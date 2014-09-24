@@ -1,0 +1,20 @@
+{
+    "name": "phlexible/element-finder-bundle",
+    "description": "phlexible element finder bundle",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": { 
+            "Phlexible\\ElementFinderBundle\\": ""
+        }
+    },
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.brainbits.net/phlexible-bundles/"
+        }
+    ],
+    "minimum-stability": "stable"
+}
