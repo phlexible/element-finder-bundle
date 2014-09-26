@@ -8,11 +8,6 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Matcher;
 
-use Phlexible\Bundle\ElementBundle\ElementService;
-use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeManagerInterface;
-use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
-use Phlexible\Bundle\TreeBundle\Tree\TreeIterator;
-use Phlexible\Bundle\TreeBundle\Tree\TreeManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

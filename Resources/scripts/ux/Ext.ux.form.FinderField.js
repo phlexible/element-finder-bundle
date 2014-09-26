@@ -116,8 +116,6 @@ Ext.ux.form.FinderField = Ext.extend(Ext.form.TwinTriggerField, {
     },
 
     onClear: function () {
-        Ext.ux.form.FinderField.superclass.onClear.call(this);
-
         this.setValue(null);
         this.setRawValue('');
         this.hiddenValue = this.getValue();

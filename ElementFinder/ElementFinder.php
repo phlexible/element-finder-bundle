@@ -102,12 +102,16 @@ class ElementFinder
         $isPreview,
         $filter = null)
     {
-        $matchedTreeIds = $this->treeNodeMatcher->getMatchingTreeIdsByLanguage(
-            $elementCatch->getTreeId(),
-            $elementCatch->getMaxDepth(),
-            $isPreview,
-            $languages
-        );
+        if ($elementCatch->getTreeId()) {
+            $matchedTreeIds = $this->treeNodeMatcher->getMatchingTreeIdsByLanguage(
+                $elementCatch->getTreeId(),
+                $elementCatch->getMaxDepth(),
+                $isPreview,
+                $languages
+            );
+        } else {
+            $matchedTreeIds = array();
+        }
 
         $qb = $this->createSelect($elementCatch, $isPreview, $languages, $matchedTreeIds, $filter);
 
@@ -227,16 +231,18 @@ class ElementFinder
             return $qb;
         }
 
-        $or = $qb->expr()->orX();
-        foreach ($matchedTreeIds as $language => $tids) {
-            $or->add(
-                $qb->expr()->andX(
-                    $qb->expr()->in('ch.tree_id', $tids),
-                    $qb->expr()->eq('ch.language', $qb->expr()->literal($language))
-                )
-            );
+        if (count($matchedTreeIds)) {
+            $or = $qb->expr()->orX();
+            foreach ($matchedTreeIds as $language => $tids) {
+                $or->add(
+                    $qb->expr()->andX(
+                        $qb->expr()->in('ch.tree_id', $tids),
+                        $qb->expr()->eq('ch.language', $qb->expr()->literal($language))
+                    )
+                );
+            }
+            $qb->where($or);
         }
-        $qb->where($or);
 
         if ($isPreview) {
             $qb->andWhere('ch.is_preview = 1');
