@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Catch controller
  *
  * @author Stephan Wentz <sw@brainbits.net>
- * @Route("/teasers/catch")
+ * @Route("/elementfinder")
  * @Security("is_granted('teasers')")
  */
 class CatchController extends Controller
@@ -94,7 +94,7 @@ class CatchController extends Controller
 
                 $fields[] = array(
                     'ds_id' => $dsId,
-                    'title' => $node->getName() . ' (' . $node->getLabel('fieldlabel', $this->getUser()->getInterfaceLanguage('en')) . ')',
+                    'title' => $node->getName() . ' (' . $node->getLabel('fieldLabel', $this->getUser()->getInterfaceLanguage('en')) . ')',
                     'icon'  => $field->getIcon(),
                 );
             }
@@ -150,9 +150,9 @@ class CatchController extends Controller
 
         $data = array();
         foreach ($elementtypes as $elementtype) {
-            $data[$elementtype->getTitle() . $elementtype->getId()] = array(
+            $data[$elementtype->getName() . $elementtype->getId()] = array(
                 'id'    => $elementtype->getId(),
-                'title' => $elementtype->getTitle(),
+                'title' => $elementtype->getName(),
                 'icon'  => $iconResolver->resolveElementtype($elementtype),
             );
         }
