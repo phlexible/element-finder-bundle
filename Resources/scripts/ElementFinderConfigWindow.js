@@ -69,6 +69,7 @@ Phlexible.elementfinder.ElementFinderConfigWindow = Ext.extend(Ext.Window, {
             }],
             tbar: [{
                 text: this.strings.preview,
+                iconCls: 'p-elementfinder-reload-icon',
                 handler: function() {
                     this.getComponent(1).getStore().baseParams = this.getComponent(0).getValues();
                     this.getComponent(1).getStore().reload();
