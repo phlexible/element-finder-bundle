@@ -150,9 +150,9 @@ class CatchController extends Controller
 
         $data = array();
         foreach ($elementtypes as $elementtype) {
-            $data[$elementtype->getName() . $elementtype->getId()] = array(
+            $data[$elementtype->getTitle() . $elementtype->getId()] = array(
                 'id'    => $elementtype->getId(),
-                'title' => $elementtype->getName(),
+                'title' => $elementtype->getTitle(),
                 'icon'  => $iconResolver->resolveElementtype($elementtype),
             );
         }
