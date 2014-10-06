@@ -49,8 +49,7 @@ class CatchController extends Controller
             $dsIds = null;
             foreach ($elementtypeIds as $elementtypeId) {
                 $elementtype = $elementtypeService->findElementtype($elementtypeId);
-                $elementtypeVersion = $elementtypeService->findLatestElementtypeVersion($elementtype);
-                $elementtypeStructure = $elementtypeService->findElementtypeStructure($elementtypeVersion);
+                $elementtypeStructure = $elementtype->getStructure();
 
                 $dsIds = (null === $dsIds)
                     ? $elementtypeStructure->getAllDsIds()
