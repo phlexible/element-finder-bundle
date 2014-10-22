@@ -41,3 +41,10 @@ services:
         public: false
         tags:
             - {name: phlexible_elementtype.field, alias: finder}
+
+    # role providers
+    phlexible_element_finder.role_provider:
+        class: Phlexible\Bundle\ElementFinderBundle\RoleProvider\ElementFinderRoleProvider
+        public: false
+        tags:
+            - {name: phlexible_gui.role_provider}
