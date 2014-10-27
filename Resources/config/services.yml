@@ -24,9 +24,8 @@ services:
     phlexible_element_finder.asset_provider:
         class: Phlexible\Bundle\ElementFinderBundle\AssetProvider\ElementFinderAssetProvider
         public: false
-        arguments: [@file_locator]
         tags:
-            - {name: phlexible_gui.asset.provider, priority: 100}
+            - {name: phlexible_gui.asset_provider, priority: 100}
 
     # event listeners
     phlexible_element_finder.listener.publish_node:
