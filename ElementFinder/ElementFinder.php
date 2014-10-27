@@ -113,19 +113,20 @@ class ElementFinder
             $matchedTreeIds = array();
         }
 
-        $qb = $this->createSelect($elementCatch, $isPreview, $languages, $matchedTreeIds, $filter);
+        $items = array();
+        if ($matchedTreeIds !== null) {
+            $qb = $this->createSelect($elementCatch, $isPreview, $languages, $matchedTreeIds, $filter);
+            foreach ($this->connection->fetchAll($qb->getSQL()) as $item) {
+                $items[$item['tree_id']] = $item;
+            }
+        }
 
         #$beforeEvent = new BeforeCatchGetResultPool($this, $qb, $resultPool);
         #if ($this->dispatcher->dispatch($beforeEvent)->isPropagationStopped()) {
         #    return $resultPool;
         #}
 
-        $items = $this->connection->fetchAll($qb->getSQL());
-        $newItems = array();
-        foreach ($items as $item) {
-            $newItems[$item['tree_id']] = $item;
-        }
-        $items = $newItems;
+
 
         /*
         if ($filter && $filter instanceof ResultFilterInterface) {
@@ -203,7 +204,7 @@ class ElementFinder
         ElementFinderConfig $elementCatch,
         $isPreview,
         array $languages,
-        array $matchedTreeIds = null,
+        array $matchedTreeIds = array(),
         $filter)
     {
         $qb = $this->connection->createQueryBuilder();
@@ -224,12 +225,6 @@ class ElementFinder
                 )
             )
             ->from('catch_lookup_element', 'ch');
-
-        if ($matchedTreeIds === null) {
-            $qb->where('1 = 0');
-
-            return $qb;
-        }
 
         if (count($matchedTreeIds)) {
             $or = $qb->expr()->orX();
@@ -270,7 +265,7 @@ class ElementFinder
             }
         }
 
-        if (!empty($elementCatch->getElementtypeIds())) {
+        if (count($elementCatch->getElementtypeIds())) {
             $qb->andWhere($qb->expr()->in('ch.elementtype_id', $elementCatch->getElementtypeIds()));
         }
 
