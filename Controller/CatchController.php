@@ -142,10 +142,10 @@ class CatchController extends Controller
      */
     public function elementtypesAction()
     {
-        $elementtypeService = $this->get('phlexible_elementtype.elementtype_service');
+        $elementSourceManager = $this->get('phlexible_element.element_source_manager');
         $iconResolver = $this->get('phlexible_element.icon_resolver');
 
-        $elementtypes = $elementtypeService->findElementtypeByType('full');
+        $elementtypes = $elementSourceManager->findElementtypesByType('full');
 
         $data = array();
         foreach ($elementtypes as $elementtype) {
