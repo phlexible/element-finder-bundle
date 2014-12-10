@@ -266,7 +266,7 @@ class ElementFinder
         }
 
         if (count($elementCatch->getElementtypeIds())) {
-            $qb->andWhere($qb->expr()->in('ch.elementtype_id', $elementCatch->getElementtypeIds()));
+            $qb->andWhere($qb->expr()->in('ch.elementtype_id', $qb->expr()->literal($elementCatch->getElementtypeIds())));
         }
 
         if ($elementCatch->inNavigation()) {

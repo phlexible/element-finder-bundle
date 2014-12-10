@@ -18,7 +18,7 @@ Phlexible.fields.Registry.addFactory('finder', function(parentConfig, item, valu
 	});
 
     config.baseValues = {
-        elementtypeIds: item.configuration.element_type_ids,
+        elementtypeIds: item.configuration.element_type_ids || '',
         inNavigation: item.configuration.in_navigation,
         maxDepth: item.configuration.max_depth,
         sortField: item.configuration.sort_field,
