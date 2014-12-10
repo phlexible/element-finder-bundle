@@ -1,6 +1,5 @@
 {
     "resources": {
-        "/phlexible/menu/elementfinder": "Resources/menu",
         "/phlexible/scripts/elementfinder": "Resources/scripts",
         "/phlexible/styles/elementfinder": "Resources/styles"
     }
