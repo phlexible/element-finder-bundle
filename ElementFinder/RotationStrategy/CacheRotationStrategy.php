@@ -9,7 +9,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\RotationStrategy;
 
 use Doctrine\Common\Cache\Cache;
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinderResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 
 /**
  * Cache rotations strategy
@@ -34,9 +34,9 @@ class CacheRotationStrategy implements RotationStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function getLastRotationPosition(ElementFinderResultPool $pool)
+    public function getLastRotationPosition(ResultPool $pool)
     {
-        $identifier = $pool->getIdentifier();
+        $identifier = $pool->getHash();
 
         $position = $this->cache->fetch($identifier);
 
@@ -51,9 +51,9 @@ class CacheRotationStrategy implements RotationStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function setLastRotationPosition(ElementFinderResultPool $pool, $position)
+    public function setLastRotationPosition(ResultPool $pool, $position)
     {
-        $identifier = $pool->getIdentifier();
+        $identifier = $pool->getHash();
 
         $this->cache->save($identifier, $position);
 

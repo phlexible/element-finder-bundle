@@ -8,7 +8,7 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\RotationStrategy;
 
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinderResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -34,9 +34,9 @@ class SessionRotationStrategy implements RotationStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function getLastRotationPosition(ElementFinderResultPool $pool)
+    public function getLastRotationPosition(ResultPool $pool)
     {
-        $identifier = $pool->getIdentifier();
+        $identifier = $pool->getHash();
 
         $position = $this->session->get($identifier);
 
@@ -50,9 +50,9 @@ class SessionRotationStrategy implements RotationStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function setLastRotationPosition(ElementFinderResultPool $pool, $position)
+    public function setLastRotationPosition(ResultPool $pool, $position)
     {
-        $identifier = $pool->getIdentifier();
+        $identifier = $pool->getHash();
 
         $this->session->set($identifier, $position);
 

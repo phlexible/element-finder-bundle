@@ -19,7 +19,7 @@ use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
 interface QueryEnhancerInterface
 {
     /**
-     * Add filter to a select statement.
+     * Enhance element finder query.
      *
      * @param ElementFinderConfig $catch
      * @param QueryBuilder        $qb

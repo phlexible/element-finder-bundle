@@ -8,12 +8,14 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
 
+use Pagerfanta\Adapter\AdapterInterface;
+
 /**
  * Result pool
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class ResultPool implements \Countable
+class ResultPool implements \Countable, AdapterInterface
 {
     /**
      * @var ResultItem[]
@@ -163,45 +165,34 @@ class ResultPool implements \Countable
         return $this->filter->filterItems($this->getItems(), $values);
     }
 
-    public function rotationKram()
-    {
-
-        // if _poolSize is given (indicationg rotating teasers)
-        // and _poolSize differs from _maxElements
-        // and we are in frontend ($this->page != 0)
-        if ($elementCatch->hasRotation() && ($elementCatch->getMaxResults() < count($result)) && $page) {
-            $reducedResult = array();
-            $resultKeys = array_keys($result);
-            $resultSize = count($resultKeys);
-
-            // get last remembered rotation position
-            $pos = $this->getLastRotationPosition() % $resultSize;
-
-            $size = min(
-                $elementCatch->getPoolSize() ?: PHP_INT_MAX,
-                $elementCatch->getMaxResults(),
-                $resultSize
-            );
-
-            for ($i = 0; $i < $size; ++$i) {
-                $key = $resultKeys[$pos];
-                $reducedResult[$key] = $this->result[$key];
-                $pos = ($pos + 1) % $resultSize;
-            }
-
-            // remember rotation position
-            // TODO: store somewhere else
-            $this->setLastRotationPosition($pos);
-
-            $result = $reducedResult;
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
     public function count()
     {
         return count($this->items);
+    }
+
+    /**
+     * Returns the number of results.
+     *
+     * @return integer The number of results.
+     */
+    public function getNbResults()
+    {
+        return $this->count();
+    }
+
+    /**
+     * Returns an slice of the results.
+     *
+     * @param integer $offset The offset.
+     * @param integer $length The length.
+     *
+     * @return array|\Traversable The slice.
+     */
+    public function getSlice($offset, $length)
+    {
+        return $this->slice($offset, $length);
     }
 }

@@ -8,7 +8,7 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\RotationStrategy;
 
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinderResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 
 
 /**
@@ -21,19 +21,19 @@ interface RotationStrategyInterface
     /**
      * Get last remembered position for teaser rotation.
      *
-     * @param ElementFinderResultPool $pool
-     * @param int                     $position
+     * @param ResultPool $pool
+     * @param int        $position
      *
      * @return $this
      */
-    public function setLastRotationPosition(ElementFinderResultPool $pool, $position);
+    public function setLastRotationPosition(ResultPool $pool, $position);
 
     /**
      * Get last remembered position for teaser rotation.
      *
-     * @param ElementFinderResultPool $pool
+     * @param ResultPool $pool
      *
      * @return int
      */
-    public function getLastRotationPosition(ElementFinderResultPool $pool);
+    public function getLastRotationPosition(ResultPool $pool);
 }
