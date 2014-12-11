@@ -10,7 +10,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\Twig\Extension;
 
 use Phlexible\Bundle\ElementBundle\Model\ElementStructureValue;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinder;
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinderResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -54,7 +54,7 @@ class ElementFinderExtension extends \Twig_Extension
     /**
      * @param ElementStructureValue|array $field
      *
-     * @return ElementFinderResultPool
+     * @return ResultPool
      */
     public function finder($field)
     {
