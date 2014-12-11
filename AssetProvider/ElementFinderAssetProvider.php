@@ -23,7 +23,7 @@ class ElementFinderAssetProvider implements AssetProviderInterface
     public function getUxScriptsCollection()
     {
         return array(
-            '@PhlexibleElementFinderBundle/Resources/scripts/ux/Ext.ux.form.FinderField.js',
+            '@PhlexibleElementFinderBundle/Resources/scripts-ux/Ext.ux.form.FinderField.js',
         );
     }
 
