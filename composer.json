@@ -3,12 +3,13 @@
     "description": "phlexible element finder bundle",
     "license": "proprietary",
     "autoload": {
-        "psr-4": { 
+        "psr-4": {
             "Phlexible\\Bundle\\ElementFinderBundle\\": ""
         }
     },
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "white-october/pagerfanta-bundle": "~1.0"
     },
     "repositories": [
         {
