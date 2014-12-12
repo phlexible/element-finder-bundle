@@ -48,6 +48,12 @@ class ElementFinderLookupElement
 
     /**
      * @var int
+     * @ORM\Column(name="element_version_id", type="integer")
+     */
+    private $elementVersionId;
+
+    /**
+     * @var int
      * @ORM\Column(name="elementtype_id", type="integer")
      */
     private $elementtypeId;
@@ -176,6 +182,26 @@ class ElementFinderLookupElement
     public function setTreeId($treeId)
     {
         $this->treeId = $treeId;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getElementVersionId()
+    {
+        return $this->elementVersionId;
+    }
+
+    /**
+     * @param int $elementVersionId
+     *
+     * @return $this
+     */
+    public function setElementVersionId($elementVersionId)
+    {
+        $this->elementVersionId = $elementVersionId;
 
         return $this;
     }

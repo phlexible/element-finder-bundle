@@ -8,9 +8,12 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\Command;
 
+use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Tipfinder\AppBundle\ElementFinder\Filter\DateFilter;
 
 /**
  * Test command
@@ -25,8 +28,9 @@ class TestCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('teasers:test')
-            ->setDescription('Test teasers.');
+            ->setName('element-finder:test')
+            ->setDescription('Test teasers.')
+            ->addOption('fresh', 'f', InputOption::VALUE_NONE, 'Skip cache');
     }
 
     /**
@@ -38,17 +42,43 @@ class TestCommand extends ContainerAwareCommand
 
         ini_set('memory_limit', -1);
 
-        $catchRepository = $this->getContainer()->get('phlexible_teaser.teaser_service');
-        $catcher = $this->getContainer()->get('phlexible_teaser.catcher');
+        $finder = $this->getContainer()->get('phlexible_element_finder.finder');
 
-        $catch = $catchRepository->find(50);
-        $resultPool = $catcher->catchElements(
-            $catch,
-            array('de'),
-            false,
-            new \Brainbits_Teasers_Catch_Filter_References()
-        );
+        $config = new ElementFinderConfig();
+        $config->setTreeId(48);
+        $languages = array('de');
+        $preview = true;
+        $identifier = $finder->createIdentifier($config, $languages, $preview);
 
-        ldd($resultPool->getFilteredItems(array('sector' => 'healthcare')));
+        $resultPool = null;
+        if (!$input->getOption('fresh')) {
+            try {
+                $resultPool = $finder->findByIdentifier($identifier, $languages, $preview);
+
+                $output->writeln("<info>Loaded pool $identifier cached on {$resultPool->getCreatedAt()->format('Y-m-d H:i:s')}</info>");
+            } catch (\Exception $e) {
+
+            }
+        }
+
+        if (!$resultPool) {
+            $resultPool = $finder->find($config, $languages, $preview, array(new DateFilter()));
+            $output->writeln("<info>Created pool $identifier</info>");
+        }
+
+        $resultPool->setParameter('date_location', 'Dormagen');
+
+        $output->writeln('Items:');
+        foreach ($resultPool->all() as $item) {
+            $output->writeln(" {$item->getTreeId()} " . json_encode($item->getExtras()));
+        }
+
+        $output->writeln('Facets:');
+        foreach ($resultPool->getFacets() as $key => $facet) {
+            $output->writeln(" $key");
+            foreach ($facet as $key => $value) {
+                $output->writeln("  $key: $value");
+            }
+        }
     }
 }

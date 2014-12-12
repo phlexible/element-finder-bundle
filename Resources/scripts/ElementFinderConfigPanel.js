@@ -173,7 +173,7 @@ Phlexible.elementfinder.ElementFinderConfigPanel = Ext.extend(Ext.Panel, {
                         hiddenName: 'metaKey',
                         value: this.values.metaKey,
                         store: new Ext.data.JsonStore({
-                            url: Phlexible.Router.generate('elementfinder_catch_metakeys'),
+                            url: Phlexible.Router.generate('elementfinder_catch_metafields'),
                             root: 'metakeys',
                             fields: ['id', 'name'],
                             autoLoad: true,
@@ -193,6 +193,7 @@ Phlexible.elementfinder.ElementFinderConfigPanel = Ext.extend(Ext.Panel, {
                             clear: function() {
                                 var metaKeywordsFields = this.getForm().findField('metaKeywords');
                                 metaKeywordsFields.store.removeAll();
+                                metaKeywordsFields.setValue(null);
                             },
                             scope: this
                         },

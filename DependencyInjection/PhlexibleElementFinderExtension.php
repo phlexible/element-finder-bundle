@@ -27,7 +27,7 @@ class PhlexibleElementFinderExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
-        $loader->load('doctrine.yml');
+        //$loader->load('doctrine.yml');
         $loader->load('twig_extensions.yml');
 
         $configuration = $this->getConfiguration($config, $container);
@@ -38,6 +38,6 @@ class PhlexibleElementFinderExtension extends Extension
             $config['use_master_language_as_fallback']
         );
 
-        $container->setAlias('phlexible_element_finder.element_finder_manager', 'phlexible_teaser.doctrine.element_finder_manager');
+        //$container->setAlias('phlexible_element_finder.element_finder_manager', 'phlexible_teaser.doctrine.element_finder_manager');
     }
 }

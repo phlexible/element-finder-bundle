@@ -48,6 +48,11 @@ class ResultItem
     /**
      * @var bool
      */
+    private $isPreview;
+
+    /**
+     * @var bool
+     */
     private $isRestricted;
 
     /**
@@ -61,27 +66,36 @@ class ResultItem
     private $customDate;
 
     /**
+     * @var array
+     */
+    private $extras;
+
+    /**
      * @param int       $treeId
      * @param int       $eid
      * @param int       $version
      * @param string    $language
      * @param int       $elementtypeId
+     * @param bool      $isPreview
      * @param bool      $inNavigation
      * @param bool      $isRestricted
      * @param \DateTime $publishedAt
      * @param \DateTime $customDate
+     * @param array     $extras
      */
-    public function __construct($treeId, $eid, $version, $language, $elementtypeId, $inNavigation, $isRestricted, $publishedAt, $customDate)
+    public function __construct($treeId, $eid, $version, $language, $elementtypeId, $isPreview, $inNavigation, $isRestricted, $publishedAt, $customDate, array $extras = array())
     {
         $this->treeId = $treeId;
         $this->eid = $eid;
         $this->version = $version;
         $this->language = $language;
         $this->elementtypeId = $elementtypeId;
+        $this->isPreview = $isPreview;
         $this->inNavigation = $inNavigation;
         $this->isRestricted = $isRestricted;
         $this->publishedAt = $publishedAt;
         $this->customDate = $customDate;
+        $this->extras = $extras;
     }
 
     /**
@@ -106,6 +120,14 @@ class ResultItem
     public function getElementtypeId()
     {
         return $this->elementtypeId;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPreview()
+    {
+        return $this->isPreview;
     }
 
     /**
@@ -156,4 +178,26 @@ class ResultItem
         return $this->version;
     }
 
+    /**
+     * @return array
+     */
+    public function getExtras()
+    {
+        return $this->extras;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $default
+     *
+     * @return string
+     */
+    public function getExtra($key, $default = null)
+    {
+        if (isset($this->extras[$key])) {
+            return $this->extras[$key];
+        }
+
+        return $default;
+    }
 }

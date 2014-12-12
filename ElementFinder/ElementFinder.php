@@ -10,7 +10,9 @@ namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Dumper\XmlDumper;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\QueryEnhancerInterface;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Loader\XmlLoader;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Matcher\TreeNodeMatcherInterface;
 use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -79,33 +81,49 @@ class ElementFinder
     }
 
     /**
-     * Catch elements
-     *
-     * array(
-     *    id => array(
-     *        'id'      => id,
-     *        'eid'     => eid,
-     *        'version' => version,
-     *    )
-     * )
-     *
-     * @param ElementFinderConfig $elementCatch
-     * @param array               $languages
-     * @param bool                $isPreview
-     * @param mixed               $filter
+     * @param string $identifier
+     * @param array  $languages
+     * @param bool   $isPreview
      *
      * @return ResultPool
      */
-    public function find(
-        ElementFinderConfig $elementCatch,
-        array $languages,
-        $isPreview,
-        $filter = null)
+    public function findByIdentifier($identifier, array $languages, $isPreview)
     {
-        if ($elementCatch->getTreeId()) {
+        if (!file_exists("/tmp/$identifier.xml")) {
+            throw new \Exception();
+        }
+
+        $loader = new XmlLoader();
+        $resultPool = $loader->load("/tmp/$identifier.xml");
+
+        return $resultPool;
+    }
+
+    /**
+     * Find elements
+     *
+     * @param ElementFinderConfig $config
+     * @param array               $languages
+     * @param bool                $isPreview
+     * @param array               $filters
+     *
+     * @return ResultPool
+     */
+    public function find(ElementFinderConfig $config, array $languages, $isPreview, array $filters = array())
+    {
+        $identifier = $this->createIdentifier($config, $languages, $isPreview);
+
+        if (0 && file_exists("/tmp/$identifier.xml")) {
+            $loader = new XmlLoader();
+            $resultPool = $loader->load("/tmp/$identifier.xml");
+
+            return $resultPool;
+        }
+
+        if ($config->getTreeId()) {
             $matchedTreeIds = $this->treeNodeMatcher->getMatchingTreeIdsByLanguage(
-                $elementCatch->getTreeId(),
-                $elementCatch->getMaxDepth(),
+                $config->getTreeId(),
+                $config->getMaxDepth(),
                 $isPreview,
                 $languages
             );
@@ -113,42 +131,36 @@ class ElementFinder
             $matchedTreeIds = array();
         }
 
-        $items = array();
+        $results = array();
         if ($matchedTreeIds !== null) {
-            $qb = $this->createSelect($elementCatch, $isPreview, $languages, $matchedTreeIds, $filter);
+            $qb = $this->createSelect($config, $isPreview, $languages, $matchedTreeIds, $filters);
             foreach ($this->connection->fetchAll($qb->getSQL()) as $item) {
-                $items[$item['tree_id']] = $item;
+                $results[$item['tree_id']] = $item;
             }
         }
 
-        #$beforeEvent = new BeforeCatchGetResultPool($this, $qb, $resultPool);
-        #if ($this->dispatcher->dispatch($beforeEvent)->isPropagationStopped()) {
-        #    return $resultPool;
-        #}
-
-
-
         /*
-        if ($filter && $filter instanceof ResultFilterInterface) {
-            $filter->filterResult($resultPool);
+        $beforeEvent = new BeforeCatchGetResultPool($this, $qb, $resultPool);
+        if ($this->dispatcher->dispatch($beforeEvent)->isPropagationStopped()) {
+            return $resultPool;
         }
         */
 
-        if (!$elementCatch->getSortField() && $matchedTreeIds) {
+        if (!$config->getSortField() && $matchedTreeIds) {
             // sort by tree order
             $orderedResult = array();
 
             $treeIds = $this->treeNodeMatcher->flatten($matchedTreeIds);
             foreach ($treeIds as $treeId) {
-                if (array_key_exists($treeId, $items)) {
-                    $orderedResult[$treeId] = $items[$treeId];
+                if (array_key_exists($treeId, $results)) {
+                    $orderedResult[$treeId] = $results[$treeId];
                 }
             }
             sort($orderedResult);
-            $items = $orderedResult;
+            $results = $orderedResult;
         } elseif ($this->isNatSort) {
             // sort by sort field
-            $sortedColumn = array_column($items, 'sort_field');
+            $sortedColumn = array_column($results, 'sort_field');
             if ($this->isNatSort) {
                 // use natsort
                 natsort($sortedColumn);
@@ -159,80 +171,124 @@ class ElementFinder
 
             $orderedResult = array();
             foreach (array_keys($sortedColumn) as $key) {
-                $orderedResult[] = $items[$key];
+                $orderedResult[] = $results[$key];
             }
-            $items = $orderedResult;
+            $results = $orderedResult;
         }
 
-        $resultPool = new ResultPool();
-        $resultPool->setQuery((string) $qb);
-
-        foreach ($items as $row) {
-            $resultPool->addItem(
-                new ResultItem(
-                    $row['tree_id'],
-                    $row['eid'],
-                    $row['version'],
-                    $row['language'],
-                    $row['elementtype_id'],
-                    $row['in_navigation'],
-                    $row['is_restricted'],
-                    $row['published_at'],
-                    $row['custom_date']
-                )
-            );
+        $items = array();
+        foreach ($results as $result) {
+            $items[] = $this->createItem($result);
         }
 
-        #$event = new CatchGetResultPool($this, $resultPool);
-        #$this->dispatcher->dispatch($event);
+        $query = !empty($qb) ? $qb->getSQL() : null;
+        $resultPool = new ResultPool($identifier, $config, $query, $items, $filters);
+
+        /*
+        $event = new CatchGetResultPool($this, $resultPool);
+        $this->dispatcher->dispatch($event);
+        */
+
+        $dumper = new XmlDumper();
+        file_put_contents("/tmp/$identifier.xml", $dumper->dump($resultPool));
 
         return $resultPool;
     }
 
     /**
+     * @param ElementFinderConfig $config
+     * @param array               $languages
+     * @param bool                $isPreview
+     *
+     * @return string
+     */
+    public function createIdentifier(ElementFinderConfig $config, $languages, $isPreview)
+    {
+        return hash('sha1', serialize(array($config, $languages, $isPreview)));
+    }
+
+    /**
+     * @param array $row
+     *
+     * @return ResultItem
+     */
+    private function createItem(array $row)
+    {
+        $treeId = $row['tree_id'];
+        $eid = $row['eid'];
+        $version = $row['version'];
+        $language = $row['language'];
+        $elementtypeId = $row['elementtype_id'];
+        $isPreview = $row['is_preview'];
+        $inNavigation = $row['in_navigation'];
+        $isRestricted = $row['is_restricted'];
+        $publishedAt = $row['published_at'] ? new \DateTime($row['published_at']) : null;
+        $customDate = $row['custom_date'] ? new \DateTime($row['custom_date']) : null;
+
+        unset(
+            $row['tree_id'], $row['eid'], $row['version'], $row['language'], $row['elementtype_id'],
+            $row['is_preview'], $row['in_navigation'], $row['is_restricted'], $row['published_at'], $row['custom_date']
+        );
+
+        return new ResultItem(
+            $treeId,
+            $eid,
+            $version,
+            $language,
+            $elementtypeId,
+            $isPreview,
+            $inNavigation,
+            $isRestricted,
+            $publishedAt,
+            $customDate,
+            $row
+        );
+    }
+
+    /**
      * Apply filter and limit clause.
      *
-     * @param ElementFinderConfig $elementCatch
+     * @param ElementFinderConfig $config
      * @param bool                $isPreview
      * @param array               $languages
      * @param array|null          $matchedTreeIds
-     * @param mixed               $filter
+     * @param array               $filters
      *
      * @return QueryBuilder
      */
     private function createSelect(
-        ElementFinderConfig $elementCatch,
+        ElementFinderConfig $config,
         $isPreview,
         array $languages,
         array $matchedTreeIds = array(),
-        $filter)
+        array $filters = array())
     {
         $qb = $this->connection->createQueryBuilder();
         $qb
             ->select(
                 array(
-                    'ch.tree_id',
-                    'ch.eid',
-                    'ch.version',
-                    'ch.is_preview',
-                    'ch.elementtype_id',
-                    'ch.in_navigation',
-                    'ch.is_restricted',
-                    'ch.published_at',
-                    'ch.custom_date',
-                    'ch.language',
-                    //'ch.online_version',
+                    'lookup.tree_id',
+                    'lookup.eid',
+                    'lookup.version',
+                    'lookup.elementtype_id',
+                    'lookup.is_preview',
+                    'lookup.in_navigation',
+                    'lookup.is_restricted',
+                    'lookup.published_at',
+                    'lookup.custom_date',
+                    'lookup.language',
+                    //'lookup.online_version',
                 )
             )
-            ->from('catch_lookup_element', 'ch');
+            ->from('catch_lookup_element', 'lookup');
 
         if (count($matchedTreeIds)) {
             $or = $qb->expr()->orX();
             foreach ($matchedTreeIds as $language => $tids) {
                 $or->add(
                     $qb->expr()->andX(
-                        $qb->expr()->in('ch.tree_id', $tids),
-                        $qb->expr()->eq('ch.language', $qb->expr()->literal($language))
+                        $qb->expr()->in('lookup.tree_id', $tids),
+                        $qb->expr()->in('lookup.language', $qb->expr()->literal(current($languages)))
                     )
                 );
             }
@@ -240,18 +296,18 @@ class ElementFinder
         }
 
         if ($isPreview) {
-            $qb->andWhere('ch.is_preview = 1');
+            $qb->andWhere('lookup.is_preview = 1');
         } else {
-            $qb->andWhere('ch.is_preview = 0');
+            $qb->andWhere('lookup.is_preview = 0');
         }
 
-        if ($elementCatch->getMetaSearch()) {
+        if ($config->getMetaField() && $config->getMetaKeywords()) {
             $metaI = 0;
-            foreach ($elementCatch->getMetaSearch() as $key => $value) {
-                $alias = 'evmi' . ++$metaI;
+            foreach ($config->getMetaKeywords() as $key => $value) {
+                $alias = 'meta' . ++$metaI;
                 $qb
-                    ->join('ch', 'catch_lookup_meta', $alias, $alias . '.eid = ch.eid AND ' . $alias . '.version = ch.version AND ' . $alias . '.language = ch.language')
-                    ->andWhere($qb->expr()->eq("$alias.key", $qb->expr()->literal($key)));
+                    ->join('lookup', 'catch_lookup_meta', $alias, $alias . '.eid = lookup.eid AND ' . $alias . '.version = lookup.version AND ' . $alias . '.language = lookup.language')
+                    ->andWhere($qb->expr()->eq("$alias.field", $qb->expr()->literal($config->getMetaField())));
 
                 $multiValueSelects = array();
                 foreach (explode(',', $value) as $singleValue) {
@@ -265,44 +321,46 @@ class ElementFinder
             }
         }
 
-        if (count($elementCatch->getElementtypeIds())) {
-            $qb->andWhere($qb->expr()->in('ch.elementtype_id', $qb->expr()->literal($elementCatch->getElementtypeIds())));
+        if (count($config->getElementtypeIds())) {
+            $qb->andWhere($qb->expr()->in('lookup.elementtype_id', $qb->expr()->literal($config->getElementtypeIds())));
         }
 
-        if ($elementCatch->inNavigation()) {
-            $qb->andWhere('ch.in_navigation = 1');
+        if ($config->inNavigation()) {
+            $qb->andWhere('lookup.in_navigation = 1');
         }
 
         if (count($this->tidSkipList)) {
             $tidSkipList = $this->tidSkipList;
 
-            $qb->andWhere($qb->expr()->notIn('ch.tree_id', $tidSkipList));
+            $qb->andWhere($qb->expr()->notIn('lookup.tree_id', $tidSkipList));
         }
 
         /*
         if ($country) {
             if ($country !== 'global') {
                 $qb->andWhere(
-                    '(ch.tree_id IN (SELECT DISTINCT tid FROM element_tree_context WHERE context = ? OR context = "global") OR ch.tree_id NOT IN (SELECT DISTINCT tid from element_tree_context))',
+                    '(lookup.tree_id IN (SELECT DISTINCT tid FROM element_tree_context WHERE context = ? OR context = "global") OR lookup.tree_id NOT IN (SELECT DISTINCT tid from element_tree_context))',
                     $country
                 );
             } else {
                 $qb->andWhere(
-                    '(ch.tree_id IN (SELECT DISTINCT tid FROM element_tree_context WHERE context = "global") OR ch.tree_id NOT IN (SELECT DISTINCT tid from element_tree_context))'
+                    '(lookup.tree_id IN (SELECT DISTINCT tid FROM element_tree_context WHERE context = "global") OR lookup.tree_id NOT IN (SELECT DISTINCT tid from element_tree_context))'
                 );
             }
         }
         */
 
-        $qb->groupBy('ch.eid');
+        $qb->groupBy('lookup.eid');
 
-        // apply filter
-        if ($filter && $filter instanceof QueryEnhancerInterface) {
-            $filter->enhance($elementCatch, $qb);
+        // apply filters
+        foreach ($filters as $filter) {
+            if ($filter && $filter instanceof QueryEnhancerInterface) {
+                $filter->enhanceQuery($config, $qb);
+            }
         }
 
         // set sort information
-        $this->applySort($qb, $elementCatch, $isPreview);
+        $this->applySort($qb, $config, $isPreview);
 
         return $qb;
     }
@@ -311,28 +369,32 @@ class ElementFinder
      * Add a sort criteria to the select statement.
      *
      * @param QueryBuilder        $qb
-     * @param ElementFinderConfig $elementCatch
+     * @param ElementFinderConfig $config
      * @param bool                $isPreview
      */
-    private function applySort(QueryBuilder $qb, ElementFinderConfig $elementCatch, $isPreview)
+    private function applySort(QueryBuilder $qb, ElementFinderConfig $config, $isPreview)
     {
-        $sortField = $elementCatch->getSortField();
+        $sortField = $config->getSortField();
         if (!$sortField) {
             return;
         }
 
         if (self::SORT_TITLE_BACKEND === $sortField) {
-            $this->applySortByTitle($qb, 'backend', $elementCatch);
+            $this->applySortByTitle($qb, 'backend', $config);
         } elseif (self::SORT_TITLE_PAGE === $sortField) {
-            $this->applySortByTitle($qb, 'page', $elementCatch);
+            $this->applySortByTitle($qb, 'page', $config);
         } elseif (self::SORT_TITLE_NAVIGATION === $sortField) {
-            $this->applySortByTitle($qb, 'navigation', $elementCatch);
+            $this->applySortByTitle($qb, 'navigation', $config);
         } elseif (self::SORT_PUBLISH_DATE === $sortField) {
-            $this->applySortByPublishDate($qb, $elementCatch, $isPreview);
+            $this->applySortByPublishDate($qb, $config, $isPreview);
         } elseif (self::SORT_CUSTOM_DATE === $sortField) {
-            $this->applySortByCustomDate($qb, $elementCatch);
+            $this->applySortByCustomDate($qb, $config);
         } else {
-            $this->applySortByField($qb, $elementCatch);
+            $this->applySortByField($qb, $config);
+        }
+
+        if (!$this->isNatSort) {
+            $qb->orderBy(self::FIELD_SORT, $config->getSortDir());
         }
     }
 
@@ -340,23 +402,23 @@ class ElementFinder
      * Add field sorting to select statement.
      *
      * @param QueryBuilder        $qb
-     * @param ElementFinderConfig $elementCatch
+     * @param ElementFinderConfig $config
      */
-    private function applySortByField(QueryBuilder $qb, ElementFinderConfig $elementCatch)
+    private function applySortByField(QueryBuilder $qb, ElementFinderConfig $config)
     {
         $qb
             ->addSelect('sort_esv.content AS sort_field')
             ->join(
-                'ch',
+                'lookup',
                 'element_structure',
                 'sort_es',
-                'ch.eid = sort_es.eid AND ch.version = sort_es.version'
+                'lookup.eid = sort_es.eid AND lookup.version = sort_es.version'
             )
             ->join(
                 'sort_d',
                 'element_structure_value',
                 'sort_esv',
-                'sort_es.data_id = sort_esvl.data_id AND sort_es.version = sort_esv.version AND sort_es.eid = sort_esv.eid AND sort_es.ds_id = ' . $qb->expr()->literal($elementCatch->getSortField()) . ' AND sort_esv.language = ch.language'
+                'sort_es.data_id = sort_esvl.data_id AND sort_es.version = sort_esv.version AND sort_es.eid = sort_esv.eid AND sort_es.ds_id = ' . $qb->expr()->literal($config->getSortField()) . ' AND sort_esv.language = lookup.language'
             );
     }
 
@@ -365,36 +427,32 @@ class ElementFinder
      *
      * @param QueryBuilder        $qb
      * @param string              $title
-     * @param ElementFinderConfig $elementCatch
+     * @param ElementFinderConfig $config
      */
-    private function applySortByTitle(QueryBuilder $qb, $title, ElementFinderConfig $elementCatch)
+    private function applySortByTitle(QueryBuilder $qb, $title, ElementFinderConfig $config)
     {
         $qb
             ->addSelect("sort.$title AS sort_field")
             ->leftJoin(
-                'ch',
+                'lookup',
                 'element_version_mapped_fields',
                 'sort',
-                'ch.eid = sort_t.eid AND ch.version = sort_t.version AND ch.language = sort_t.language'
+                'lookup.eid = sort_t.eid AND lookup.version = sort_t.version AND lookup.language = sort_t.language'
             );
-
-        if (!$this->isNatSort) {
-            $qb->orderBy(self::FIELD_SORT, $elementCatch->getSortDir());
-        }
     }
 
     /**
      * Add title sorting to select statement.
      *
      * @param QueryBuilder        $qb
-     * @param ElementFinderConfig $elementCatch
+     * @param ElementFinderConfig $config
      * @param bool                $isPreview
      */
-    private function applySortByPublishDate(QueryBuilder $qb, ElementFinderConfig $elementCatch, $isPreview)
+    private function applySortByPublishDate(QueryBuilder $qb, ElementFinderConfig $config, $isPreview)
     {
         if (!$isPreview) {
             $qb
-                ->addSelect("ch.publish_time AS sort_field");
+                ->addSelect("lookup.publish_time AS sort_field");
         }
     }
 
@@ -402,11 +460,11 @@ class ElementFinder
      * Add title sorting to select statement.
      *
      * @param QueryBuilder        $qb
-     * @param ElementFinderConfig $elementCatch
+     * @param ElementFinderConfig $config
      */
-    private function applySortByCustomDate(QueryBuilder $qb, ElementFinderConfig $elementCatch)
+    private function applySortByCustomDate(QueryBuilder $qb, ElementFinderConfig $config)
     {
         $qb
-            ->addSelect("ch.custom_date AS sort_field");
+            ->addSelect("lookup.custom_date AS sort_field");
     }
 }

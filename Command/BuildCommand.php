@@ -10,6 +10,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -25,8 +26,9 @@ class BuildCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('elementfinder:build')
-            ->setDescription('Refresh element finder lookup tables.');
+            ->setName('element-finder:build')
+            ->setDescription('Refresh element finder lookup tables.')
+            ->addOption('empty', null, InputOption::VALUE_NONE, 'Remove all lookup items before building');
     }
 
     /**
@@ -37,6 +39,10 @@ class BuildCommand extends ContainerAwareCommand
         $treeManager = $this->getContainer()->get('phlexible_tree.tree_manager');
         $lookupBuilder = $this->getContainer()->get('phlexible_element_finder.lookup_builder');
 
+        if ($input->getOption('empty')) {
+            $lookupBuilder->removeAll();
+        }
+
         foreach ($treeManager->getAll() as $tree) {
             $rii = new \RecursiveIteratorIterator($tree->getIterator(), \RecursiveIteratorIterator::SELF_FIRST);
             foreach ($rii as $treeNode) {
@@ -44,7 +50,7 @@ class BuildCommand extends ContainerAwareCommand
             }
         }
 
-        $output->writeln("Refresh done.");
+        $output->writeln("Build finished.");
 
         return $output;
     }

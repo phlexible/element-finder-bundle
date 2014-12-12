@@ -8,7 +8,10 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pagerfanta\Adapter\AdapterInterface;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\ResultPoolFilterInterface;
+use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
 
 /**
  * Result pool
@@ -18,14 +21,24 @@ use Pagerfanta\Adapter\AdapterInterface;
 class ResultPool implements \Countable, AdapterInterface
 {
     /**
+     * @var string
+     */
+    private $identifier;
+
+    /**
+     * @var ElementFinderConfig
+     */
+    private $config;
+
+    /**
      * @var ResultItem[]
      */
     private $items = array();
 
     /**
-     * @var mixed
+     * @var array
      */
-    private $filter;
+    private $filters;
 
     /**
      * @var string
@@ -33,15 +46,93 @@ class ResultPool implements \Countable, AdapterInterface
     private $query;
 
     /**
-     * @param string $query
+     * @var \DateTime
+     */
+    private $createdAt;
+
+    /**
+     * @var array
+     */
+    private $parameters = array();
+
+    /**
+     * @param string              $identifier
+     * @param ElementFinderConfig $config
+     * @param string              $query
+     * @param ResultItem[]        $items
+     * @param array               $filters
+     * @param \DateTime           $createdAt
+     */
+    public function __construct($identifier, ElementFinderConfig $config, $query, array $items, array $filters, \DateTime $createdAt = null)
+    {
+        if (null === $createdAt) {
+            $createdAt = new \DateTime;
+        }
+
+        foreach ($items as $item) {
+            if (!$item instanceof ResultItem) {
+                throw new \InvalidArgumentException("Invalid result item.");
+            }
+        }
+
+        $this->identifier = $identifier;
+        $this->config = $config;
+        $this->query = $query;
+        $this->filters = $filters;
+        $this->createdAt = $createdAt;
+
+        $this->items = new ArrayCollection($items);
+    }
+
+    /**
+     * @return array
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * @param array $parameters
      *
      * @return $this
      */
-    public function setQuery($query)
+    public function setParameters(array $parameters = array())
     {
-        $this->query = $query;
+        foreach ($parameters as $key => $value) {
+            $this->setParameter($key, $value);
+        }
 
         return $this;
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function setParameter($key, $value)
+    {
+        $this->parameters[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * @return ElementFinderConfig
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 
     /**
@@ -53,19 +144,19 @@ class ResultPool implements \Countable, AdapterInterface
     }
 
     /**
-     * @param ResultItem[] $items
-     *
-     * @return $this
+     * @return array
      */
-    public function setItems(array $items)
+    public function getFilters()
     {
-        $this->items = array();
+        return $this->filters;
+    }
 
-        foreach ($items as $item) {
-            $this->addItem($item);
-        }
-
-        return $this;
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**
@@ -73,72 +164,70 @@ class ResultPool implements \Countable, AdapterInterface
      *
      * @return $this
      */
-    public function addItem(ResultItem $item)
+    public function remove(ResultItem $item)
     {
-        $this->items[] = $item;
+        if ($this->items->contains($item)) {
+            $this->items->removeElement($item);
+        }
 
         return $this;
     }
 
     /**
-     * @param mixed $filter
-     *
-     * @return $this
+     * @return ArrayCollection|ResultItem[]
      */
-    public function setFilter($filter)
+    private function getItems()
     {
-        $this->filter = $filter;
+        $items = $this->items;
 
-        return $this;
+        foreach ($this->filters as $filter) {
+            if ($filter instanceof ResultPoolFilterInterface) {
+                $filter->reduceItems($items, $this->parameters);
+            }
+        }
+
+        return $items;
     }
 
     /**
-     * @return mixed
-     */
-    public function getFilter()
-    {
-        return $this->filter;
-    }
-
-    /**
-     * @return array
+     * @return ResultItem[]
      */
     public function all()
     {
-        return $this->items;
+        return $this->getItems()->getValues();
     }
 
     /**
      * @param int $from
      * @param int $to
      *
-     * @return array
+     * @return ResultItem[]
      */
     public function range($from, $to)
     {
-        return array_slice($this->items, $from, $to - $from);
+        return $this->getItems()->slice($from, $to - $from);
     }
 
     /**
      * @param int $from
      * @param int $length
      *
-     * @return array
+     * @return ResultItem[]
      */
     public function slice($from, $length)
     {
-        return array_slice($this->items, $from, $length);
+        return $this->getItems()->slice($from, $length);
     }
 
     /**
      * @param int $pageSize
      * @param int $page
      *
-     * @return array
+     * @return ResultItem[]
      */
     public function page($pageSize, $page)
     {
-        return array_slice($this->items, $page * $pageSize, $pageSize);
+        return $this->getItems()->slice($page * $pageSize, $pageSize);
     }
 
     /**
@@ -152,25 +241,11 @@ class ResultPool implements \Countable, AdapterInterface
     }
 
     /**
-     * @param array $values
-     *
-     * @return array
-     */
-    public function getFilteredItems(array $values = array())
-    {
-        if (!$this->filter || !count($values)) {
-            return $this->getItems();
-        }
-
-        return $this->filter->filterItems($this->getItems(), $values);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function count()
     {
-        return count($this->items);
+        return $this->items->count();
     }
 
     /**
@@ -189,10 +264,49 @@ class ResultPool implements \Countable, AdapterInterface
      * @param integer $offset The offset.
      * @param integer $length The length.
      *
-     * @return array|\Traversable The slice.
+     * @return ResultItem[]|\Traversable The slice.
      */
     public function getSlice($offset, $length)
     {
         return $this->slice($offset, $length);
+    }
+
+    /**
+     * @return array
+     */
+    public function getFacets()
+    {
+        $parameters = array();
+        foreach ($this->filters as $filter) {
+            if ($filter instanceof ResultPoolFilterInterface) {
+                $parameters = array_merge($parameters, $filter->getParameters());
+            }
+        }
+
+        $facets = array();
+        foreach ($parameters as $parameter) {
+            $facets[$parameter] = $this->getFacet($parameter);
+        }
+
+        return $facets;
+    }
+
+    /**
+     * @param string $parameter
+     *
+     * @return array
+     */
+    public function getFacet($parameter)
+    {
+        $values = array();
+        foreach ($this->getItems() as $item) {
+            if (!isset($values[$item->getExtra($parameter)])) {
+                $values[$item->getExtra($parameter)] = 1;
+            } else {
+                $values[$item->getExtra($parameter)]++;
+            }
+        }
+
+        return $values;
     }
 }

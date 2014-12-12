@@ -21,8 +21,8 @@ interface QueryEnhancerInterface
     /**
      * Enhance element finder query.
      *
-     * @param ElementFinderConfig $catch
+     * @param ElementFinderConfig $config
      * @param QueryBuilder        $qb
      */
-    public function enhance(ElementFinderConfig $catch, QueryBuilder $qb);
+    public function enhanceQuery(ElementFinderConfig $config, QueryBuilder $qb);
 }

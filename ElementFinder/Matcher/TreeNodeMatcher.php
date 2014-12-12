@@ -75,7 +75,9 @@ class TreeNodeMatcher implements TreeNodeMatcherInterface
 
         // create RecursiveIteratorIterator
         $rii = new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::SELF_FIRST);
-        $rii->setMaxDepth($maxDepth);
+        if ($maxDepth !== null) {
+            $rii->setMaxDepth($maxDepth);
+        }
 
         $catched = array();
         foreach ($rii as $childNode) {

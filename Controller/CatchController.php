@@ -163,23 +163,23 @@ class CatchController extends Controller
 
     /**
      * @return JsonResponse
-     * @Route("/metakeys", name="elementfinder_catch_metakeys")
+     * @Route("/metafields", name="elementfinder_catch_metafields")
      */
-    public function metaKeysAction()
+    public function metaFieldsAction()
     {
         $metasetManager = $this->get('phlexible_meta_set.meta_set_manager');
 
-        $metakeys = array();
+        $metaFields = array();
         foreach ($metasetManager->findAll() as $metaset) {
             foreach ($metaset->getFields() as $field) {
-                $metakeys[] = array(
+                $metaFields[] = array(
                     'id'   => $field->getId(),
                     'name' => $metaset->getName() . '/' . $field->getName()
                 );
             }
         }
 
-        return new JsonResponse(array('metakeys' => $metakeys));
+        return new JsonResponse(array('metakeys' => $metaFields));
     }
 
     /**
@@ -203,12 +203,12 @@ class CatchController extends Controller
             ->andWhere($qb->expr()->eq('em.language', $qb->expr()->literal($language)));
 
         // TODO: repair
-        $keywords = array();
+        $metaKeywords = array();
         foreach (array_column($conn->fetchAll($qb->getSQL()), 'value') as $value) {
-            $keywords[]['keyword'] = $value;
+            $metaKeywords[] = array('keyword' => $value);
         }
 
-        return new JsonResponse(array('meta_keywords' => $keywords));
+        return new JsonResponse(array('meta_keywords' => $metaKeywords));
     }
 
     /**
@@ -331,34 +331,33 @@ class CatchController extends Controller
         } else {
             $elementtypeIds = array();
         }
-        $metaKey = $request->get('metaKey', null);
+        $metaField = $request->get('metaKey', null);
         $metaKeywords = $request->get('metaKeywords', null);
         $template = $request->get('template', null);
         $sortField = $request->get('sortField', null);
         $sortDir = $request->get('sortDir', null);
 
-        $elementFinderConfig = new ElementFinderConfig();
-        $elementFinderConfig
+        $config = new ElementFinderConfig();
+        $config
             ->setTreeId($treeId)
             ->setMaxDepth($maxDepth)
             ->setNavigation($inNavigation)
             ->setElementtypeIds($elementtypeIds)
-            #->setMetaSearch($metaKey)
-            #->setMetaKeywords($metaKeywords)
+            ->setMetaField($metaField)
+            ->setMetaKeywords($metaKeywords ? explode(',', $metaKeywords) : null)
             ->setTemplate($template)
             ->setSortField($sortField)
-            ->setSortDir($sortDir)
-        ;
+            ->setSortDir($sortDir);
 
         $elementFinder = $this->get('phlexible_element_finder.finder');
         $treeManager = $this->get('phlexible_tree.tree_manager');
         $elementService = $this->get('phlexible_element.element_service');
         $iconResolver = $this->get('phlexible_element.icon_resolver');
 
-        $result = $elementFinder->find($elementFinderConfig, array('de'), true);
+        $result = $elementFinder->find($config, array('de'), true);
 
         $data = array();
-        foreach ($result->range(0,10) as $resultItem) {
+        foreach ($result->range(0, 10) as $resultItem) {
             $tree = $treeManager->getByNodeId($resultItem->getTreeId());
             $treeNode = $tree->get($resultItem->getTreeId());
             $element = $elementService->findElement($treeNode->getTypeId());

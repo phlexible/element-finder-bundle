@@ -79,10 +79,10 @@ class ElementFinderConfig
     private $template;
 
     /**
-     * @var int
-     * @ORM\Column(name="max_depth", type="integer")
+     * @var int|null
+     * @ORM\Column(name="max_depth", type="integer", nullable=true)
      */
-    private $maxDepth = -1;
+    private $maxDepth;
 
     /**
      * @var bool
@@ -92,9 +92,15 @@ class ElementFinderConfig
 
     /**
      * @var array
-     * @ORM\Column(name="meta_search", type="string", length=255, nullable=true)
+     * @ORM\Column(name="meta_field", type="string", length=255, nullable=true)
      */
-    private $metaSearch;
+    private $metaField;
+
+    /**
+     * @var array
+     * @ORM\Column(name="meta_keywords", type="string", length=255, nullable=true)
+     */
+    private $metaKeywords;
 
     /**
      * @var array
@@ -195,7 +201,7 @@ class ElementFinderConfig
      */
     public function setSortField($sortField)
     {
-        $this->sortField = $sortField;
+        $this->sortField = $sortField ?: null;
 
         return $this;
     }
@@ -217,7 +223,7 @@ class ElementFinderConfig
      */
     public function setSortDir($sortOrder)
     {
-        $this->sortDir = strtoupper($sortOrder) === 'DESC' ? 'DESC' : 'ASC';
+        $this->sortDir = $sortOrder ? (strtoupper($sortOrder) === 'DESC' ? 'DESC' : 'ASC') : null;
 
         return $this;
     }
@@ -257,7 +263,11 @@ class ElementFinderConfig
      */
     public function setMaxDepth($maxDepth)
     {
-        $this->maxDepth = (int) $maxDepth;
+        if (strlen($maxDepth)) {
+            $this->maxDepth = (int) $maxDepth;
+        } else {
+            $this->maxDepth = null;
+        }
 
         return $this;
     }
@@ -297,7 +307,7 @@ class ElementFinderConfig
      */
     public function setTemplate($template)
     {
-        $this->template = $template;
+        $this->template = $template ?: null;
 
         return $this;
     }
@@ -311,13 +321,33 @@ class ElementFinderConfig
     }
 
     /**
-     * @param array $metaSearch
+     * @param array $metaField
      *
      * @return $this
      */
-    public function setMetaSearch(array $metaSearch = null)
+    public function setMetaField($metaField)
     {
-        $this->metaSearch = $metaSearch;
+        $this->metaField = $metaField ?: null;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetaField()
+    {
+        return $this->metaField;
+    }
+
+    /**
+     * @param array $metaKeywords
+     *
+     * @return $this
+     */
+    public function setMetaKeywords(array $metaKeywords = null)
+    {
+        $this->metaKeywords = $metaKeywords ?: null;
 
         return $this;
     }
@@ -325,8 +355,8 @@ class ElementFinderConfig
     /**
      * @return array
      */
-    public function getMetaSearch()
+    public function getMetaKeywords()
     {
-        return $this->metaSearch;
+        return $this->metaKeywords;
     }
 }

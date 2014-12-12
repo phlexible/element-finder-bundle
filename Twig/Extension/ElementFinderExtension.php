@@ -73,22 +73,33 @@ class ElementFinderExtension extends \Twig_Extension
         $sortField = !empty($values['sortField']) ? $values['sortField'] : null;
         $sortDir = !empty($values['sortDir']) ? $values['sortDir'] : null;
         $startTreeId = !empty($values['startTreeId']) ? $values['startTreeId'] : null;
+        $metaField = !empty($values['metaField']) ? $values['metaField'] : null;
+        $metaKeywords = !empty($values['metaKeywords']) ? $values['metaKeywords'] : null;
 
         $elementFinderConfig = new ElementFinderConfig();
         $elementFinderConfig
+            ->setTreeId($startTreeId)
             ->setElementtypeIds($elementtypeIds)
             ->setNavigation($inNavigation)
             ->setMaxDepth($maxDepth)
             ->setFilter($filter)
             ->setSortField($sortField)
             ->setSortDir($sortDir)
-            ->setTreeId($startTreeId);
+            ->setMetaField($metaField)
+            ->setMetaKeywords($metaKeywords);
 
         $resultPool = $this->elementFinder->find(
             $elementFinderConfig,
             array('de'),
             true //$this->requestStack->getCurrentRequest()->attributes->get('preview', false)
         );
+
+        $parameters = array_merge(
+            $this->requestStack->getCurrentRequest()->query->all(),
+            $this->requestStack->getCurrentRequest()->request->all()
+        );
+
+        $resultPool->setParameters($parameters);
 
         return $resultPool;
     }

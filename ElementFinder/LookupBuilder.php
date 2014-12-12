@@ -92,6 +92,22 @@ class LookupBuilder
     }
 
     /**
+     * Remove all lookup items
+     */
+    public function removeAll()
+    {
+        foreach ($this->getLookupElementRepository()->findAll() as $lookupElement) {
+            $this->entityManager->remove($lookupElement);
+        }
+
+        foreach ($this->getLookupMetaRepository()->findAll() as $lookupMeta) {
+            $this->entityManager->remove($lookupMeta);
+        }
+
+        $this->entityManager->flush();
+    }
+
+    /**
      * @param TreeNodeInterface $treeNode
      * @param bool              $flush
      */
@@ -283,6 +299,7 @@ class LookupBuilder
             ->setPublishedAt($elementVersion->getCreatedAt())
             ->setCustomDate($elementVersion->getCustomDate($language))
             ->setIsPreview($preview)
+            ->setElementVersionId($elementVersion->getId())
             ->setElementtypeId($element->getElementtypeId())
             ->setVersion($elementVersion->getVersion())
             ->setLanguage($language)
