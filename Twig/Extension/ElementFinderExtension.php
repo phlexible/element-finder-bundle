@@ -13,6 +13,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinder;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Tipfinder\AppBundle\ElementFinder\Filter\DateFilter;
 
 /**
  * Twig element finder extension
@@ -59,6 +60,7 @@ class ElementFinderExtension extends \Twig_Extension
     public function finder($field)
     {
         $currentRequest = $this->requestStack->getCurrentRequest();
+        $masterRequest = $this->requestStack->getMasterRequest();
         $languages = array('de'); //array($currentRequest->attributes->get('_locale', false))
         $preview = true; //$currentRequest->attributes->get('preview', false)
 
@@ -74,8 +76,8 @@ class ElementFinderExtension extends \Twig_Extension
         $resultPool = $this->elementFinder->find($config, $languages, $preview);
 
         $parameters = array_merge(
-            $currentRequest->query->all(),
-            $currentRequest->request->all()
+            $masterRequest->query->all(),
+            $masterRequest->request->all()
         );
 
         $resultPool->setParameters($parameters);
