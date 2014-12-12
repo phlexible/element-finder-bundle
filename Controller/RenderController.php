@@ -22,20 +22,19 @@ use Symfony\Component\HttpFoundation\Response;
 class RenderController extends Controller
 {
     /**
-     * Render catch
+     * Render finder
      *
      * @param Request $request
-     * @param string  $language
      * @param string  $identifier
      *
      * @return Response
-     * @Route("/render/{language}/{identifier}", name="elementfinder_render")
+     * @Route("/render/{identifier}", name="elementfinder_render")
      */
-    public function renderAction(Request $request, $language, $identifier)
+    public function renderAction(Request $request, $identifier)
     {
         $finder = $this->get('phlexible_element_finder.finder');
 
-        $pool = $finder->findByIdentifier($identifier, array($language), true);
+        $pool = $finder->findByIdentifier($identifier);
 
         $data = array(
             'finder' => $pool,

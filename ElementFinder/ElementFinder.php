@@ -82,12 +82,10 @@ class ElementFinder
 
     /**
      * @param string $identifier
-     * @param array  $languages
-     * @param bool   $isPreview
      *
      * @return ResultPool
      */
-    public function findByIdentifier($identifier, array $languages, $isPreview)
+    public function findByIdentifier($identifier)
     {
         if (!file_exists("/tmp/$identifier.xml")) {
             throw new \Exception();

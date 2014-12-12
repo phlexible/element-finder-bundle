@@ -53,7 +53,7 @@ class TestCommand extends ContainerAwareCommand
         $resultPool = null;
         if (!$input->getOption('fresh')) {
             try {
-                $resultPool = $finder->findByIdentifier($identifier, $languages, $preview);
+                $resultPool = $finder->findByIdentifier($identifier);
 
                 $output->writeln("<info>Loaded pool $identifier cached on {$resultPool->getCreatedAt()->format('Y-m-d H:i:s')}</info>");
             } catch (\Exception $e) {

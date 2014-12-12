@@ -115,6 +115,38 @@ class ElementFinderConfig
     private $createdAt;
 
     /**
+     * @param array $values
+     *
+     * @return ElementFinderConfig
+     */
+    public static function fromValues(array $values)
+    {
+        $elementtypeIds = !empty($values['elementtypeIds']) ? explode(',', $values['elementtypeIds']) : array();
+        $inNavigation = !empty($values['inNavigation']);
+        $maxDepth = strlen($values['maxDepth']) ? (int) $values['maxDepth'] : null;
+        $filter = !empty($values['filter']) ? $values['filter'] : null;
+        $sortField = !empty($values['sortField']) ? $values['sortField'] : null;
+        $sortDir = !empty($values['sortDir']) ? $values['sortDir'] : null;
+        $startTreeId = !empty($values['startTreeId']) ? $values['startTreeId'] : null;
+        $metaField = !empty($values['metaField']) ? $values['metaField'] : null;
+        $metaKeywords = !empty($values['metaKeywords']) ? $values['metaKeywords'] : null;
+
+        $config = new ElementFinderConfig();
+        $config
+            ->setTreeId($startTreeId)
+            ->setElementtypeIds($elementtypeIds)
+            ->setNavigation($inNavigation)
+            ->setMaxDepth($maxDepth)
+            ->setFilter($filter)
+            ->setSortField($sortField)
+            ->setSortDir($sortDir)
+            ->setMetaField($metaField)
+            ->setMetaKeywords($metaKeywords);
+
+        return $config;
+    }
+
+    /**
      * @param int $id
      *
      * @return $this

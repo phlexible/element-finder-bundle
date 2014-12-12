@@ -58,6 +58,10 @@ class ElementFinderExtension extends \Twig_Extension
      */
     public function finder($field)
     {
+        $currentRequest = $this->requestStack->getCurrentRequest();
+        $languages = array('de'); //array($currentRequest->attributes->get('_locale', false))
+        $preview = true; //$currentRequest->attributes->get('preview', false)
+
         if (is_array($field)) {
             $values = $field;
         } elseif ($field instanceof ElementStructureValue) {
@@ -66,37 +70,12 @@ class ElementFinderExtension extends \Twig_Extension
             return '';
         }
 
-        $elementtypeIds = !empty($values['elementtypeIds']) ? explode(',', $values['elementtypeIds']) : array();
-        $inNavigation = !empty($values['inNavigation']);
-        $maxDepth = strlen($values['maxDepth']) ? (int) $values['maxDepth'] : null;
-        $filter = !empty($values['filter']) ? $values['filter'] : null;
-        $sortField = !empty($values['sortField']) ? $values['sortField'] : null;
-        $sortDir = !empty($values['sortDir']) ? $values['sortDir'] : null;
-        $startTreeId = !empty($values['startTreeId']) ? $values['startTreeId'] : null;
-        $metaField = !empty($values['metaField']) ? $values['metaField'] : null;
-        $metaKeywords = !empty($values['metaKeywords']) ? $values['metaKeywords'] : null;
-
-        $elementFinderConfig = new ElementFinderConfig();
-        $elementFinderConfig
-            ->setTreeId($startTreeId)
-            ->setElementtypeIds($elementtypeIds)
-            ->setNavigation($inNavigation)
-            ->setMaxDepth($maxDepth)
-            ->setFilter($filter)
-            ->setSortField($sortField)
-            ->setSortDir($sortDir)
-            ->setMetaField($metaField)
-            ->setMetaKeywords($metaKeywords);
-
-        $resultPool = $this->elementFinder->find(
-            $elementFinderConfig,
-            array('de'),
-            true //$this->requestStack->getCurrentRequest()->attributes->get('preview', false)
-        );
+        $config = ElementFinderConfig::fromValues($values);
+        $resultPool = $this->elementFinder->find($config, $languages, $preview);
 
         $parameters = array_merge(
-            $this->requestStack->getCurrentRequest()->query->all(),
-            $this->requestStack->getCurrentRequest()->request->all()
+            $currentRequest->query->all(),
+            $currentRequest->request->all()
         );
 
         $resultPool->setParameters($parameters);
