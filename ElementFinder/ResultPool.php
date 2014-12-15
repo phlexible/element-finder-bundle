@@ -81,6 +81,8 @@ class ResultPool implements \Countable, AdapterInterface
         $this->filters = $filters;
         $this->createdAt = $createdAt;
 
+        $this->setParameter('identifier', $identifier);
+
         $this->items = new ArrayCollection($items);
     }
 

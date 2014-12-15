@@ -30,19 +30,19 @@ class XmlDumper implements DumperInterface
         $root->appendElement('query', $pool->getQuery());
 
         $configNode = $root->appendElement('config');
-        $configNode->appendElement('value', '', array('treeId' => $pool->getConfig()->getTreeId()));
-        $configNode->appendElement('value', '', array('elementtypeIds' => implode(',', $pool->getConfig()->getElementtypeIds())));
-        $configNode->appendElement('value', '', array('maxDepth' => $pool->getConfig()->getMaxDepth()));
-        $configNode->appendElement('value', '', array('metaField' => $pool->getConfig()->getMetaField()));
-        $configNode->appendElement('value', '', array('metaKeywords' => $pool->getConfig()->getMetaKeywords() ? json_encode($pool->getConfig()->getMetaKeywords()) : ''));
-        $configNode->appendElement('value', '', array('navigation' => $pool->getConfig()->inNavigation() ? 1 : 0));
-        $configNode->appendElement('value', '', array('sortField' => $pool->getConfig()->getSortField()));
-        $configNode->appendElement('value', '', array('sortDir' => $pool->getConfig()->getSortDir()));
-        $configNode->appendElement('value', '', array('template' => $pool->getConfig()->getTemplate()));
+        $configNode->appendElement('value', $pool->getConfig()->getTreeId(), array('key' => 'treeId'));
+        $configNode->appendElement('value', implode(',', $pool->getConfig()->getElementtypeIds()), array('key' => 'elementtypeIds'));
+        $configNode->appendElement('value', $pool->getConfig()->getMaxDepth(), array('key' => 'maxDepth'));
+        $configNode->appendElement('value', $pool->getConfig()->getMetaField(), array('key' => 'metaField'));
+        $configNode->appendElement('value', $pool->getConfig()->getMetaKeywords() ? json_encode($pool->getConfig()->getMetaKeywords()) : '', array('key' => 'metaKeywords'));
+        $configNode->appendElement('value', $pool->getConfig()->inNavigation() ? 1 : 0, array('key' => 'navigation'));
+        $configNode->appendElement('value', $pool->getConfig()->getSortField(), array('key' => 'sortField'));
+        $configNode->appendElement('value', $pool->getConfig()->getSortDir(), array('key' => 'sortDir'));
+        $configNode->appendElement('value', $pool->getConfig()->getTemplate(), array('key' => 'template'));
 
         $filtersNode = $root->appendElement('filters');
-        foreach ($pool->getFilters() as $filter) {
-            $filtersNode->appendElement('filter', get_class($filter));
+        foreach ($pool->getFilters() as $filterName => $filter) {
+            $filtersNode->appendElement('filter', $filterName);
         }
 
         $itemsNode = $root->appendElement('items');

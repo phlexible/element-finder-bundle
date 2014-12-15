@@ -34,18 +34,33 @@ class XmlLoader implements LoaderInterface
         $query = (string) $rootAttributes['query'];
         $createdAt = new \DateTIme((string) $rootAttributes['createdAt']);
 
-        $configAttributes = $xml->config->attributes();
+
         $config = new ElementFinderConfig();
-        $config
-            ->setTreeId((int) $configAttributes['treeId'])
-            ->setElementtypeIds(explode(',', (string) $configAttributes['elementtypeIds']))
-            ->setMaxDepth((int) $configAttributes['maxDepth'])
-            ->setMetaField((string) $configAttributes['metaField'])
-            ->setMetaKeywords(json_decode((string) $configAttributes['metaKeywords'], true))
-            ->setNavigation((bool) $configAttributes['navigation'])
-            ->setSortField((string) $configAttributes['sortField'])
-            ->setSortDir((string) $configAttributes['sortDir'])
-            ->setTemplate((string) $configAttributes['template']);
+        foreach ($xml->config->value as $valueNode) {
+            $valueAttributes = $valueNode->attributes();
+            if (!strlen((string) $valueNode)) {
+                continue;
+            }
+            if ((string) $valueAttributes['key'] === 'treeId') {
+                $config->setTreeId((int) $valueNode);
+            } elseif ((string) $valueAttributes['key'] === 'elementtypeIds') {
+                $config->setElementtypeIds(explode(',', (string) $valueNode));
+            } elseif ((string) $valueAttributes['key'] === 'maxDepth') {
+                $config->setMaxDepth((string) $valueNode);
+            } elseif ((string) $valueAttributes['key'] === 'metaField') {
+                $config->setMetaField((string) $valueNode);
+            } elseif ((string) $valueAttributes['key'] === 'metaKeywords') {
+                $config->setMetaKeywords(json_decode((string) $valueNode, true));
+            } elseif ((string) $valueAttributes['key'] === 'navigation') {
+                $config->setNavigation((bool) $valueNode);
+            } elseif ((string) $valueAttributes['key'] === 'sortField') {
+                $config->setSortField((string) $valueNode);
+            } elseif ((string) $valueAttributes['key'] === 'sortDir') {
+                $config->setSortDir((string) $valueNode);
+            } elseif ((string) $valueAttributes['key'] === 'template') {
+                $config->setTemplate((string) $valueNode);
+            }
+        }
 
         $items = array();
         foreach ($xml->items->item as $itemNode) {

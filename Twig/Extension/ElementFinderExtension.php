@@ -47,7 +47,7 @@ class ElementFinderExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('finder', array($this, 'finder')),
+            new \Twig_SimpleFunction('find', array($this, 'find')),
         );
     }
 
@@ -56,7 +56,7 @@ class ElementFinderExtension extends \Twig_Extension
      *
      * @return ResultPool
      */
-    public function finder($field)
+    public function find($field)
     {
         $currentRequest = $this->requestStack->getCurrentRequest();
         $masterRequest = $this->requestStack->getMasterRequest();

@@ -129,7 +129,7 @@ class ElementFinder
 
         $filters = array();
         foreach (explode(',', $config->getFilter()) as $filterName) {
-            $filters[] = $this->filterManager->get($filterName);
+            $filters[$filterName] = $this->filterManager->get($filterName);
         }
 
         if ($config->getTreeId()) {

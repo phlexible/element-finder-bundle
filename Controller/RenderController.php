@@ -34,12 +34,21 @@ class RenderController extends Controller
     {
         $finder = $this->get('phlexible_element_finder.finder');
 
-        $pool = $finder->findByIdentifier($identifier);
+        $resultPool = $finder->findByIdentifier($identifier);
 
-        $data = array(
-            'finder' => $pool,
+        $parameters = array_merge(
+            $request->query->all(),
+            $request->request->all()
         );
 
-        return $this->render($pool->getConfig()->getTemplate(), $data);
+        $resultPool->setParameters($parameters);
+
+        $data = array(
+            'pool'  => $resultPool,
+            'start' => !empty($parameters['finder_start']) ? $parameters['finder_start'] : 0,
+            'limit' => !empty($parameters['finder_limit']) ? $parameters['finder_limit'] : 10
+        );
+
+        return $this->render($resultPool->getConfig()->getTemplate(), $data);
     }
 }

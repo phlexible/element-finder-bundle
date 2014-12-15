@@ -130,6 +130,7 @@ class ElementFinderConfig
         $startTreeId = !empty($values['startTreeId']) ? $values['startTreeId'] : null;
         $metaField = !empty($values['metaField']) ? $values['metaField'] : null;
         $metaKeywords = !empty($values['metaKeywords']) ? $values['metaKeywords'] : null;
+        $template = !empty($values['template']) ? $values['template'] : null;
 
         $config = new ElementFinderConfig();
         $config
@@ -141,7 +142,8 @@ class ElementFinderConfig
             ->setSortField($sortField)
             ->setSortDir($sortDir)
             ->setMetaField($metaField)
-            ->setMetaKeywords($metaKeywords);
+            ->setMetaKeywords($metaKeywords)
+            ->setTemplate($template);
 
         return $config;
     }
