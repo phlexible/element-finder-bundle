@@ -8,6 +8,7 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Loader;
 
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterManager;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 
 /**
@@ -18,9 +19,10 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 interface LoaderInterface
 {
     /**
-     * @param string $filename
+     * @param FilterManager $filterManager
+     * @param string        $filename
      *
      * @return ResultPool
      */
-    public function load($filename);
+    public function load(FilterManager $filterManager, $filename);
 }

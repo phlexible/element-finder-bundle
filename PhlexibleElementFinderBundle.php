@@ -8,6 +8,8 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle;
 
+use Phlexible\Bundle\ElementFinderBundle\DependencyInjection\Compiler\AddFiltersPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -17,4 +19,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PhlexibleElementFinderBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new AddFiltersPass());
+    }
 }

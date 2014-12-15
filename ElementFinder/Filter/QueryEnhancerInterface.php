@@ -16,7 +16,7 @@ use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-interface QueryEnhancerInterface
+interface QueryEnhancerInterface extends FilterInterface
 {
     /**
      * Enhance element finder query.

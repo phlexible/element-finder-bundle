@@ -9,6 +9,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Loader;
 
 use FluentDOM\Document;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterManager;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultItem;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
@@ -23,7 +24,7 @@ class XmlLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function load($filename)
+    public function load(FilterManager $filterManager, $filename)
     {
         $xml = simplexml_load_file($filename);
 
@@ -67,14 +68,16 @@ class XmlLoader implements LoaderInterface
                 (bool) $itemAttributes['isRestricted'],
                 (string) $itemAttributes['publishedAt'],
                 (string) $itemAttributes['customDate'],
+                (string) $itemAttributes['sortField'],
                 $extra
             );
         }
 
         $filters = array();
         foreach ($xml->filters->filter as $filterNode) {
-            $filterClass = (string) $filterNode;
-            $filters[] = new $filterClass();
+            $filterName = (string) $filterNode;
+            $filter = $filterManager->get($filterName);
+            $filters[] = $filter;
         }
 
         $result = new ResultPool($identifier, $config, $query, $items, $filters, $createdAt);

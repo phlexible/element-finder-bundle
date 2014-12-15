@@ -66,6 +66,11 @@ class ResultItem
     private $customDate;
 
     /**
+     * @var string
+     */
+    private $sortField;
+
+    /**
      * @var array
      */
     private $extras;
@@ -81,9 +86,10 @@ class ResultItem
      * @param bool      $isRestricted
      * @param \DateTime $publishedAt
      * @param \DateTime $customDate
+     * @param string    $sortField
      * @param array     $extras
      */
-    public function __construct($treeId, $eid, $version, $language, $elementtypeId, $isPreview, $inNavigation, $isRestricted, $publishedAt, $customDate, array $extras = array())
+    public function __construct($treeId, $eid, $version, $language, $elementtypeId, $isPreview, $inNavigation, $isRestricted, $publishedAt, $customDate, $sortField, array $extras = array())
     {
         $this->treeId = $treeId;
         $this->eid = $eid;
@@ -95,6 +101,7 @@ class ResultItem
         $this->isRestricted = $isRestricted;
         $this->publishedAt = $publishedAt;
         $this->customDate = $customDate;
+        $this->sortField = $sortField;
         $this->extras = $extras;
     }
 
@@ -176,6 +183,14 @@ class ResultItem
     public function getVersion()
     {
         return $this->version;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSortField()
+    {
+        return $this->sortField;
     }
 
     /**

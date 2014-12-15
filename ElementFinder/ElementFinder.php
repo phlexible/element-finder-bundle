@@ -11,6 +11,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Dumper\XmlDumper;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterManager;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\QueryEnhancerInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Loader\XmlLoader;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Matcher\TreeNodeMatcherInterface;
@@ -48,6 +49,11 @@ class ElementFinder
     private $treeNodeMatcher;
 
     /**
+     * @var FilterManager
+     */
+    private $filterManager;
+
+    /**
      * @var bool
      */
     private $useElementLanguageAsFallback;
@@ -66,17 +72,20 @@ class ElementFinder
      * @param Connection               $connection
      * @param EventDispatcherInterface $dispatcher
      * @param TreeNodeMatcherInterface $treeNodeMatcher
+     * @param FilterManager            $filterManager
      * @param bool                     $useElementLanguageAsFallback
      */
     public function __construct(
         Connection $connection,
         EventDispatcherInterface $dispatcher,
         TreeNodeMatcherInterface $treeNodeMatcher,
+        FilterManager $filterManager,
         $useElementLanguageAsFallback)
     {
         $this->connection = $connection;
         $this->dispatcher = $dispatcher;
         $this->treeNodeMatcher = $treeNodeMatcher;
+        $this->filterManager = $filterManager;
         $this->useElementLanguageAsFallback = (bool) $useElementLanguageAsFallback;
     }
 
@@ -92,7 +101,7 @@ class ElementFinder
         }
 
         $loader = new XmlLoader();
-        $resultPool = $loader->load("/tmp/$identifier.xml");
+        $resultPool = $loader->load($this->filterManager, "/tmp/$identifier.xml");
 
         return $resultPool;
     }
@@ -113,9 +122,14 @@ class ElementFinder
 
         if (0 && file_exists("/tmp/$identifier.xml")) {
             $loader = new XmlLoader();
-            $resultPool = $loader->load("/tmp/$identifier.xml");
+            $resultPool = $loader->load($this->filterManager, "/tmp/$identifier.xml");
 
             return $resultPool;
+        }
+
+        $filters = array();
+        foreach (explode(',', $config->getFilter()) as $filterName) {
+            $filters[] = $this->filterManager->get($filterName);
         }
 
         if ($config->getTreeId()) {
@@ -222,10 +236,11 @@ class ElementFinder
         $isRestricted = $row['is_restricted'];
         $publishedAt = $row['published_at'] ? new \DateTime($row['published_at']) : null;
         $customDate = $row['custom_date'] ? new \DateTime($row['custom_date']) : null;
+        $sortField = $row['sort_field'] ?: null;
 
         unset(
-            $row['tree_id'], $row['eid'], $row['version'], $row['language'], $row['elementtype_id'],
-            $row['is_preview'], $row['in_navigation'], $row['is_restricted'], $row['published_at'], $row['custom_date']
+            $row['tree_id'], $row['eid'], $row['version'], $row['language'], $row['elementtype_id'], $row['is_preview'],
+            $row['in_navigation'], $row['is_restricted'], $row['published_at'], $row['custom_date'], $row['sort_field']
         );
 
         return new ResultItem(
@@ -239,6 +254,7 @@ class ElementFinder
             $isRestricted,
             $publishedAt,
             $customDate,
+            $sortField,
             $row
         );
     }

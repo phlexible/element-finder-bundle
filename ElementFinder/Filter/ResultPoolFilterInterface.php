@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-interface ResultPoolFilterInterface
+interface ResultPoolFilterInterface extends FilterInterface
 {
     /**
      * @return array

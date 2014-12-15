@@ -13,6 +13,7 @@ elementfinder:
     sort_ascending: Ascending
     sort_descending: Descending
     filter: Filter
+    meta_field: Meta field
     meta_filter: Meta filter
     no_filter: No filter
     meta_keywords: Meta keywords

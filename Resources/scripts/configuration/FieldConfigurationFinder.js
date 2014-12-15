@@ -59,7 +59,8 @@ Phlexible.elementfinder.configuration.FieldConfigurationFinder = Ext.extend(Ext.
                 store: new Ext.data.JsonStore({
                     url: Phlexible.Router.generate('elementfinder_catch_sortfields'),
                     root: 'data',
-                    fields: ['ds_id', 'title', 'icon']
+                    fields: ['ds_id', 'title', 'icon'],
+                    autoLoad: true
                 }),
                 //tpl: '<tpl for="."><div class="x-combo-list-item {icon}">{title}</div></tpl>',
                 displayField: 'title',
@@ -100,24 +101,21 @@ Phlexible.elementfinder.configuration.FieldConfigurationFinder = Ext.extend(Ext.
                 selectOnFocus: true,
                 allowBlank: false
             },{
-                xtype: 'twincombobox',
-                width: 283,
-                listWidth: 300,
+                xtype: 'multiselect',
+                width: 300,
+                height: 100,
                 fieldLabel: this.strings.filter,
                 hiddenName: 'catch_filter',
                 store: new Ext.data.JsonStore({
                     url: Phlexible.Router.generate('elementfinder_catch_filters'),
                     root: 'filters',
-                    fields: ['name', 'class']
+                    fields: ['id', 'name'],
+                    autoLoad: true
                 }),
                 displayField: 'name',
-                valueField: 'class',
+                valueField: 'id',
                 mode: 'remote',
-                emptyText: this.strings.no_filter,
-                listClass: 'x-combo-list-big',
-                editable: false,
-                triggerAction: 'all',
-                selectOnFocus: true
+                emptyText: this.strings.no_filter
             },{
                 xtype: 'textfield',
                 width: 300,

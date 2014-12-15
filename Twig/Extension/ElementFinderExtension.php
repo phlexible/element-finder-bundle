@@ -13,7 +13,6 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinder;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Tipfinder\AppBundle\ElementFinder\Filter\DateFilter;
 
 /**
  * Twig element finder extension

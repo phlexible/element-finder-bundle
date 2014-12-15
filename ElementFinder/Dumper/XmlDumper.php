@@ -58,6 +58,7 @@ class XmlDumper implements DumperInterface
                 'isRestricted'  => $item->isIsRestricted() ? 1 : 0,
                 'customDate'    => $item->getCustomDate() ? $item->getCustomDate()->format('Y-m-d H:i:s') : '',
                 'publishedAt'   => $item->getPublishedAt() ? $item->getPublishedAt()->format('Y-m-d H:i:s') : '',
+                'sortField'     => $item->getSortField(),
             );
             $itemNode = $itemsNode->appendElement('item', '', $attributes);
 

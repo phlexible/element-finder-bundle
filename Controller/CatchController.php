@@ -38,7 +38,7 @@ class CatchController extends Controller
     {
         $query = $request->get('query');
 
-        $elementtypeService = $this->get('phlexible_elementtype.elementtype_service');
+        $elementSourceManager = $this->get('phlexible_element.element_source_manager');
         $fieldRegistry = $this->get('phlexible_elementtype.field.registry');
 
         $fields = array();
@@ -48,7 +48,7 @@ class CatchController extends Controller
 
             $dsIds = null;
             foreach ($elementtypeIds as $elementtypeId) {
-                $elementtype = $elementtypeService->findElementtype($elementtypeId);
+                $elementtype = $elementSourceManager->findElementtype($elementtypeId);
                 $elementtypeStructure = $elementtype->getStructure();
 
                 $dsIds = (null === $dsIds)
@@ -85,7 +85,7 @@ class CatchController extends Controller
                 }
                 if (!in_array($field->getDataType(), array('string', 'float', 'integer', 'number', 'checkbox'))) {
                      continue;
-                 }
+                }
 
                 if (in_array($fieldType, $skipFieldTypes)) {
                     continue;
@@ -221,97 +221,16 @@ class CatchController extends Controller
     {
         $data = array();
 
-        // @TODO: repair
-        $filters = array();//$this->componentCallback->getCatchFilter();
+        $filterManager = $this->get('phlexible_element_finder.filter_manager');
 
-        foreach ($filters as $name => $class) {
+        foreach ($filterManager->all() as $name => $filter) {
             $data[] = array(
-                'name'  => $name,
-                'class' => $class,
+                'id'   => $name,
+                'name' => ucfirst(strtolower($name)),
             );
         }
 
         return new JsonResponse(array('filters' => $data));
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return ResultResponse
-     * @Route("/create", name="elementfinder_catch_create")
-     */
-    public function createAction(Request $request)
-    {
-        $teaserService = $this->get('phlexible_teaser.teaser_service');
-
-        $teaserService->createCatch(
-            $request->get('tree_id'),
-            $request->get('eid'),
-            $request->get('layoutarea_id')
-        );
-
-        return new ResultResponse(true, 'Catch created.');
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return ResultResponse
-     * @Route("/save", name="elementfinder_catch_save")
-     */
-    public function saveAction(Request $request)
-    {
-        $catchManager = $this->get('phlexible_element_finder.finder_manager');
-
-        $notEmpty = true;
-        $i = 1;
-
-        $catchMetaSearch = array();
-        do {
-            if ($request->get('catch_meta_key_' . $i) &&
-                $request->get('catch_meta_keywords_' . $i)
-            ) {
-                $catchMetaSearchKey = $this->filter($request->get('catch_meta_key_' . $i));
-                $catchMetaSearchKeyword = $this->filter($request->get('catch_meta_keywords_' . $i));
-                $i++;
-                if (strlen($catchMetaSearchKey) && strlen($catchMetaSearchKeyword)) {
-                    $catchMetaSearch[$catchMetaSearchKey] = $catchMetaSearchKeyword;
-                }
-            } else {
-                $notEmpty = false;
-            }
-        } while ($notEmpty);
-
-        $catch = $catchManager->findCatch($request->get('id'));
-
-        $catch
-            ->setTitle($request->get('title'))
-            ->setTreeId($request->get('for_tree_id_hidden'))
-            ->setElementtypeIds($request->get('catch_element_type_id') ? explode(',', $request->get('catch_element_type_id')) : array())
-            ->setNavigation($request->get('catch_in_navigation') === 'on')
-            ->setMaxDepth($request->get('catch_max_depth'))
-            ->setSortField($request->get('catch_sort_field'))
-            ->setSortOrder($request->get('catch_sort_order'))
-            ->setFilter($request->get('catch_filter'))
-            ->setMaxResults($request->get('catch_max_elements'))
-            ->setRotation($request->get('catch_rotation') === 'on')
-            ->setPoolSize($request->get('catch_pool_size'))
-            ->setResultsPerPage($request->get('catch_elements_per_page'))
-            ->setMetaSearch($catchMetaSearch);
-
-        $catchManager->updateCatch($catch);
-
-        return new ResultResponse(true, 'Catch created.');
-    }
-
-    /**
-     * @param string $s
-     *
-     * @return string
-     */
-    private function filter($s)
-    {
-        return strip_tags(trim($s));
     }
 
     /**
@@ -336,6 +255,7 @@ class CatchController extends Controller
         $template = $request->get('template', null);
         $sortField = $request->get('sortField', null);
         $sortDir = $request->get('sortDir', null);
+        $filter = $request->get('filter', null);
 
         $config = new ElementFinderConfig();
         $config
@@ -347,7 +267,8 @@ class CatchController extends Controller
             ->setMetaKeywords($metaKeywords ? explode(',', $metaKeywords) : null)
             ->setTemplate($template)
             ->setSortField($sortField)
-            ->setSortDir($sortDir);
+            ->setSortDir($sortDir)
+            ->setFilter($filter);
 
         $elementFinder = $this->get('phlexible_element_finder.finder');
         $treeManager = $this->get('phlexible_tree.tree_manager');

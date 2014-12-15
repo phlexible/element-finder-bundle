@@ -162,14 +162,14 @@ Phlexible.elementfinder.ElementFinderConfigPanel = Ext.extend(Ext.Panel, {
                 },
                 {
                     xtype: 'fieldset',
-                    title: this.strings.filter,
+                    title: this.strings.meta_filter,
                     autoHeight: true,
                     anchor: '-15',
                     items: [{
                         xtype: 'twincombobox',
                         width: 300,
                         listWidth: 300,
-                        fieldLabel: this.strings.meta_filter,
+                        fieldLabel: this.strings.meta_field,
                         hiddenName: 'metaKey',
                         value: this.values.metaKey,
                         store: new Ext.data.JsonStore({

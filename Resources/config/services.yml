@@ -1,4 +1,8 @@
 services:
+    phlexible_element_finder.filter_manager:
+        class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterManager
+        arguments: [[]]
+
     phlexible_element_finder.treenode_matcher:
         class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\Matcher\TreeNodeMatcher
         arguments:
@@ -9,7 +13,12 @@ services:
 
     phlexible_element_finder.finder:
         class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinder
-        arguments: [@doctrine.dbal.default_connection, @event_dispatcher, @phlexible_element_finder.treenode_matcher, false]
+        arguments:
+            - @doctrine.dbal.default_connection
+            - @event_dispatcher
+            - @phlexible_element_finder.treenode_matcher
+            - @phlexible_element_finder.filter_manager
+            - false
 
     phlexible_element_finder.lookup_builder:
         class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\LookupBuilder
