@@ -15,7 +15,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterManager;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\QueryEnhancerInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Loader\XmlLoader;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Matcher\TreeNodeMatcherInterface;
-use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
+use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -54,6 +54,11 @@ class ElementFinder
     private $filterManager;
 
     /**
+     * @var string
+     */
+    private $cacheDir;
+
+    /**
      * @var bool
      */
     private $useElementLanguageAsFallback;
@@ -73,6 +78,7 @@ class ElementFinder
      * @param EventDispatcherInterface $dispatcher
      * @param TreeNodeMatcherInterface $treeNodeMatcher
      * @param FilterManager            $filterManager
+     * @param string                   $cacheDir
      * @param bool                     $useElementLanguageAsFallback
      */
     public function __construct(
@@ -80,12 +86,14 @@ class ElementFinder
         EventDispatcherInterface $dispatcher,
         TreeNodeMatcherInterface $treeNodeMatcher,
         FilterManager $filterManager,
+        $cacheDir,
         $useElementLanguageAsFallback)
     {
         $this->connection = $connection;
         $this->dispatcher = $dispatcher;
         $this->treeNodeMatcher = $treeNodeMatcher;
         $this->filterManager = $filterManager;
+        $this->cacheDir = $cacheDir;
         $this->useElementLanguageAsFallback = (bool) $useElementLanguageAsFallback;
     }
 
@@ -96,12 +104,14 @@ class ElementFinder
      */
     public function findByIdentifier($identifier)
     {
-        if (!file_exists("/tmp/$identifier.xml")) {
+        $filename = $this->cacheDir . "/$identifier.xml";
+
+        if (!file_exists($filename)) {
             throw new \Exception();
         }
 
         $loader = new XmlLoader();
-        $resultPool = $loader->load($this->filterManager, "/tmp/$identifier.xml");
+        $resultPool = $loader->load($this->filterManager, $filename);
 
         return $resultPool;
     }
@@ -119,8 +129,9 @@ class ElementFinder
     public function find(ElementFinderConfig $config, array $languages, $isPreview, array $filters = array())
     {
         $identifier = $this->createIdentifier($config, $languages, $isPreview);
+        $filename = $this->cacheDir . "/$identifier.xml";
 
-        if (0 && file_exists("/tmp/$identifier.xml")) {
+        if (0 && file_exists($filename)) {
             $loader = new XmlLoader();
             $resultPool = $loader->load($this->filterManager, "/tmp/$identifier.xml");
 
@@ -202,7 +213,12 @@ class ElementFinder
         */
 
         $dumper = new XmlDumper();
-        file_put_contents("/tmp/$identifier.xml", $dumper->dump($resultPool));
+        if (!file_exists(dirname($filename))) {
+            if (!mkdir(dirname($filename), 0777, true)) {
+                throw new \Exception("mkdir failed.");
+            }
+        }
+        file_put_contents($filename, $dumper->dump($resultPool));
 
         return $resultPool;
     }
@@ -262,7 +278,7 @@ class ElementFinder
     /**
      * Apply filter and limit clause.
      *
-     * @param ElementFinderConfig $config
+     * @param \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig $config
      * @param bool                $isPreview
      * @param array               $languages
      * @param array|null          $matchedTreeIds
@@ -383,7 +399,7 @@ class ElementFinder
      * Add a sort criteria to the select statement.
      *
      * @param QueryBuilder        $qb
-     * @param ElementFinderConfig $config
+     * @param \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig $config
      * @param bool                $isPreview
      */
     private function applySort(QueryBuilder $qb, ElementFinderConfig $config, $isPreview)
@@ -416,7 +432,7 @@ class ElementFinder
      * Add field sorting to select statement.
      *
      * @param QueryBuilder        $qb
-     * @param ElementFinderConfig $config
+     * @param \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig $config
      */
     private function applySortByField(QueryBuilder $qb, ElementFinderConfig $config)
     {
@@ -441,7 +457,7 @@ class ElementFinder
      *
      * @param QueryBuilder        $qb
      * @param string              $title
-     * @param ElementFinderConfig $config
+     * @param \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig $config
      */
     private function applySortByTitle(QueryBuilder $qb, $title, ElementFinderConfig $config)
     {
@@ -459,7 +475,7 @@ class ElementFinder
      * Add title sorting to select statement.
      *
      * @param QueryBuilder        $qb
-     * @param ElementFinderConfig $config
+     * @param \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig $config
      * @param bool                $isPreview
      */
     private function applySortByPublishDate(QueryBuilder $qb, ElementFinderConfig $config, $isPreview)
@@ -474,7 +490,7 @@ class ElementFinder
      * Add title sorting to select statement.
      *
      * @param QueryBuilder        $qb
-     * @param ElementFinderConfig $config
+     * @param \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig $config
      */
     private function applySortByCustomDate(QueryBuilder $qb, ElementFinderConfig $config)
     {

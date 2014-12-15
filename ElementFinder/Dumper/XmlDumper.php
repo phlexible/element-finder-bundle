@@ -39,6 +39,7 @@ class XmlDumper implements DumperInterface
         $configNode->appendElement('value', $pool->getConfig()->getSortField(), array('key' => 'sortField'));
         $configNode->appendElement('value', $pool->getConfig()->getSortDir(), array('key' => 'sortDir'));
         $configNode->appendElement('value', $pool->getConfig()->getTemplate(), array('key' => 'template'));
+        $configNode->appendElement('value', $pool->getConfig()->getPageSize(), array('key' => 'pageSize'));
 
         $filtersNode = $root->appendElement('filters');
         foreach ($pool->getFilters() as $filterName => $filter) {

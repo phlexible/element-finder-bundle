@@ -8,11 +8,10 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Loader;
 
-use FluentDOM\Document;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterManager;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultItem;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
-use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
+use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
 /**
  * Xml loader
@@ -59,6 +58,8 @@ class XmlLoader implements LoaderInterface
                 $config->setSortDir((string) $valueNode);
             } elseif ((string) $valueAttributes['key'] === 'template') {
                 $config->setTemplate((string) $valueNode);
+            } elseif ((string) $valueAttributes['key'] === 'pageSize') {
+                $config->setPageSize((int) $valueNode);
             }
         }
 

@@ -29,7 +29,7 @@ class RenderController extends Controller
      * @param string  $identifier
      *
      * @return Response
-     * @Route("/render/html/{identifier}", name="elementfinder_render_html")
+     * @Route("/render/html/{identifier}", name="elementfinder_render")
      */
     public function htmlAction(Request $request, $identifier)
     {
@@ -45,9 +45,8 @@ class RenderController extends Controller
         $resultPool->setParameters($parameters);
 
         $data = array(
-            'pool'  => $resultPool,
-            'start' => !empty($parameters['finder_start']) ? $parameters['finder_start'] : 0,
-            'limit' => !empty($parameters['finder_limit']) ? $parameters['finder_limit'] : 10
+            'pool'     => $resultPool,
+            'start'    => !empty($parameters['finder_start']) ? $parameters['finder_start'] : 0,
         );
 
         return $this->render($resultPool->getConfig()->getTemplate(), $data);
@@ -78,13 +77,14 @@ class RenderController extends Controller
         $data = array(
             'pool'  => $resultPool,
             'start' => !empty($parameters['finder_start']) ? $parameters['finder_start'] : 0,
-            'limit' => !empty($parameters['finder_limit']) ? $parameters['finder_limit'] : 10
         );
 
         return new JsonResponse(array(
-            'view'  => $this->renderView($resultPool->getConfig()->getTemplate(), $data),
-            'start' => (int) $data['start'],
-            'limit' => (int) $data['limit']
+            'view'   => $this->renderView($resultPool->getConfig()->getTemplate(), $data),
+            'start'  => (int) $data['start'],
+            'limit'  => $resultPool->getConfig()->getPageSize(),
+            'facets' => $resultPool->getFacets(),
+            'hasMore' => $resultPool->count() > $data['start'] + $resultPool->getConfig()->getPageSize(),
         ));
     }
 }

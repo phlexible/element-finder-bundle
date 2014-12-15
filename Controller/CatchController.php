@@ -9,8 +9,8 @@
 namespace Phlexible\Bundle\ElementFinderBundle\Controller;
 
 use Doctrine\DBAL\Connection;
+use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Phlexible\Bundle\GuiBundle\Response\ResultResponse;
-use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

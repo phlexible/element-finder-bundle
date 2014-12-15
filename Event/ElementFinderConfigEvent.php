@@ -8,7 +8,7 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\Event;
 
-use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
+use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -24,7 +24,7 @@ class ElementFinderConfigEvent extends Event
     private $elementFinderConfig;
 
     /**
-     * @param ElementFinderConfig $elementFinderConfig
+     * @param \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig $elementFinderConfig
      */
     public function __construct(ElementFinderConfig $elementFinderConfig)
     {
@@ -32,7 +32,7 @@ class ElementFinderConfigEvent extends Event
     }
 
     /**
-     * @return ElementFinderConfig
+     * @return \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig
      */
     public function getTreeId()
     {

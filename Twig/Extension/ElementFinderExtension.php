@@ -11,7 +11,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\Twig\Extension;
 use Phlexible\Bundle\ElementBundle\Model\ElementStructureValue;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinder;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
-use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
+use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -53,10 +53,11 @@ class ElementFinderExtension extends \Twig_Extension
 
     /**
      * @param ElementStructureValue|array $field
+     * @param int                         $pageSize
      *
      * @return ResultPool
      */
-    public function find($field)
+    public function find($field, $pageSize = null)
     {
         $currentRequest = $this->requestStack->getCurrentRequest();
         $masterRequest = $this->requestStack->getMasterRequest();
@@ -72,6 +73,10 @@ class ElementFinderExtension extends \Twig_Extension
         }
 
         $config = ElementFinderConfig::fromValues($values);
+        if ($pageSize) {
+            $config->setPageSize($pageSize);
+        }
+
         $resultPool = $this->elementFinder->find($config, $languages, $preview);
 
         $parameters = array_merge(

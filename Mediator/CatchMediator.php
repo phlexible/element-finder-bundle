@@ -8,14 +8,10 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\Mediator;
 
-use Phlexible\Bundle\ElementBundle\ElementService;
-use Phlexible\Bundle\ElementBundle\Entity\Element;
-use Phlexible\Bundle\ElementBundle\Entity\ElementVersion;
-use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
-use Phlexible\Bundle\TeaserBundle\Entity\Teaser;
+use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderManagerInterface;
+use Phlexible\Bundle\TeaserBundle\Entity\Teaser;
 use Phlexible\Bundle\TeaserBundle\Mediator\MediatorInterface;
-use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 
 /**
  * Catch mediator
@@ -66,7 +62,7 @@ class CatchMediator implements MediatorInterface
     /**
      * {@inheritdoc}
      *
-     * @return ElementFinderConfig
+     * @return \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig
      */
     public function getObject(Teaser $teaser)
     {
@@ -76,7 +72,7 @@ class CatchMediator implements MediatorInterface
     /**
      * {@inheritdoc}
      *
-     * @return ElementFinderConfig
+     * @return \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig
      */
     public function getVersionedObject(Teaser $teaser)
     {

@@ -18,6 +18,7 @@ services:
             - @event_dispatcher
             - @phlexible_element_finder.treenode_matcher
             - @phlexible_element_finder.filter_manager
+            - %phlexible_element_finder.cache_dir%
             - false
 
     phlexible_element_finder.lookup_builder:

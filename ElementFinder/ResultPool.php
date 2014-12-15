@@ -11,7 +11,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pagerfanta\Adapter\AdapterInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\ResultPoolFilterInterface;
-use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
+use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
 /**
  * Result pool
@@ -110,7 +110,22 @@ class ResultPool implements \Countable, AdapterInterface
 
     /**
      * @param string $key
-     * @param string $value
+     * @param mixed  $defaultValue
+     *
+     * @return mixed
+     */
+    public function getParameter($key, $defaultValue = null)
+    {
+        if (isset($this->parameters[$key])) {
+            return $this->parameters[$key];
+        }
+
+        return $defaultValue;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $value
      *
      * @return $this
      */

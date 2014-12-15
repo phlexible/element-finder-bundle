@@ -10,7 +10,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
+use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
 /**
  * Element field filter

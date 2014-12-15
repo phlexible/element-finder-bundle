@@ -9,12 +9,12 @@
 namespace Phlexible\Bundle\ElementFinderBundle\Doctrine;
 
 use Doctrine\ORM\EntityManager;
-use Phlexible\Bundle\MessageBundle\Message\MessagePoster;
-use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
-use Phlexible\Bundle\ElementFinderBundle\Event\ElementFinderConfigEvent;
-use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderManagerInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinderEvents;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinderMessage;
+use Phlexible\Bundle\ElementFinderBundle\Event\ElementFinderConfigEvent;
+use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
+use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderManagerInterface;
+use Phlexible\Bundle\MessageBundle\Message\MessagePoster;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -69,7 +69,7 @@ class ElementFinderManager implements ElementFinderManagerInterface
     }
 
     /**
-     * @param ElementFinderConfig $catch
+     * @param \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig $catch
      */
     public function updateCatch(ElementFinderConfig $catch)
     {

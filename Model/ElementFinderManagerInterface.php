@@ -8,8 +8,6 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\Model;
 
-use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderConfig;
-
 /**
  * Element finder manager interface
  *

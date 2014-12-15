@@ -6,17 +6,12 @@
  * @license   proprietary
  */
 
-namespace Phlexible\Bundle\ElementFinderBundle\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
+namespace Phlexible\Bundle\ElementFinderBundle\Model;
 
 /**
  * Element finder config
  *
  * @author Stephan Wentz <sw@brainbits.net>
- *
- * @ORM\Entity
- * @ORM\Table(name="catch")
  */
 class ElementFinderConfig
 {
@@ -26,93 +21,60 @@ class ElementFinderConfig
     const SORT_PUBLISH_DATE = '__publish_date';
     const SORT_CUSTOM_DATE = '__custom_date';
 
-    const FIELD_SORT = 'sort_field';
-
     /**
      * @var int
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
-
-    /**
-     * @var int
-     * @ORM\Column(name="tree_id", type="integer")
      */
     private $treeId;
 
     /**
      * @var array
-     * @ORM\Column(name="elementtype_ids", type="simple_array")
      */
     private $elementtypeIds = array();
 
     /**
      * @var string
-     * @ORM\Column(name="sort_field", type="string", length=255, nullable=true)
      */
     private $sortField;
 
     /**
      * @var string
-     * @ORM\Column(name="sort_order", type="string", length=255, nullable=true)
      */
     private $sortDir;
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $filter;
 
     /**
      * @var string
-     * @ORM\Column(name="template", type="string", length=255, nullable=true)
      */
     private $template;
 
     /**
      * @var int|null
-     * @ORM\Column(name="max_depth", type="integer", nullable=true)
      */
     private $maxDepth;
 
     /**
      * @var bool
-     * @ORM\Column(name="in_navigation", type="boolean")
      */
     private $inNavigation;
 
     /**
      * @var array
-     * @ORM\Column(name="meta_field", type="string", length=255, nullable=true)
      */
     private $metaField;
 
     /**
      * @var array
-     * @ORM\Column(name="meta_keywords", type="string", length=255, nullable=true)
      */
     private $metaKeywords;
 
     /**
-     * @var array
-     * @ORM\Column(name="create_user_id", type="string", length=36, options={"fixed"=true})
+     * @var int
      */
-    private $createUserId;
-
-    /**
-     * @var \DateTime
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private $createdAt;
+    private $pageSize;
 
     /**
      * @param array $values
@@ -131,6 +93,7 @@ class ElementFinderConfig
         $metaField = !empty($values['metaField']) ? $values['metaField'] : null;
         $metaKeywords = !empty($values['metaKeywords']) ? $values['metaKeywords'] : null;
         $template = !empty($values['template']) ? $values['template'] : null;
+        $pageSize = !empty($values['pageSize']) ? $values['pageSize'] : null;
 
         $config = new ElementFinderConfig();
         $config
@@ -143,49 +106,10 @@ class ElementFinderConfig
             ->setSortDir($sortDir)
             ->setMetaField($metaField)
             ->setMetaKeywords($metaKeywords)
-            ->setTemplate($template);
+            ->setTemplate($template)
+            ->setPageSize($pageSize);
 
         return $config;
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = (int) $id;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     *
-     * @return $this
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
     }
 
     /**
@@ -392,5 +316,25 @@ class ElementFinderConfig
     public function getMetaKeywords()
     {
         return $this->metaKeywords;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPageSize()
+    {
+        return $this->pageSize;
+    }
+
+    /**
+     * @param int $pageSize
+     *
+     * @return $this
+     */
+    public function setPageSize($pageSize)
+    {
+        $this->pageSize = $pageSize;
+
+        return $this;
     }
 }

@@ -37,6 +37,7 @@ class PhlexibleElementFinderExtension extends Extension
             'phlexible_element_finder.use_master_language_as_fallback',
             $config['use_master_language_as_fallback']
         );
+        $container->setParameter('phlexible_element_finder.cache_dir', '%kernel.cache_dir%/elementfinder');
 
         //$container->setAlias('phlexible_element_finder.element_finder_manager', 'phlexible_teaser.doctrine.element_finder_manager');
     }
