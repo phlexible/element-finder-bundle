@@ -10,6 +10,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,15 +23,15 @@ use Symfony\Component\HttpFoundation\Response;
 class RenderController extends Controller
 {
     /**
-     * Render finder
+     * Render finder pool as html
      *
      * @param Request $request
      * @param string  $identifier
      *
      * @return Response
-     * @Route("/render/{identifier}", name="elementfinder_render")
+     * @Route("/render/html/{identifier}", name="elementfinder_render_html")
      */
-    public function renderAction(Request $request, $identifier)
+    public function htmlAction(Request $request, $identifier)
     {
         $finder = $this->get('phlexible_element_finder.finder');
 
@@ -50,5 +51,40 @@ class RenderController extends Controller
         );
 
         return $this->render($resultPool->getConfig()->getTemplate(), $data);
+    }
+
+    /**
+     * Render finder pool as html
+     *
+     * @param Request $request
+     * @param string  $identifier
+     *
+     * @return JsonResponse
+     * @Route("/render/json/{identifier}", name="elementfinder_render_json")
+     */
+    public function jsonAction(Request $request, $identifier)
+    {
+        $finder = $this->get('phlexible_element_finder.finder');
+
+        $resultPool = $finder->findByIdentifier($identifier);
+
+        $parameters = array_merge(
+            $request->query->all(),
+            $request->request->all()
+        );
+
+        $resultPool->setParameters($parameters);
+
+        $data = array(
+            'pool'  => $resultPool,
+            'start' => !empty($parameters['finder_start']) ? $parameters['finder_start'] : 0,
+            'limit' => !empty($parameters['finder_limit']) ? $parameters['finder_limit'] : 10
+        );
+
+        return new JsonResponse(array(
+            'view'  => $this->renderView($resultPool->getConfig()->getTemplate(), $data),
+            'start' => (int) $data['start'],
+            'limit' => (int) $data['limit']
+        ));
     }
 }
