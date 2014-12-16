@@ -275,7 +275,7 @@ class CatchController extends Controller
         $elementService = $this->get('phlexible_element.element_service');
         $iconResolver = $this->get('phlexible_element.icon_resolver');
 
-        $result = $elementFinder->find($config, array('de'), true);
+        $result = $elementFinder->find($config, array('de'), false);
 
         $data = array();
         foreach ($result->range(0, 10) as $resultItem) {
