@@ -36,7 +36,7 @@ class ResultItem
     private $language;
 
     /**
-     * @var int
+     * @var string
      */
     private $elementtypeId;
 
@@ -80,7 +80,7 @@ class ResultItem
      * @param int       $eid
      * @param int       $version
      * @param string    $language
-     * @param int       $elementtypeId
+     * @param string    $elementtypeId
      * @param bool      $isPreview
      * @param bool      $inNavigation
      * @param bool      $isRestricted
@@ -122,7 +122,7 @@ class ResultItem
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getElementtypeId()
     {
@@ -148,7 +148,7 @@ class ResultItem
     /**
      * @return boolean
      */
-    public function isIsRestricted()
+    public function isRestricted()
     {
         return $this->isRestricted;
     }

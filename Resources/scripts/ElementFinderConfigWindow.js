@@ -2,17 +2,20 @@ Phlexible.elementfinder.ElementFinderConfigWindow = Ext.extend(Ext.Window, {
     strings: Phlexible.elementfinder.Strings.preview,
     title: Phlexible.elementfinder.Strings.finder,
     iconCls: 'p-elementfinder-finder-icon',
-    width: 900,
+    width: 950,
+    minWidth: 950,
     height: 450,
+    minHeight: 450,
     layout: 'border',
     modal: true,
-    resizable: false,
+    resizable: true,
+    maximizable: true,
     border: false,
 
     initComponent: function () {
         var store = new Ext.data.JsonStore({
             url: Phlexible.Router.generate('elementfinder_catch_preview'),
-            fields: ['id', 'version', 'language', 'title', 'icon'],
+            fields: Phlexible.elementfinder.model.ResultItem,
             id: 'id',
             root: 'items',
             baseParams: {},
@@ -43,29 +46,65 @@ Phlexible.elementfinder.ElementFinderConfigWindow = Ext.extend(Ext.Window, {
             xtype: 'grid',
             region: 'center',
             store: store,
-            autoExpandColumn: 3,
+            autoExpandColumn: 4,
             emptyText: this.strings.no_match,
             columns: [{
                 header: this.strings.id,
                 dataIndex: 'id',
-                width: 50
+                width: 40
             },{
                 header: this.strings.version,
                 dataIndex: 'version',
-                width: 50
+                width: 40
             },{
                 header: this.strings.language,
                 dataIndex: 'language',
-                width: 50,
+                width: 30,
                 renderer: function(v) {
                     return Phlexible.inlineIcon("p-flags-" + v + "-icon");
                 }
+            },{
+                header: this.strings.elementtype_id,
+                dataIndex: 'elementtypeId',
+                width: 220,
+                hidden: true
             },{
                 header: this.strings.title,
                 dataIndex: 'title',
                 renderer: function(v, md, r) {
                     return '<img src="' + r.data.icon + '" width="18" height="18" style="vertical-align: middle;" /> ' + v;
                 }
+            },{
+                header: this.strings.published_at,
+                dataIndex: 'publishedAt',
+                width: 120,
+                hidden: true,
+                renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')
+            },{
+                header: this.strings.custom_date,
+                dataIndex: 'customDate',
+                width: 120,
+                hidden: true,
+                renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')
+            },{
+                header: this.strings.in_navigation,
+                dataIndex: 'inNavigation',
+                width: 40,
+                hidden: true
+            },{
+                header: this.strings.is_restricted,
+                dataIndex: 'isRestricted',
+                width: 40,
+                hidden: true
+            },{
+                header: this.strings.is_preview,
+                dataIndex: 'isPreview',
+                width: 40,
+                hidden: true
+            },{
+                header: this.strings.sort_field,
+                dataIndex: 'sortField',
+                width: 120
             }],
             tbar: [{
                 text: this.strings.preview,

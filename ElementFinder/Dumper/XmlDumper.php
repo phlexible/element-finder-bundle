@@ -56,7 +56,7 @@ class XmlDumper implements DumperInterface
                 'elementtypeId' => $item->getElementtypeId(),
                 'isPreview'     => $item->isPreview() ? 1 : 0,
                 'inNavigation'  => $item->isInNavigation() ? 1 : 0,
-                'isRestricted'  => $item->isIsRestricted() ? 1 : 0,
+                'isRestricted'  => $item->isRestricted() ? 1 : 0,
                 'customDate'    => $item->getCustomDate() ? $item->getCustomDate()->format('Y-m-d H:i:s') : '',
                 'publishedAt'   => $item->getPublishedAt() ? $item->getPublishedAt()->format('Y-m-d H:i:s') : '',
                 'sortField'     => $item->getSortField(),

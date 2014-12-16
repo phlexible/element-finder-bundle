@@ -64,11 +64,6 @@ class ElementFinder
     private $useElementLanguageAsFallback;
 
     /**
-     * @var bool
-     */
-    private $isNatSort = false;
-
-    /**
      * @var array
      */
     private $tidSkipList = array();
@@ -122,11 +117,10 @@ class ElementFinder
      * @param ElementFinderConfig $config
      * @param array               $languages
      * @param bool                $isPreview
-     * @param array               $filters
      *
      * @return ResultPool
      */
-    public function find(ElementFinderConfig $config, array $languages, $isPreview, array $filters = array())
+    public function find(ElementFinderConfig $config, array $languages, $isPreview)
     {
         $identifier = $this->createIdentifier($config, $languages, $isPreview);
         $filename = $this->cacheDir . "/$identifier.xml";
@@ -171,33 +165,15 @@ class ElementFinder
 
         if (!$config->getSortField() && $matchedTreeIds) {
             // sort by tree order
-            $orderedResult = array();
-
             $treeIds = $this->treeNodeMatcher->flatten($matchedTreeIds);
-            foreach ($treeIds as $treeId) {
+            foreach ($treeIds as $index => $treeId) {
                 if (array_key_exists($treeId, $results)) {
-                    $orderedResult[$treeId] = $results[$treeId];
+                    $results[$treeId]['sort_field'] = $index;
                 }
             }
-            sort($orderedResult);
-            $results = $orderedResult;
-        } elseif ($this->isNatSort) {
-            // sort by sort field
-            $sortedColumn = array_column($results, 'sort_field');
-            if ($this->isNatSort) {
-                // use natsort
-                natsort($sortedColumn);
-            } else {
-                // use sort
-                sort($sortedColumn);
-            }
-
-            $orderedResult = array();
-            foreach (array_keys($sortedColumn) as $key) {
-                $orderedResult[] = $results[$key];
-            }
-            $results = $orderedResult;
         }
+
+        $results = $this->sortResults($results, $config->getSortDir());
 
         $items = array();
         foreach ($results as $result) {
@@ -233,6 +209,33 @@ class ElementFinder
     public function createIdentifier(ElementFinderConfig $config, $languages, $isPreview)
     {
         return hash('sha1', serialize(array($config, $languages, $isPreview)));
+    }
+
+    /**
+     * @param array  $results
+     * @param string $sortDir
+     *
+     * @return array
+     */
+    private function sortResults(array $results, $sortDir)
+    {
+        $sortedColumn = array_column($results, 'sort_field', 'tree_id');
+        $sortedColumn = array_map(function($str) {
+            return mb_strtoupper($str, 'UTF-8');
+        }, $sortedColumn);
+
+        if ($sortDir === 'DESC') {
+            arsort($sortedColumn, SORT_NATURAL);
+        } else {
+            asort($sortedColumn, SORT_NATURAL);
+        }
+
+        $orderedResult = array();
+        foreach (array_keys($sortedColumn) as $key) {
+            $orderedResult[] = $results[$key];
+        }
+
+        return $orderedResult;
     }
 
     /**
@@ -278,7 +281,7 @@ class ElementFinder
     /**
      * Apply filter and limit clause.
      *
-     * @param \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig $config
+     * @param ElementFinderConfig $config
      * @param bool                $isPreview
      * @param array               $languages
      * @param array|null          $matchedTreeIds
@@ -399,7 +402,7 @@ class ElementFinder
      * Add a sort criteria to the select statement.
      *
      * @param QueryBuilder        $qb
-     * @param \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig $config
+     * @param ElementFinderConfig $config
      * @param bool                $isPreview
      */
     private function applySort(QueryBuilder $qb, ElementFinderConfig $config, $isPreview)
@@ -422,17 +425,13 @@ class ElementFinder
         } else {
             $this->applySortByField($qb, $config);
         }
-
-        if (!$this->isNatSort) {
-            $qb->orderBy(self::FIELD_SORT, $config->getSortDir());
-        }
     }
 
     /**
      * Add field sorting to select statement.
      *
      * @param QueryBuilder        $qb
-     * @param \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig $config
+     * @param ElementFinderConfig $config
      */
     private function applySortByField(QueryBuilder $qb, ElementFinderConfig $config)
     {
@@ -457,7 +456,7 @@ class ElementFinder
      *
      * @param QueryBuilder        $qb
      * @param string              $title
-     * @param \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig $config
+     * @param ElementFinderConfig $config
      */
     private function applySortByTitle(QueryBuilder $qb, $title, ElementFinderConfig $config)
     {
@@ -465,9 +464,15 @@ class ElementFinder
             ->addSelect("sort.$title AS sort_field")
             ->leftJoin(
                 'lookup',
-                'element_version_mapped_fields',
+                'element_version',
+                'sort_ev',
+                'lookup.eid = sort_ev.eid AND lookup.version = sort_ev.version'
+            )
+            ->leftJoin(
+                'sort_ev',
+                'element_version_mapped_field',
                 'sort',
-                'lookup.eid = sort_t.eid AND lookup.version = sort_t.version AND lookup.language = sort_t.language'
+                'sort_ev.id = sort.element_version_id AND lookup.language = sort.language'
             );
     }
 
@@ -475,22 +480,20 @@ class ElementFinder
      * Add title sorting to select statement.
      *
      * @param QueryBuilder        $qb
-     * @param \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig $config
+     * @param ElementFinderConfig $config
      * @param bool                $isPreview
      */
     private function applySortByPublishDate(QueryBuilder $qb, ElementFinderConfig $config, $isPreview)
     {
-        if (!$isPreview) {
-            $qb
-                ->addSelect("lookup.publish_time AS sort_field");
-        }
+        $qb
+            ->addSelect("lookup.published_at AS sort_field");
     }
 
     /**
      * Add title sorting to select statement.
      *
      * @param QueryBuilder        $qb
-     * @param \Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig $config
+     * @param ElementFinderConfig $config
      */
     private function applySortByCustomDate(QueryBuilder $qb, ElementFinderConfig $config)
     {

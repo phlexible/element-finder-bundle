@@ -53,8 +53,8 @@ class ElementFinderLookupElement
     private $elementVersionId;
 
     /**
-     * @var int
-     * @ORM\Column(name="elementtype_id", type="integer")
+     * @var string
+     * @ORM\Column(name="elementtype_id", type="string", length=36, options={"fixed"=true})
      */
     private $elementtypeId;
 
@@ -81,12 +81,6 @@ class ElementFinderLookupElement
      * @ORM\Column(type="string", length=2, options={"fixed"=true})
      */
     private $language;
-
-    /**
-     * @var int
-     * @ORM\Column(name="online_version", type="integer", nullable=true)
-     */
-    private $onlineVersion;
 
     /**
      * @var \DateTime
@@ -207,7 +201,7 @@ class ElementFinderLookupElement
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getElementtypeId()
     {
@@ -215,7 +209,7 @@ class ElementFinderLookupElement
     }
 
     /**
-     * @param int $elementtypeId
+     * @param string $elementtypeId
      *
      * @return $this
      */
@@ -302,26 +296,6 @@ class ElementFinderLookupElement
     public function setLanguage($language)
     {
         $this->language = $language;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getOnlineVersion()
-    {
-        return $this->onlineVersion;
-    }
-
-    /**
-     * @param int $onlineVersion
-     *
-     * @return $this
-     */
-    public function setOnlineVersion($onlineVersion)
-    {
-        $this->onlineVersion = $onlineVersion;
 
         return $this;
     }

@@ -25,6 +25,13 @@ elementfinder:
         id: ID
         version: Version
         language: Language
+        elementtype_id: Elementtype ID
+        published_at: Publish Date
+        custom_date: Date
+        sort_field: Sortfield
+        in_navigation: In navigation
+        is_restricted: Is restricted
+        is_preview: Is preview
         title: Title
         no_match: No matches
         showing: Showing results {0} - {1} of {2}

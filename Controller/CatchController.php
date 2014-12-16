@@ -36,15 +36,15 @@ class CatchController extends Controller
      */
     public function sortfieldsAction(Request $request)
     {
-        $query = $request->get('query');
+        $elementtypeIds = $request->get('query');
 
         $elementSourceManager = $this->get('phlexible_element.element_source_manager');
         $fieldRegistry = $this->get('phlexible_elementtype.field.registry');
 
         $fields = array();
 
-        if ($query) {
-            $elementtypeIds = explode(',', $query);
+        if ($elementtypeIds) {
+            $elementtypeIds = explode(',', $elementtypeIds);
 
             $dsIds = null;
             foreach ($elementtypeIds as $elementtypeId) {
@@ -83,7 +83,7 @@ class CatchController extends Controller
                 if ($field->isContainer()) {
                     continue;
                 }
-                if (!in_array($field->getDataType(), array('string', 'float', 'integer', 'number', 'checkbox'))) {
+                if (!in_array($field->getDataType(), array('string', 'float', 'integer', 'number', 'boolean'))) {
                      continue;
                 }
 
@@ -285,11 +285,19 @@ class CatchController extends Controller
             $elementVersion = $elementService->findElementVersion($element, $resultItem->getVersion());
 
             $data[] = array(
-                'id'       => $resultItem->getTreeId(),
-                'version'  => $resultItem->getVersion(),
-                'language' => $resultItem->getLanguage(),
-                'title'    => $elementVersion->getBackendTitle($resultItem->getLanguage()),
-                'icon'     => $iconResolver->resolveTreeNode($treeNode, $resultItem->getLanguage()),
+                'id'            => $resultItem->getTreeId(),
+                'version'       => $resultItem->getVersion(),
+                'language'      => $resultItem->getLanguage(),
+                'elementtypeId' => $resultItem->getElementtypeId(),
+                'customDate'    => $resultItem->getCustomDate() ? $resultItem->getCustomDate()->format('Y-m-d H:i:s') : null,
+                'publishedAt'   => $resultItem->getPublishedAt() ? $resultItem->getPublishedAt()->format('Y-m-d H:i:s') : null,
+                'sortField'     => $resultItem->getSortField(),
+                'isRestricted'  => $resultItem->isRestricted(),
+                'isPreview'     => $resultItem->isPreview(),
+                'inNavigation'  => $resultItem->isInNavigation(),
+                'extras'        => $resultItem->getExtras(),
+                'title'         => $elementVersion->getBackendTitle($resultItem->getLanguage()),
+                'icon'          => $iconResolver->resolveTreeNode($treeNode, $resultItem->getLanguage()),
             );
         }
 

@@ -194,7 +194,7 @@ class LookupBuilder
      */
     public function update(TreeNodeInterface $treeNode)
     {
-        //$this->updateOnline($treeNode);
+        $this->updateOnline($treeNode);
         $this->updatePreview($treeNode);
     }
 
@@ -246,7 +246,7 @@ class LookupBuilder
 
         $element = $this->elementService->findElement($treeNode->getTypeId());
         foreach ($treeNode->getTree()->getPublishedVersions($treeNode) as $language => $onlineVersion) {
-            $elementVersion = $this->elementService->findLatestElementVersion($element, $onlineVersion);
+            $elementVersion = $this->elementService->findElementVersion($element, $onlineVersion);
 
             $this->updateVersion(
                 $treeNode,
@@ -303,7 +303,6 @@ class LookupBuilder
             ->setElementtypeId($element->getElementtypeId())
             ->setVersion($elementVersion->getVersion())
             ->setLanguage($language)
-            ->setOnlineVersion($onlineVersion)
             ->setInNavigation($treeNode->getInNavigation())
             ->setIsRestricted($treeNode->getNeedAuthentication())
             ->setCachedAt(new \DateTime());

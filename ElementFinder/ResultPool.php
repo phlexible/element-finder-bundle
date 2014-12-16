@@ -265,11 +265,17 @@ class ResultPool implements \Countable, AdapterInterface
         return $this->items->count();
     }
 
+    /**
+     * @return int
+     */
     public function nextStart()
     {
         return $this->getParameter('finder_start', 0) + $this->getConfig()->getPageSize();
     }
 
+    /**
+     * @return bool
+     */
     public function hasMore()
     {
         return $this->count() > $this->getParameter('finder_start', 0) + $this->getConfig()->getPageSize();

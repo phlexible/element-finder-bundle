@@ -52,6 +52,8 @@ class ElementFinderAssetProvider implements AssetProviderInterface
             '@PhlexibleElementFinderBundle/Resources/scripts/configuration/FieldConfigurationFinder.js',
 
             '@PhlexibleElementFinderBundle/Resources/scripts/field/Finder.js',
+
+            '@PhlexibleElementFinderBundle/Resources/scripts/model/ResultItem.js',
         );
     }
 
