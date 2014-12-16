@@ -81,10 +81,10 @@ class RenderController extends Controller
 
         return new JsonResponse(array(
             'view'   => $this->renderView($resultPool->getConfig()->getTemplate(), $data),
-            'start'  => (int) $data['start'],
+            'start'  => $resultPool->getParameter('finder_start', 0),
             'limit'  => $resultPool->getConfig()->getPageSize(),
             'facets' => $resultPool->getFacets(),
-            'hasMore' => $resultPool->count() > $data['start'] + $resultPool->getConfig()->getPageSize(),
+            'hasMore' => $resultPool->hasMore(),
         ));
     }
 }
