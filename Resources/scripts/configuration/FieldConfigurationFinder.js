@@ -1,3 +1,5 @@
+Ext.ns('Phlexible.elementfinder.configuration');
+
 Phlexible.elementfinder.configuration.FieldConfigurationFinder = Ext.extend(Ext.form.FieldSet, {
     strings: Phlexible.elementfinder.Strings,
     title: Phlexible.elementfinder.Strings.finder,

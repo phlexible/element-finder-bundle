@@ -1,8 +1,3 @@
-Ext.ns(
-    'Phlexible.elementfinder.configuration',
-    'Phlexible.elementfinder.model'
-);
-
 Phlexible.elementtypes.configuration.FieldConfiguration.prototype.initMyItems =
     Phlexible.elementtypes.configuration.FieldConfiguration.prototype.initMyItems.createSequence(function() {
         this.items.push({

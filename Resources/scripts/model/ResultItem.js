@@ -1,3 +1,5 @@
+Ext.ns('Phlexible.elementfinder.model');
+
 Phlexible.elementfinder.model.ResultItem = Ext.data.Record.create([
     'id',
     'version',

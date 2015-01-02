@@ -1,0 +1,9 @@
+require:
+    - configuration/FieldConfigurationFinder
+    - field/Finder
+    - model/ResultItem
+    - ElementFinderConfigPanel
+    - ElementFinderConfigWindow
+    # - NewCatchWindow
+    - sequences
+
