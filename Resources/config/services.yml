@@ -30,13 +30,6 @@ services:
             - @phlexible_element.element_meta_data_manager
             - @event_dispatcher
 
-    # asset providers
-    phlexible_element_finder.asset_provider:
-        class: Phlexible\Bundle\ElementFinderBundle\AssetProvider\ElementFinderAssetProvider
-        public: false
-        tags:
-            - {name: phlexible_gui.asset_provider, priority: 100}
-
     # event listeners
     phlexible_element_finder.listener.publish_node:
         class: Phlexible\Bundle\ElementFinderBundle\EventListener\NodeListener
