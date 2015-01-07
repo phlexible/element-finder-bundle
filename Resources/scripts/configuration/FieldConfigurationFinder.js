@@ -1,5 +1,7 @@
 Ext.provide('Phlexible.elementfinder.configuration.FieldConfigurationFinder');
 
+Ext.require('Ext.ux.Multiselect');
+
 Phlexible.elementfinder.configuration.FieldConfigurationFinder = Ext.extend(Ext.form.FieldSet, {
     strings: Phlexible.elementfinder.Strings,
     title: Phlexible.elementfinder.Strings.finder,

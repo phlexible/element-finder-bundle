@@ -1,5 +1,7 @@
 Ext.provide('Phlexible.elementfinder.ElementFinderConfigPanel');
 
+Ext.require('Ext.ux.Multiselect');
+
 Phlexible.elementfinder.ElementFinderConfigPanel = Ext.extend(Ext.Panel, {
     strings: Phlexible.elementfinder.Strings,
     title: Phlexible.elementfinder.Strings.finder,
