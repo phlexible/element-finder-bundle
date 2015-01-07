@@ -1,6 +1,7 @@
-Ext.ns('Ext.ux.form');
+Ext.provide('Phlexible.elementfinder.field.FinderField');
+Ext.require('Phlexible.elementfinder.ElementFinderConfigWindow');
 
-Ext.ux.form.FinderField = Ext.extend(Ext.form.TwinTriggerField, {
+Phlexible.elementfinder.field.FinderField = Ext.extend(Ext.form.TwinTriggerField, {
     trigger1Class: 'x-form-clear-trigger',
     trigger2Class: 'p-form-finder-trigger',
     hiddenValue: '',
@@ -19,11 +20,11 @@ Ext.ux.form.FinderField = Ext.extend(Ext.form.TwinTriggerField, {
             this.ctCls = 'x-item-disabled';
         }
 
-        Ext.ux.form.FinderField.superclass.initComponent.call(this);
+        Phlexible.elementfinder.field.FinderField.superclass.initComponent.call(this);
     },
 
     onRender: function(ct, position) {
-        Ext.ux.form.FinderField.superclass.onRender.call(this, ct, position);
+        Phlexible.elementfinder.field.FinderField.superclass.onRender.call(this, ct, position);
 
         this.hiddenField = Ext.DomHelper.insertAfter(this.el, {
             tag: 'input',
@@ -69,7 +70,7 @@ Ext.ux.form.FinderField = Ext.extend(Ext.form.TwinTriggerField, {
     },
 
     initValue: function() {
-        Ext.ux.form.FinderField.superclass.initValue.call(this);
+        Phlexible.elementfinder.field.FinderField.superclass.initValue.call(this);
 
         this.setHiddenFieldValue(this.hiddenValue);
     },
@@ -98,7 +99,7 @@ Ext.ux.form.FinderField = Ext.extend(Ext.form.TwinTriggerField, {
             }
         }
 
-        Ext.ux.form.FinderField.superclass.setValue.call(this, v);
+        Phlexible.elementfinder.field.FinderField.superclass.setValue.call(this, v);
 
         this.setHiddenFieldValue(this.hiddenValue);
     },
@@ -108,7 +109,7 @@ Ext.ux.form.FinderField = Ext.extend(Ext.form.TwinTriggerField, {
     },
 
     onSelect: function (record, index) {
-        Ext.ux.form.FinderField.superclass.onSelect.call(this, record, index);
+        Phlexible.elementfinder.field.FinderField.superclass.onSelect.call(this, record, index);
 
         this.setHiddenValue({
             type: record.data.type,
@@ -145,4 +146,4 @@ Ext.ux.form.FinderField = Ext.extend(Ext.form.TwinTriggerField, {
     }
 });
 
-Ext.reg('finderfield', Ext.ux.form.FinderField);
+Ext.reg('finderfield', Phlexible.elementfinder.field.FinderField);

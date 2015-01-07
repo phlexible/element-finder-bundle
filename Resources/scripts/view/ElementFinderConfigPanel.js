@@ -1,3 +1,5 @@
+Ext.provide('Phlexible.elementfinder.ElementFinderConfigPanel');
+
 Phlexible.elementfinder.ElementFinderConfigPanel = Ext.extend(Ext.Panel, {
     strings: Phlexible.elementfinder.Strings,
     title: Phlexible.elementfinder.Strings.finder,
