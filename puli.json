@@ -1,7 +1,7 @@
 {
     "resources": {
-        "/phlexible/icons/elementfinder": "Resources/public/icons",
-        "/phlexible/scripts/elementfinder": "Resources/scripts",
-        "/phlexible/styles/elementfinder": "Resources/styles"
+        "/phlexible/icons/phlexibleelementfinder": "Resources/public/icons",
+        "/phlexible/scripts/phlexibleelementfinder": "Resources/scripts",
+        "/phlexible/styles/phlexibleelementfinder": "Resources/styles"
     }
 }
