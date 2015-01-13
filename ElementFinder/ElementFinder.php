@@ -361,7 +361,7 @@ class ElementFinder
             foreach ($elementtypeIds as $index => $elementtypeId) {
                 $elementtypeIds[$index] = $qb->expr()->literal($elementtypeId);
             }
-            $qb->andWhere($qb->expr()->in('lookup.elementtype_id', $config->getElementtypeIds()));
+            $qb->andWhere($qb->expr()->in('lookup.elementtype_id', $elementtypeIds));
         }
 
         if ($config->inNavigation()) {
