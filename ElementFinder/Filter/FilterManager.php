@@ -47,10 +47,25 @@ class FilterManager
      * @param string $name
      *
      * @return FilterInterface
+     * @throws \InvalidArgumentException
      */
     public function get($name)
     {
+        if (!$this->has($name)) {
+            throw new \InvalidArgumentException("Filter $name not registered.");
+        }
+
         return $this->filters[$name];
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function has($name)
+    {
+        return isset($this->filters[$name]);
     }
 
     /**
