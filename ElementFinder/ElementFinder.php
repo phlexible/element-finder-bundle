@@ -357,7 +357,11 @@ class ElementFinder
         }
 
         if (count($config->getElementtypeIds())) {
-            $qb->andWhere($qb->expr()->in('lookup.elementtype_id', $qb->expr()->literal($config->getElementtypeIds())));
+            $elementtypeIds = $config->getElementtypeIds();
+            foreach ($elementtypeIds as $index => $elementtypeId) {
+                $elementtypeIds[$index] = $qb->expr()->literal($elementtypeId);
+            }
+            $qb->andWhere($qb->expr()->in('lookup.elementtype_id', $config->getElementtypeIds()));
         }
 
         if ($config->inNavigation()) {
