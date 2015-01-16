@@ -9,7 +9,6 @@
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pagerfanta\Adapter\AdapterInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\ResultPoolFilterInterface;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
@@ -18,7 +17,7 @@ use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class ResultPool implements \Countable, AdapterInterface
+class ResultPool implements \Countable
 {
     /**
      * @var string
@@ -279,29 +278,6 @@ class ResultPool implements \Countable, AdapterInterface
     public function hasMore()
     {
         return $this->count() > $this->getParameter('finder_start', 0) + $this->getConfig()->getPageSize();
-    }
-
-    /**
-     * Returns the number of results.
-     *
-     * @return integer The number of results.
-     */
-    public function getNbResults()
-    {
-        return $this->count();
-    }
-
-    /**
-     * Returns an slice of the results.
-     *
-     * @param integer $offset The offset.
-     * @param integer $length The length.
-     *
-     * @return ResultItem[]|\Traversable The slice.
-     */
-    public function getSlice($offset, $length)
-    {
-        return $this->slice($offset, $length);
     }
 
     /**
