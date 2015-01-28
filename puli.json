@@ -8,11 +8,11 @@
     },
     "bindings": {
         "d80e5ff2-01fd-5f75-aca8-7fdfb93099a4": {
-            "query": "/phlexible/phlexibleelementfinder/scripts/*.js",
+            "query": "/phlexible/phlexibleelementfinder/scripts/**.js",
             "type": "phlexible/scripts"
         },
         "0ccc6173-ba11-5df3-b86b-257c6b40ce9e": {
-            "query": "/phlexible/phlexibleelementfinder/styles/*.css",
+            "query": "/phlexible/phlexibleelementfinder/styles/**.css",
             "type": "phlexible/styles"
         },
         "6ce2d4bc-e5af-55c6-88e1-7284fc2a1c31": {
