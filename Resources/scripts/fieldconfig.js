@@ -38,6 +38,13 @@ Phlexible.fields.Registry.addFactory('finder', function(parentConfig, item, valu
 
 	delete config.name;
 
+    if (config.readOnly) {
+        config.hideTrigger1 = true;
+        config.hideTrigger2 = true;
+        config.onTrigger1Click = Ext.emptyFn;
+        config.onTrigger2Click = Ext.emptyFn;
+    }
+
 	return config;
 });
 
