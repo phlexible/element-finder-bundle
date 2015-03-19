@@ -42,11 +42,11 @@ public function registerBundles()
 }
 ```
 
-### Step 3: Import PhlexibleElementFinderBundle routing files
+### Step 3: Import PhlexibleElementFinderBundle routing
 
-Now that you have activated the bundle, you have to import the PhlexibleElementFinderBundle routes.
+Import the PhlexibleElementFinderBundle routing.
 
-In YAML:
+For frontend:
 
 ``` yaml
 # app/config/routing.yml
@@ -54,6 +54,8 @@ phlexible_element_finder_render:
     resource: "@PhlexibleElementFinderBundle/Controller/RenderController.php"
     type:     annotation
 ```
+
+For administration backend:
 
 ``` yaml
 # app/config/admin_routing.yml
@@ -64,12 +66,12 @@ phlexible_element_finder_catch:
 
 ### Step 4: Enable puli resources
 
-Now that the bundle is configured, we have the tell phlexible how to load the resource that the the PhlexibleElementFinderBundle provides. phlexible uses puli types to manage resources.
+The PhlexibleElementFinderBundle provides puli bindings for phlexible scripts, styles and icons. These need to be activated.
 
 ``` bash
-$ bin/puli bind --enable d80e5f # enable PhlexibleElementFinderBundle scripts
-$ bin/puli bind --enable 0ccc61 # enable PhlexibleElementFinderBundle styles
-$ bin/puli bind --enable 6ce2d4 # enable PhlexibleElementFinderBundle icons
+$ bin/puli bind --enable d80e5f # enable binding for phlexible/scripts
+$ bin/puli bind --enable 0ccc61 # enable binding for phlexible/styles
+$ bin/puli bind --enable 6ce2d4 # enable binding for phlexible/icons
 ```
 
 ### Step 5: Update your database schema
