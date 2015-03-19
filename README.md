@@ -86,6 +86,8 @@ $ php app/console doctrine:schema:update --force
 
 ### Step 6: Clear the symfony cache
 
+If you access your phlexible application with environment prod, clear the cache:
+
 ``` bash
 $ php app/console cache:clear --env=prod
 ```
