@@ -13,7 +13,7 @@ Installation is a 5 step process:
 3. Import PhlexibleElementFinderBundle routing
 4. Enable puli resources
 5. Update your database schema
-
+6. Clear the symfony cache
 
 ### Step 1: Download PhlexibleElementFinderBundle using composer
 
@@ -82,4 +82,10 @@ For ORM run the following command.
 
 ``` bash
 $ php app/console doctrine:schema:update --force
+```
+
+### Step 6: Clear the symfony cache
+
+``` bash
+$ php app/console cache:clear --env=prod
 ```
