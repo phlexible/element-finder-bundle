@@ -154,7 +154,9 @@ class ElementFinder
         $results = array();
         if ($matchedTreeIds !== null) {
             $qb = $this->createSelect($config, $isPreview, $languages, $matchedTreeIds, $filters);
-            foreach ($this->connection->fetchAll($qb->getSQL()) as $item) {
+            $statement = $qb->execute();
+            while ($item = $statement->fetch()) {
+                dump($item);
                 $results[$item['tree_id']] = $item;
             }
         }
@@ -320,24 +322,16 @@ class ElementFinder
 
         if (count($matchedTreeIds)) {
             $or = $qb->expr()->orX();
-            /*
-            $quotedLanguages = array();
-            foreach ($languages as $language) {
-                $quotedLanguages[] = $qb->expr()->literal($language);
-            }
-            */
             foreach ($matchedTreeIds as $language => $tids) {
                 $or->add(
                     $qb->expr()->andX(
                         $qb->expr()->in('lookup.tree_id', $tids),
-                        $qb->expr()->eq('lookup.language', $qb->expr()->literal($language))
-                        /*
-                        $qb->expr()->in('lookup.language', $quotedLanguages)
-                        */
+                        $qb->expr()->in('lookup.language', ':languages')
                     )
                 );
             }
             $qb->where($or);
+            $qb->setParameter('languages', $languages, Connection::PARAM_STR_ARRAY);
         }
 
         if ($isPreview) {
