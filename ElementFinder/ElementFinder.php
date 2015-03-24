@@ -320,14 +320,22 @@ class ElementFinder
 
         if (count($matchedTreeIds)) {
             $or = $qb->expr()->orX();
+            /*
+            $quotedLanguages = array();
+            foreach ($languages as $language) {
+                $quotedLanguages[] = $qb->expr()->literal($language);
+            }
+            */
             foreach ($matchedTreeIds as $language => $tids) {
                 $or->add(
                     $qb->expr()->andX(
                         $qb->expr()->in('lookup.tree_id', $tids),
-                        $qb->expr()->in('lookup.language', '?1')
+                        $qb->expr()->eq('lookup.language', $qb->expr()->literal($language))
+                        /*
+                        $qb->expr()->in('lookup.language', $quotedLanguages)
+                        */
                     )
                 );
-                $qb->setParameter(1, $languages, Connection::PARAM_STR_ARRAY);
             }
             $qb->where($or);
         }
