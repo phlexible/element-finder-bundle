@@ -156,7 +156,6 @@ class ElementFinder
             $qb = $this->createSelect($config, $isPreview, $languages, $matchedTreeIds, $filters);
             $statement = $qb->execute();
             while ($item = $statement->fetch()) {
-                dump($item);
                 $results[$item['tree_id']] = $item;
             }
         }
