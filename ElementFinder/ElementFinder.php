@@ -119,6 +119,7 @@ class ElementFinder
      * @param bool                $isPreview
      *
      * @return ResultPool
+     * @throws \Exception
      */
     public function find(ElementFinderConfig $config, array $languages, $isPreview)
     {
@@ -323,9 +324,10 @@ class ElementFinder
                 $or->add(
                     $qb->expr()->andX(
                         $qb->expr()->in('lookup.tree_id', $tids),
-                        $qb->expr()->in('lookup.language', $qb->expr()->literal(current($languages)))
+                        $qb->expr()->in('lookup.language', '?1')
                     )
                 );
+                $qb->setParameter(1, $languages, Connection::PARAM_STR_ARRAY);
             }
             $qb->where($or);
         }
