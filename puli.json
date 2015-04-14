@@ -1,7 +1,7 @@
 {
     "version": "1.0",
     "name": "phlexible/element-finder-bundle",
-    "resources": {
+    "path-mappings": {
         "/phlexible/phlexibleelementfinder/icons": "Resources/public/icons",
         "/phlexible/phlexibleelementfinder/scripts": "Resources/scripts",
         "/phlexible/phlexibleelementfinder/styles": "Resources/styles"
