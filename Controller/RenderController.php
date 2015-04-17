@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Render controller
  *
  * @author Stephan Wentz <sw@brainbits.net>
- * @Route("/_finder")
+ * @Route("/_finder/render")
  */
 class RenderController extends Controller
 {
@@ -29,7 +29,7 @@ class RenderController extends Controller
      * @param string  $identifier
      *
      * @return Response
-     * @Route("/render/html/{identifier}", name="elementfinder_render")
+     * @Route("/html/{_locale}/{identifier}", name="elementfinder_render")
      */
     public function htmlAction(Request $request, $identifier)
     {
@@ -59,7 +59,7 @@ class RenderController extends Controller
      * @param string  $identifier
      *
      * @return JsonResponse
-     * @Route("/render/json/{identifier}", name="elementfinder_render_json")
+     * @Route("/json/{_locale}/{identifier}", name="elementfinder_render_json")
      */
     public function jsonAction(Request $request, $identifier)
     {
