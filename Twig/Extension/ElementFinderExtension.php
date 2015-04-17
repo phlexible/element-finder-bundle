@@ -59,10 +59,13 @@ class ElementFinderExtension extends \Twig_Extension
      */
     public function find($field, $pageSize = null)
     {
-        $currentRequest = $this->requestStack->getCurrentRequest();
-        $masterRequest = $this->requestStack->getMasterRequest();
-        $languages = array('de'); //array($currentRequest->attributes->get('_locale', false))
-        $preview = true; //$currentRequest->attributes->get('preview', false)
+        $currentRequest = $masterRequest = $this->requestStack->getCurrentRequest();
+        if ($this->requestStack->getParentRequest()) {
+            $masterRequest = $this->requestStack->getMasterRequest();
+        }
+
+        $languages = array($currentRequest->getLocale());
+        $preview = $currentRequest->attributes->get('preview', false);
 
         if (is_array($field)) {
             $values = $field;
