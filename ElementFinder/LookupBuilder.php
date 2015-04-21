@@ -226,8 +226,6 @@ class LookupBuilder
             );
         }
 
-        $this->entityManager->flush();
-
         $event = new UpdateLookupElement($treeNode, true);
         $this->dispatcher->dispatch(ElementFinderEvents::UPDATE_LOOKUP_ELEMENT, $event);
     }
@@ -308,6 +306,7 @@ class LookupBuilder
             ->setCachedAt(new \DateTime());
 
         $this->entityManager->persist($lookupElement);
+        $this->entityManager->flush($lookupElement);
     }
 
     /**
