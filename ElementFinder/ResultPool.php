@@ -310,24 +310,7 @@ class ResultPool implements \Countable
      */
     public function getFacet($facetName)
     {
-        $values = array();
-        foreach ($this->getItems() as $item) {
-            if (!isset($values[$item->getExtra($facetName)])) {
-                $values[$item->getExtra($facetName)] = 1;
-            } else {
-                $values[$item->getExtra($facetName)]++;
-            }
-        }
-
-        ksort($values);
-
-        foreach ($this->filters as $filter) {
-            if ($filter instanceof FacetSorterInterface) {
-                $values = $filter->sortFacet($facetName, $values);
-            }
-        }
-
-        return $values;
+        return $this->extractValues($facetName, $this->getItems());
     }
 
     /**
@@ -359,12 +342,23 @@ class ResultPool implements \Countable
      */
     public function getRawFacet($facetName)
     {
+        return $this->extractValues($facetName, $this->items);
+    }
+
+    /**
+     * @param string          $facetName
+     * @param ArrayCollection $items
+     *
+     * @return array
+     */
+    private function extractValues($facetName, ArrayCollection $items)
+    {
         $values = array();
-        foreach ($this->items as $item) {
+        foreach ($items as $item) {
             if (!isset($values[$item->getExtra($facetName)])) {
-                $values[$item->getExtra($facetName)] = 1;
+                $values[$item->getExtra($facetName)] = array('value' => (string) $item->getExtra($facetName), 'count' => 1);
             } else {
-                $values[$item->getExtra($facetName)]++;
+                $values[$item->getExtra($facetName)]['count']++;
             }
         }
 
@@ -375,6 +369,8 @@ class ResultPool implements \Countable
                 $values = $filter->sortFacet($facetName, $values);
             }
         }
+
+        $values = array_values($values);
 
         return $values;
     }
