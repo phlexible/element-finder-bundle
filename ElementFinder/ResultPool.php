@@ -297,6 +297,8 @@ class ResultPool implements \Countable
             $facets[$parameter] = $this->getFacet($parameter);
         }
 
+        ksort($facets);
+
         return $facets;
     }
 
@@ -315,6 +317,8 @@ class ResultPool implements \Countable
                 $values[$item->getExtra($parameter)]++;
             }
         }
+
+        ksort($values);
 
         return $values;
     }
