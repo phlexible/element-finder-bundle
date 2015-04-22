@@ -1,0 +1,2 @@
+2015-04-22
+- element finder facet values have changed from a key value pair to an array of {value: "abc", count: 123} arrays.
