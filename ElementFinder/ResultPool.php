@@ -9,6 +9,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FacetSorterInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\ResultPoolFilterInterface;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
@@ -198,7 +199,7 @@ class ResultPool implements \Countable
 
         foreach ($this->filters as $filter) {
             if ($filter instanceof ResultPoolFilterInterface) {
-                $filter->reduceItems($items, $this->parameters);
+                $filter->reduceItems($items, $this);
             }
         }
 
@@ -285,16 +286,16 @@ class ResultPool implements \Countable
      */
     public function getFacets()
     {
-        $parameters = array();
+        $facetNames = array();
         foreach ($this->filters as $filter) {
             if ($filter instanceof ResultPoolFilterInterface) {
-                $parameters = array_merge($parameters, $filter->getParameters());
+                $facetNames = array_merge($facetNames, $filter->getFacetNames());
             }
         }
 
         $facets = array();
-        foreach ($parameters as $parameter) {
-            $facets[$parameter] = $this->getFacet($parameter);
+        foreach ($facetNames as $facetName) {
+            $facets[$facetName] = $this->getFacet($facetName);
         }
 
         ksort($facets);
@@ -303,22 +304,28 @@ class ResultPool implements \Countable
     }
 
     /**
-     * @param string $parameter
+     * @param string $facetName
      *
      * @return array
      */
-    public function getFacet($parameter)
+    public function getFacet($facetName)
     {
         $values = array();
         foreach ($this->getItems() as $item) {
-            if (!isset($values[$item->getExtra($parameter)])) {
-                $values[$item->getExtra($parameter)] = 1;
+            if (!isset($values[$item->getExtra($facetName)])) {
+                $values[$item->getExtra($facetName)] = 1;
             } else {
-                $values[$item->getExtra($parameter)]++;
+                $values[$item->getExtra($facetName)]++;
             }
         }
 
         ksort($values);
+
+        foreach ($this->filters as $filter) {
+            if ($filter instanceof FacetSorterInterface) {
+                $values = $filter->sortFacet($facetName, $values);
+            }
+        }
 
         return $values;
     }
@@ -328,16 +335,16 @@ class ResultPool implements \Countable
      */
     public function getRawFacets()
     {
-        $parameters = array();
+        $facetNames = array();
         foreach ($this->filters as $filter) {
             if ($filter instanceof ResultPoolFilterInterface) {
-                $parameters = array_merge($parameters, $filter->getParameters());
+                $facetNames = array_merge($facetNames, $filter->getFacetNames());
             }
         }
 
         $facets = array();
-        foreach ($parameters as $parameter) {
-            $facets[$parameter] = $this->getRawFacet($parameter);
+        foreach ($facetNames as $facetName) {
+            $facets[$facetName] = $this->getRawFacet($facetName);
         }
 
         ksort($facets);
@@ -346,22 +353,28 @@ class ResultPool implements \Countable
     }
 
     /**
-     * @param string $parameter
+     * @param string $facetName
      *
      * @return array
      */
-    public function getRawFacet($parameter)
+    public function getRawFacet($facetName)
     {
         $values = array();
         foreach ($this->items as $item) {
-            if (!isset($values[$item->getExtra($parameter)])) {
-                $values[$item->getExtra($parameter)] = 1;
+            if (!isset($values[$item->getExtra($facetName)])) {
+                $values[$item->getExtra($facetName)] = 1;
             } else {
-                $values[$item->getExtra($parameter)]++;
+                $values[$item->getExtra($facetName)]++;
             }
         }
 
         ksort($values);
+
+        foreach ($this->filters as $filter) {
+            if ($filter instanceof FacetSorterInterface) {
+                $values = $filter->sortFacet($facetName, $values);
+            }
+        }
 
         return $values;
     }

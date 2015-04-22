@@ -9,6 +9,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 
 /**
  * Pool filter interface
@@ -20,13 +21,13 @@ interface ResultPoolFilterInterface extends FilterInterface
     /**
      * @return array
      */
-    public function getParameters();
+    public function getFacetNames();
 
     /**
      * Filter result items
      *
      * @param ArrayCollection $items
-     * @param array           $parameters
+     * @param ResultPool      $resultPool
      */
-    public function reduceItems(ArrayCollection $items, $parameters);
+    public function reduceItems(ArrayCollection $items, ResultPool $resultPool);
 }
