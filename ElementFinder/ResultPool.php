@@ -322,4 +322,47 @@ class ResultPool implements \Countable
 
         return $values;
     }
+
+    /**
+     * @return array
+     */
+    public function getRawFacets()
+    {
+        $parameters = array();
+        foreach ($this->filters as $filter) {
+            if ($filter instanceof ResultPoolFilterInterface) {
+                $parameters = array_merge($parameters, $filter->getParameters());
+            }
+        }
+
+        $facets = array();
+        foreach ($parameters as $parameter) {
+            $facets[$parameter] = $this->getRawFacet($parameter);
+        }
+
+        ksort($facets);
+
+        return $facets;
+    }
+
+    /**
+     * @param string $parameter
+     *
+     * @return array
+     */
+    public function getRawFacet($parameter)
+    {
+        $values = array();
+        foreach ($this->items as $item) {
+            if (!isset($values[$item->getExtra($parameter)])) {
+                $values[$item->getExtra($parameter)] = 1;
+            } else {
+                $values[$item->getExtra($parameter)]++;
+            }
+        }
+
+        ksort($values);
+
+        return $values;
+    }
 }
