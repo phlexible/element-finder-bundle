@@ -80,11 +80,13 @@ class RenderController extends Controller
         );
 
         return new JsonResponse(array(
-            'view'   => $this->renderView($resultPool->getConfig()->getTemplate(), $data),
-            'start'  => $resultPool->getParameter('finder_start', 0),
-            'limit'  => $resultPool->getConfig()->getPageSize(),
-            'facets' => $resultPool->getFacets(),
-            'hasMore' => $resultPool->hasMore(),
+            'view'       => $this->renderView($resultPool->getConfig()->getTemplate(), $data),
+            'start'      => $resultPool->getParameter('finder_start', 0),
+            'limit'      => $resultPool->getConfig()->getPageSize(),
+            'facets'     => $resultPool->getFacets(),
+            'rawFacets'  => $resultPool->getRawFacets(),
+            'parameters' => $parameters,
+            'hasMore'    => $resultPool->hasMore(),
         ));
     }
 }
