@@ -331,7 +331,7 @@ class LookupBuilder
             return;
         }
 
-        foreach ($metadata->getValues() as $name => $value) {
+        foreach ($metadata->getValues()[$language] as $name => $value) {
             $cleanString = str_replace(
                 array(',', ';'),
                 array('===', '==='),

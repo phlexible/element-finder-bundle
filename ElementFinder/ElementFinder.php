@@ -334,9 +334,9 @@ class ElementFinder
         }
 
         if ($isPreview) {
-            $qb->andWhere('lookup.is_preview = 1');
+            $qb->andWhere($qb->expr()->eq('lookup.is_preview', 1));
         } else {
-            $qb->andWhere('lookup.is_preview = 0');
+            $qb->andWhere($qb->expr()->eq('lookup.is_preview', 0));
         }
 
         if ($config->getMetaField() && $config->getMetaKeywords()) {
@@ -344,7 +344,16 @@ class ElementFinder
             foreach ($config->getMetaKeywords() as $key => $value) {
                 $alias = 'meta' . ++$metaI;
                 $qb
-                    ->join('lookup', 'catch_lookup_meta', $alias, $alias . '.eid = lookup.eid AND ' . $alias . '.version = lookup.version AND ' . $alias . '.language = lookup.language')
+                    ->join(
+                        'lookup',
+                        'catch_lookup_meta',
+                        $alias,
+                        $qb->expr()->andX(
+                            $qb->expr()->eq("$alias.eid = lookup.eid"),
+                            $qb->expr()->eq("$alias.version = lookup.version"),
+                            $qb->expr()->eq("$alias.language = lookup.language")
+                        )
+                    )
                     ->andWhere($qb->expr()->eq("$alias.field", $qb->expr()->literal($config->getMetaField())));
 
                 $multiValueSelects = array();

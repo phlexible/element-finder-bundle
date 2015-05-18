@@ -38,6 +38,7 @@ class FindCommand extends ContainerAwareCommand
             ->addOption('elementtype-id', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Elementtype ID', array())
             ->addOption('filter', null, InputOption::VALUE_REQUIRED, 'Filter')
             ->addOption('max-depth', null, InputOption::VALUE_REQUIRED, 'Max. depth')
+            ->addOption('parameter', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Parameter', array())
         ;
     }
 
@@ -55,6 +56,7 @@ class FindCommand extends ContainerAwareCommand
         $navigation = $input->getOption('navigation');
         $languages = $input->getOption('language');
         $preview = $input->getOption('preview');
+        $parameters = $input->getOption('parameter');
 
         $config = new ElementFinderConfig();
         $config->setTreeId($treeId);
@@ -65,7 +67,15 @@ class FindCommand extends ContainerAwareCommand
 
         $resultPool = $finder->find($config, $languages, $preview);
 
-        $output->writeln('Results:');
+        foreach ($parameters as $parameter) {
+            $parts = explode('=', $parameter);
+            if ($parts[0] && $parts[1]) {
+                $resultPool->setParameter($parts[0], $parts[1]);
+            }
+        }
+
+        $output->writeln('Result pool identifier: ' . $resultPool->getIdentifier());
+        $output->writeln('');
 
         $table = new Table($output);
         $table->setHeaders(array('Tree ID', 'Version', 'Language', 'Elementtype ID', 'Custom Date', 'Sort Field', 'Published At', 'Extras'));
@@ -87,10 +97,31 @@ class FindCommand extends ContainerAwareCommand
 
         $output->writeln('');
         $output->writeln('Facets:');
-        foreach ($resultPool->getFacets() as $key => $facet) {
-            $output->writeln(" $key");
-            foreach ($facet as $key => $value) {
-                $output->writeln("  $key: $value");
+        foreach ($resultPool->getRawFacets() as $key => $facet) {
+            $output->writeln("  $key:");
+            foreach ($facet as $facetItem) {
+                $value = $facetItem['value'];
+                $count = $facetItem['count'];
+                if ($value === null) {
+                    $value = '[null]';
+                }
+                $output->writeln("    $value ($count)");
+            }
+        }
+
+        if (count($parameters)) {
+            $output->writeln('');
+            $output->writeln('Filtered Facets:');
+            foreach ($resultPool->getFacets() as $key => $facet) {
+                $output->writeln("  $key:");
+                foreach ($facet as $facetItem) {
+                    $value = $facetItem['value'];
+                    $count = $facetItem['count'];
+                    if ($value === null) {
+                        $value = '[null]';
+                    }
+                    $output->writeln("    $value ($count)");
+                }
             }
         }
     }
