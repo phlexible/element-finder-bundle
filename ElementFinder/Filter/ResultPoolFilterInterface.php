@@ -28,6 +28,8 @@ interface ResultPoolFilterInterface extends FilterInterface
      *
      * @param ArrayCollection $items
      * @param ResultPool      $resultPool
+     *
+     * @return ArrayCollection
      */
     public function reduceItems(ArrayCollection $items, ResultPool $resultPool);
 }

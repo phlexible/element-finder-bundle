@@ -199,7 +199,7 @@ class ResultPool implements \Countable
 
         foreach ($this->filters as $filter) {
             if ($filter instanceof ResultPoolFilterInterface) {
-                $filter->reduceItems($items, $this);
+                $items = $filter->reduceItems($items, $this);
             }
         }
 
@@ -356,7 +356,7 @@ class ResultPool implements \Countable
         $values = array();
         foreach ($items as $item) {
             if (!isset($values[$item->getExtra($facetName)])) {
-                $values[$item->getExtra($facetName)] = array('value' => (string) $item->getExtra($facetName), 'count' => 1);
+                $values[$item->getExtra($facetName)] = array('value' => $item->getExtra($facetName), 'count' => 1);
             } else {
                 $values[$item->getExtra($facetName)]['count']++;
             }
