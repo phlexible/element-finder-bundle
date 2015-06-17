@@ -19,11 +19,6 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 interface ResultPoolFilterInterface extends FilterInterface
 {
     /**
-     * @return array
-     */
-    public function getFacetNames();
-
-    /**
      * Filter result items
      *
      * @param ArrayCollection $items
@@ -31,5 +26,5 @@ interface ResultPoolFilterInterface extends FilterInterface
      *
      * @return ArrayCollection
      */
-    public function reduceItems(ArrayCollection $items, ResultPool $resultPool);
+    public function filterItems(ArrayCollection $items, ResultPool $resultPool);
 }
