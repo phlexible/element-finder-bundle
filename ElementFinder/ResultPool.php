@@ -38,6 +38,11 @@ class ResultPool implements \Countable
     /**
      * @var array
      */
+    private $facetNames = array();
+
+    /**
+     * @var array
+     */
     private $filters;
 
     /**
@@ -69,11 +74,14 @@ class ResultPool implements \Countable
             $createdAt = new \DateTime;
         }
 
+        $this->facetNames = array();
         foreach ($items as $item) {
             if (!$item instanceof ResultItem) {
                 throw new \InvalidArgumentException("Invalid result item.");
             }
+            $this->facetNames = array_unique(array_merge($this->facetNames, array_keys($item->getExtras())));
         }
+        sort($this->facetNames);
 
         $this->identifier = $identifier;
         $this->config = $config;
@@ -199,7 +207,7 @@ class ResultPool implements \Countable
 
         foreach ($this->filters as $filter) {
             if ($filter instanceof ResultPoolFilterInterface) {
-                $items = $filter->reduceItems($items, $this);
+                $items = $filter->filterItems($items, $this);
             }
         }
 
@@ -284,17 +292,18 @@ class ResultPool implements \Countable
     /**
      * @return array
      */
+    public function getFacetNames()
+    {
+        return $this->facetNames;
+    }
+
+    /**
+     * @return array
+     */
     public function getFacets()
     {
-        $facetNames = array();
-        foreach ($this->filters as $filter) {
-            if ($filter instanceof ResultPoolFilterInterface) {
-                $facetNames = array_merge($facetNames, $filter->getFacetNames());
-            }
-        }
-
         $facets = array();
-        foreach ($facetNames as $facetName) {
+        foreach ($this->facetNames as $facetName) {
             $facets[$facetName] = $this->getFacet($facetName);
         }
 
@@ -318,15 +327,8 @@ class ResultPool implements \Countable
      */
     public function getRawFacets()
     {
-        $facetNames = array();
-        foreach ($this->filters as $filter) {
-            if ($filter instanceof ResultPoolFilterInterface) {
-                $facetNames = array_merge($facetNames, $filter->getFacetNames());
-            }
-        }
-
         $facets = array();
-        foreach ($facetNames as $facetName) {
+        foreach ($this->facetNames as $facetName) {
             $facets[$facetName] = $this->getRawFacet($facetName);
         }
 
