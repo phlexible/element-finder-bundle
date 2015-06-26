@@ -77,7 +77,7 @@ Phlexible.elementfinder.configuration.FieldConfigurationFinder = Ext.extend(Ext.
                 selectOnFocus: true,
                 listeners: {
                     beforequery: function (event) {
-                        console.log(this.getComponent(0).getValue());
+                        Phlexible.console.debug(this.getComponent(0).getValue());
                         event.query = this.getComponent(0).getValue();
                     },
                     scope: this
