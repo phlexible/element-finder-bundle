@@ -36,7 +36,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Phlexible\Bundle\PhlexibleElementFinderBundle(),
+        new Phlexible\Bundle\ElementFinderBundle\PhlexibleElementFinderBundle(),
     );
 }
 ```
