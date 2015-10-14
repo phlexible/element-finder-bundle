@@ -215,6 +215,14 @@ class ResultPool implements \Countable
     }
 
     /**
+     * @return ResultItem
+     */
+    public function first()
+    {
+        return $this->getItems()->first();
+    }
+
+    /**
      * @return ResultItem[]
      */
     public function all()
