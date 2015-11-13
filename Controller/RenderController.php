@@ -45,8 +45,8 @@ class RenderController extends Controller
         $resultPool->setParameters($parameters);
 
         $data = array(
-            'pool'     => $resultPool,
-            'start'    => !empty($parameters['finder_start']) ? $parameters['finder_start'] : 0,
+            'pool'  => $resultPool,
+            'start' => !empty($parameters['finder_start']) ? $parameters['finder_start'] : 0,
         );
 
         return $this->render($resultPool->getConfig()->getTemplate(), $data);
