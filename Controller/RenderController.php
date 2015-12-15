@@ -8,8 +8,6 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\Controller;
 
-use Pagerfanta\Adapter\NullAdapter;
-use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -39,12 +37,6 @@ class RenderController extends Controller
 
         $resultPool = $finder->findByIdentifier($identifier);
 
-        $siterootId = $request->get('siterootId');
-        $pageSize = $resultPool->getConfig()->getPageSize() ? $resultPool->getConfig()->getPageSize() : 10;
-        $limit = (int) $request->get('limit', $pageSize);
-        $page = (int) $request->get('page', 1);
-        $start = ($page - 1) * $limit;
-
         $parameters = array_merge(
             $request->query->all(),
             $request->request->all()
@@ -52,18 +44,9 @@ class RenderController extends Controller
 
         $resultPool->setParameters($parameters);
 
-        $adapter = new NullAdapter($resultPool->count());
-        $pagerfanta = new Pagerfanta($adapter);
-        $pagerfanta->setMaxPerPage($limit)
-                    ->setCurrentPage($page);
-
         $data = array(
             'pool'  => $resultPool,
-            'start' => $start,
-
-            'pager' => $pagerfanta,
-            'limit' => $limit,
-            'siterootId' => $siterootId,
+            'start' => !empty($parameters['finder_start']) ? $parameters['finder_start'] : 0,
         );
 
         return $this->render($resultPool->getConfig()->getTemplate(), $data);
