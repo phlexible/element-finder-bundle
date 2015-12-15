@@ -40,7 +40,8 @@ class RenderController extends Controller
         $resultPool = $finder->findByIdentifier($identifier);
 
         $siterootId = $request->get('siterootId');
-        $limit = (int) $request->get('limit', 1);
+        $pageSize = $resultPool->getConfig()->getPageSize() ? $resultPool->getConfig()->getPageSize() : 10;
+        $limit = (int) $request->get('limit', $pageSize);
         $page = (int) $request->get('page', 1);
         $start = ($page - 1) * $limit;
 
