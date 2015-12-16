@@ -231,6 +231,14 @@ class ResultPool implements \Countable
     }
 
     /**
+     * @return ResultItem[]
+     */
+    public function rawAll()
+    {
+        return $this->items->getValues();
+    }
+
+    /**
      * @param int $from
      * @param int $to
      *

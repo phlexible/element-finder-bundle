@@ -47,7 +47,7 @@ class XmlDumper implements DumperInterface
         }
 
         $itemsNode = $root->appendElement('items');
-        foreach ($pool->all() as $item) {
+        foreach ($pool->rawAll() as $item) {
             $attributes = array(
                 'treeId'        => $item->getTreeId(),
                 'eid'           => $item->getEid(),

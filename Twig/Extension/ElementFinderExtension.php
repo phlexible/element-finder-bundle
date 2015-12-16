@@ -57,6 +57,7 @@ class ElementFinderExtension extends \Twig_Extension
      * @param int                         $pageSize
      *
      * @return ResultPool
+     * @throws \Exception
      */
     public function find($configValues, $pageSize = null)
     {
@@ -72,7 +73,6 @@ class ElementFinderExtension extends \Twig_Extension
             $configValues = $configValues->getValue();
         } elseif (!is_array($configValues)) {
             throw new \Exception("No config values given to find().");
-            return null;
         }
 
         $config = ElementFinderConfig::fromValues($configValues);
@@ -83,8 +83,8 @@ class ElementFinderExtension extends \Twig_Extension
         $resultPool = $this->elementFinder->find($config, $languages, $preview);
 
         $parameters = array_merge(
-            $masterRequest->query->all(),
-            $masterRequest->request->all()
+            $masterRequest->request->all(),
+            $masterRequest->query->all()
         );
 
         $resultPool->setParameters($parameters);
