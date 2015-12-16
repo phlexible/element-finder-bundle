@@ -68,11 +68,11 @@ class ElementFinderExtension extends \Twig_Extension
         $languages = array($currentRequest->getLocale());
         $preview = $currentRequest->attributes->get('preview', false);
 
-
         if ($configValues instanceof ElementStructureValue) {
             $configValues = $configValues->getValue();
         } elseif (!is_array($configValues)) {
-            return '';
+            throw new \Exception("No config values given to find().");
+            return null;
         }
 
         $config = ElementFinderConfig::fromValues($configValues);
