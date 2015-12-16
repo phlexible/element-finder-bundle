@@ -280,7 +280,7 @@ class ResultPool implements \Countable
      */
     public function pageCount($pageSize)
     {
-        return ceil(count($this->items) / $pageSize);
+        return ceil(count($this->getItems()) / $pageSize);
     }
 
     /**
@@ -288,7 +288,7 @@ class ResultPool implements \Countable
      */
     public function count()
     {
-        return $this->items->count();
+        return $this->getItems()->count();
     }
 
     /**
