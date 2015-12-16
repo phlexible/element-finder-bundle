@@ -253,6 +253,16 @@ class ResultPool implements \Countable
     }
 
     /**
+     * @param int $index
+     *
+     * @return ResultItem[]
+     */
+    public function one($index)
+    {
+        return current($this->getItems()->slice($index, 1));
+    }
+
+    /**
      * @param int $pageSize
      * @param int $page
      *

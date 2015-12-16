@@ -48,16 +48,17 @@ class ElementFinderExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('find', array($this, 'find')),
+            new \Twig_SimpleFunction('find_again', array($this, 'findAgain')),
         );
     }
 
     /**
-     * @param ElementStructureValue|array $field
+     * @param ElementStructureValue|array $configValues
      * @param int                         $pageSize
      *
      * @return ResultPool
      */
-    public function find($field, $pageSize = null)
+    public function find($configValues, $pageSize = null)
     {
         $currentRequest = $masterRequest = $this->requestStack->getCurrentRequest();
         if ($this->requestStack->getParentRequest()) {
@@ -67,20 +68,40 @@ class ElementFinderExtension extends \Twig_Extension
         $languages = array($currentRequest->getLocale());
         $preview = $currentRequest->attributes->get('preview', false);
 
-        if (is_array($field)) {
-            $values = $field;
-        } elseif ($field instanceof ElementStructureValue) {
-            $values = $field->getValue();
-        } else {
+
+        if ($configValues instanceof ElementStructureValue) {
+            $configValues = $configValues->getValue();
+        } elseif (!is_array($configValues)) {
             return '';
         }
 
-        $config = ElementFinderConfig::fromValues($values);
+        $config = ElementFinderConfig::fromValues($configValues);
         if ($pageSize) {
             $config->setPageSize($pageSize);
         }
 
         $resultPool = $this->elementFinder->find($config, $languages, $preview);
+
+        $parameters = array_merge(
+            $masterRequest->query->all(),
+            $masterRequest->request->all()
+        );
+
+        $resultPool->setParameters($parameters);
+
+        return $resultPool;
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return ResultPool
+     */
+    public function findAgain($identifier)
+    {
+        $masterRequest = $this->requestStack->getMasterRequest();
+
+        $resultPool = $this->elementFinder->findByIdentifier($identifier);
 
         $parameters = array_merge(
             $masterRequest->query->all(),
