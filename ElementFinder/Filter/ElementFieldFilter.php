@@ -10,6 +10,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Query\QueryBuilder;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
 /**
@@ -62,10 +63,10 @@ class ElementFieldFilter implements QueryEnhancerInterface, ResultPoolFilterInte
     /**
      * {@inheritdoc}
      */
-    public function reduceItems(ArrayCollection $items, $parameters)
+    public function filterItems(ArrayCollection $items, ResultPool $resultPool)
     {
         foreach ($items as $item) {
-            if (!empty($parameters[$this->fieldName]) && $item->getExtra($this->fieldName) !== $parameters[$this->fieldName]) {
+            if (!empty($parameters[$this->fieldName]) && $item->getExtra($this->fieldName) !== $resultPool->getParameter($this->fieldName)) {
                 $items->removeElement($item);
             }
         }
