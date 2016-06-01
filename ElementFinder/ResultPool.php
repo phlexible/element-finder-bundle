@@ -271,6 +271,16 @@ class ResultPool implements \Countable
     }
 
     /**
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function has($index)
+    {
+        return $this->getItems()->get($index) !== null;
+    }
+
+    /**
      * @param int $pageSize
      * @param int $page
      *
