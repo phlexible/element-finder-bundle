@@ -349,9 +349,9 @@ class ElementFinder
                         'catch_lookup_meta',
                         $alias,
                         $qb->expr()->andX(
-                            $qb->expr()->eq("$alias.eid = lookup.eid"),
-                            $qb->expr()->eq("$alias.version = lookup.version"),
-                            $qb->expr()->eq("$alias.language = lookup.language")
+                            $qb->expr()->eq("$alias.eid", "lookup.eid"),
+                            $qb->expr()->eq("$alias.version", "lookup.version"),
+                            $qb->expr()->eq("$alias.language", "lookup.language")
                         )
                     )
                     ->andWhere($qb->expr()->eq("$alias.field", $qb->expr()->literal($config->getMetaField())));
@@ -412,7 +412,7 @@ class ElementFinder
 
         // set sort information
         $this->applySort($qb, $config, $isPreview);
-
+        
         return $qb;
     }
 

@@ -331,7 +331,14 @@ class LookupBuilder
             return;
         }
 
-        foreach ($metadata->getValues()[$language] as $name => $value) {
+        foreach ($metaset->getFields() as $field) {
+//        foreach ($metadata->getValues()[$language] as $name => $value) {
+            $fieldId = $field->getId();
+            $value = $metadata->get($field->getName(), $language);
+            if (!$value) {
+                continue;
+            }
+
             $cleanString = str_replace(
                 array(',', ';'),
                 array('===', '==='),
@@ -348,7 +355,7 @@ class LookupBuilder
                     ->setVersion($elementVersion->getVersion())
                     ->setLanguage($language)
                     ->setSetId($metaset->getId())
-                    ->setField($name)
+                    ->setField($fieldId)
                     ->setValue($splitValue);
 
                 $this->entityManager->persist($lookupMeta);
