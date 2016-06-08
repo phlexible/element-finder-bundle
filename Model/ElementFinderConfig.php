@@ -90,8 +90,8 @@ class ElementFinderConfig
         $sortField = !empty($values['sortField']) ? $values['sortField'] : null;
         $sortDir = !empty($values['sortDir']) ? $values['sortDir'] : null;
         $startTreeId = !empty($values['startTreeId']) ? $values['startTreeId'] : null;
-        $metaField = !empty($values['metaField']) ? $values['metaField'] : null;
-        $metaKeywords = !empty($values['metaKeywords']) ? $values['metaKeywords'] : null;
+        $metaField = !empty($values['metaKey']) ? $values['metaKey'] : null;
+        $metaKeywords = !empty($values['metaKeywords']) ? explode(',', $values['metaKeywords']) : null;
         $template = !empty($values['template']) ? $values['template'] : null;
         $pageSize = !empty($values['pageSize']) ? $values['pageSize'] : null;
 
