@@ -4,7 +4,7 @@ services:
         class: Phlexible\Bundle\ElementFinderBundle\Twig\Extension\ElementFinderExtension
         public: false
         arguments:
-            - @phlexible_element_finder.finder
-            - @request_stack
+            - "@phlexible_element_finder.finder"
+            - "@request_stack"
         tags:
             - {name: twig.extension}
