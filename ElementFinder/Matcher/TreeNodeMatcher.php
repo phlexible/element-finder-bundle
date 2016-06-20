@@ -8,6 +8,7 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Matcher;
 
+use Exception;
 use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\ElementBundle\Model\ElementHistoryManagerInterface;
 use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
@@ -67,7 +68,7 @@ class TreeNodeMatcher implements TreeNodeMatcherInterface
     {
         try {
             $tree = $this->treeManager->getByNodeId($treeId);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
 

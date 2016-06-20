@@ -11,6 +11,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\Twig\Extension;
 use Phlexible\Bundle\ElementBundle\Model\ElementStructureValue;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinder;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
+use Phlexible\Bundle\ElementFinderBundle\Exception\InvalidArgumentException;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -72,7 +73,7 @@ class ElementFinderExtension extends \Twig_Extension
         if ($configValues instanceof ElementStructureValue) {
             $configValues = $configValues->getValue();
         } elseif (!is_array($configValues)) {
-            throw new \Exception("No config values given to find().");
+            throw new InvalidArgumentException("No valid configuration values given to find().");
         }
 
         $config = ElementFinderConfig::fromValues($configValues);

@@ -15,8 +15,10 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterManager;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\QueryEnhancerInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Loader\XmlLoader;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Matcher\TreeNodeMatcherInterface;
+use Phlexible\Bundle\ElementFinderBundle\Exception\UnknownIdentifierException;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Element finder
@@ -102,7 +104,7 @@ class ElementFinder
         $filename = $this->cacheDir . "/$identifier.xml";
 
         if (!file_exists($filename)) {
-            throw new \Exception();
+            throw new UnknownIdentifierException("Result pool for identifier $identifier not found.");
         }
 
         $loader = new XmlLoader();
@@ -119,7 +121,6 @@ class ElementFinder
      * @param bool                $isPreview
      *
      * @return ResultPool
-     * @throws \Exception
      */
     public function find(ElementFinderConfig $config, array $languages, $isPreview)
     {
@@ -192,13 +193,10 @@ class ElementFinder
         $this->dispatcher->dispatch($event);
         */
 
+        $filesystem = new Filesystem();
         $dumper = new XmlDumper();
-        if (!file_exists(dirname($filename))) {
-            if (!mkdir(dirname($filename), 0777, true)) {
-                throw new \Exception("mkdir failed.");
-            }
-        }
-        file_put_contents($filename, $dumper->dump($resultPool));
+
+        $filesystem->dumpFile($filename, $dumper->dump($resultPool));
 
         return $resultPool;
     }
@@ -412,7 +410,7 @@ class ElementFinder
 
         // set sort information
         $this->applySort($qb, $config, $isPreview);
-        
+
         return $qb;
     }
 

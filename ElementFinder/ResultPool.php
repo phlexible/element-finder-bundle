@@ -11,6 +11,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FacetSorterInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\ResultPoolFilterInterface;
+use Phlexible\Bundle\ElementFinderBundle\Exception\InvalidArgumentException;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
 /**
@@ -77,7 +78,7 @@ class ResultPool implements \Countable
         $this->facetNames = array();
         foreach ($items as $item) {
             if (!$item instanceof ResultItem) {
-                throw new \InvalidArgumentException("Invalid result item.");
+                throw new InvalidArgumentException("Invalid result item.");
             }
             $this->facetNames = array_unique(array_merge($this->facetNames, array_keys($item->getExtras())));
         }

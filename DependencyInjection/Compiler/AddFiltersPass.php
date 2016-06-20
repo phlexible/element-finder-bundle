@@ -27,7 +27,7 @@ class AddFiltersPass implements CompilerPassInterface
         $filters = [];
         foreach ($container->findTaggedServiceIds('phlexible_element_finder.filter') as $id => $attributes) {
             if (!isset($attributes[0]['alias'])) {
-                throw new \InvalidArgumentException("Missing attribute alias on filter $id.");
+                throw new \RuntimeException("Missing attribute alias on filter $id.");
             }
             $filters[$attributes[0]['alias']] = new Reference($id);
         }

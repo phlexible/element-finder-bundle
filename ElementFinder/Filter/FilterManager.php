@@ -8,6 +8,8 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter;
 
+use Phlexible\Bundle\ElementFinderBundle\Exception\InvalidArgumentException;
+
 /**
  * Filter manager
  *
@@ -47,12 +49,12 @@ class FilterManager
      * @param string $name
      *
      * @return FilterInterface
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function get($name)
     {
         if (!$this->has($name)) {
-            throw new \InvalidArgumentException("Filter $name not registered.");
+            throw new InvalidArgumentException("Filter $name not registered.");
         }
 
         return $this->filters[$name];
