@@ -66,6 +66,11 @@ class ElementFinder
     private $useElementLanguageAsFallback;
 
     /**
+     * @var int
+     */
+    private $ttl;
+
+    /**
      * @var array
      */
     private $tidSkipList = array();
@@ -77,6 +82,7 @@ class ElementFinder
      * @param FilterManager            $filterManager
      * @param string                   $cacheDir
      * @param bool                     $useElementLanguageAsFallback
+     * @param int                      $ttl
      */
     public function __construct(
         Connection $connection,
@@ -84,14 +90,16 @@ class ElementFinder
         TreeNodeMatcherInterface $treeNodeMatcher,
         FilterManager $filterManager,
         $cacheDir,
-        $useElementLanguageAsFallback)
-    {
+        $useElementLanguageAsFallback,
+        $ttl = 300
+    ) {
         $this->connection = $connection;
         $this->dispatcher = $dispatcher;
         $this->treeNodeMatcher = $treeNodeMatcher;
         $this->filterManager = $filterManager;
         $this->cacheDir = $cacheDir;
         $this->useElementLanguageAsFallback = (bool) $useElementLanguageAsFallback;
+        $this->ttl = $ttl;
     }
 
     /**
@@ -127,11 +135,8 @@ class ElementFinder
         $identifier = $this->createIdentifier($config, $languages, $isPreview);
         $filename = $this->cacheDir . "/$identifier.xml";
 
-        if (0 && file_exists($filename)) {
-            $loader = new XmlLoader();
-            $resultPool = $loader->load($this->filterManager, "/tmp/$identifier.xml");
-
-            return $resultPool;
+        if (file_exists($filename) && filemtime($filename) > time() - $this->ttl) {
+            return $this->findByIdentifier($identifier);
         }
 
         $filters = array();
