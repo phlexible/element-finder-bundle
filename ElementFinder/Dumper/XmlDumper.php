@@ -64,7 +64,7 @@ class XmlDumper implements DumperInterface
             $itemNode = $itemsNode->appendElement('item', '', $attributes);
 
             foreach ($item->getExtras() as $key => $value) {
-                $itemNode->appendElement('extra', null, array('key' => $key))->appendChild($dom->createCDATASection($value));;
+                $itemNode->appendElement('extra', null, array('key' => $key))->appendChild($dom->createCDATASection($value));
             }
         }
 
