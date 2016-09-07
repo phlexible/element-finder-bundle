@@ -8,6 +8,8 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
 
+use DateTimeInterface;
+
 /**
  * Result item
  *
@@ -56,12 +58,12 @@ class ResultItem
     private $isRestricted;
 
     /**
-     * @var \DateTime
+     * @var DateTimeInterface|null
      */
     private $publishedAt;
 
     /**
-     * @var \DateTime
+     * @var DateTimeInterface|null
      */
     private $customDate;
 
@@ -76,21 +78,33 @@ class ResultItem
     private $extras;
 
     /**
-     * @param int       $treeId
-     * @param int       $eid
-     * @param int       $version
-     * @param string    $language
-     * @param string    $elementtypeId
-     * @param bool      $isPreview
-     * @param bool      $inNavigation
-     * @param bool      $isRestricted
-     * @param \DateTime $publishedAt
-     * @param \DateTime $customDate
-     * @param string    $sortField
-     * @param array     $extras
+     * @param int                    $treeId
+     * @param int                    $eid
+     * @param int                    $version
+     * @param string                 $language
+     * @param string                 $elementtypeId
+     * @param bool                   $isPreview
+     * @param bool                   $inNavigation
+     * @param bool                   $isRestricted
+     * @param DateTimeInterface|null $publishedAt
+     * @param DateTimeInterface|null $customDate
+     * @param string                 $sortField
+     * @param array                  $extras
      */
-    public function __construct($treeId, $eid, $version, $language, $elementtypeId, $isPreview, $inNavigation, $isRestricted, $publishedAt, $customDate, $sortField, array $extras = array())
-    {
+    public function __construct(
+        $treeId,
+        $eid,
+        $version,
+        $language,
+        $elementtypeId,
+        $isPreview,
+        $inNavigation,
+        $isRestricted,
+        DateTimeInterface $publishedAt = null,
+        DateTimeInterface $customDate = null,
+        $sortField,
+        array $extras = array()
+    ) {
         $this->treeId = $treeId;
         $this->eid = $eid;
         $this->version = $version;
@@ -106,7 +120,7 @@ class ResultItem
     }
 
     /**
-     * @return \DateTime
+     * @return DateTimeInterface|null
      */
     public function getCustomDate()
     {
@@ -162,7 +176,7 @@ class ResultItem
     }
 
     /**
-     * @return \DateTime
+     * @return DateTimeInterface|null
      */
     public function getPublishedAt()
     {

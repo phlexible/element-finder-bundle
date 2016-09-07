@@ -290,7 +290,7 @@ class CatchController extends Controller
                 'language'      => $resultItem->getLanguage(),
                 'elementtypeId' => $resultItem->getElementtypeId(),
                 'customDate'    => $resultItem->getCustomDate() ? $resultItem->getCustomDate()->format('Y-m-d H:i:s') : null,
-                'publishedAt'   => $resultItem->getPublishedAt() ? (is_string($resultItem->getPublishedAt()) ? $resultItem->getPublishedAt() : $resultItem->getPublishedAt()->format('Y-m-d H:i:s')) : null,
+                'publishedAt'   => $resultItem->getPublishedAt() ? $resultItem->getPublishedAt()->format('Y-m-d H:i:s') : null,
                 'sortField'     => $resultItem->getSortField(),
                 'isRestricted'  => $resultItem->isRestricted(),
                 'isPreview'     => $resultItem->isPreview(),
