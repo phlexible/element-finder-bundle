@@ -82,8 +82,8 @@ class XmlLoader implements LoaderInterface
                 (bool) $itemAttributes['isPreview'],
                 (bool) $itemAttributes['inNavigation'],
                 (bool) $itemAttributes['isRestricted'],
-                (string) $itemAttributes['publishedAt'],
-                (string) $itemAttributes['customDate'],
+                (string) $itemAttributes['publishedAt'] ? new \DateTimeImmutable((string) $itemAttributes['publishedAt']) : null,
+                (string) $itemAttributes['customDate'] ? new \DateTimeImmutable((string) $itemAttributes['customDate']) : null,
                 (string) $itemAttributes['sortField'],
                 $extra
             );
