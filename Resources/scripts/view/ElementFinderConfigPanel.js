@@ -30,6 +30,8 @@ Phlexible.elementfinder.ElementFinderConfigPanel = Ext.extend(Ext.Panel, {
         }
         if (this.values.inNavigation === undefined) {
             this.values.inNavigation = this.baseValues.inNavigation;
+        } else {
+            this.values.inNavigation = !!this.values.inNavigation;
         }
         if (this.values.maxDepth === undefined) {
             this.values.maxDepth = this.baseValues.maxDepth;
@@ -275,6 +277,7 @@ Phlexible.elementfinder.ElementFinderConfigPanel = Ext.extend(Ext.Panel, {
         values.elementtypeIds = this.baseValues.elementtypeIds;
         values.filter = this.baseValues.filter;
         values.template = this.baseValues.template;
+        values.inNavigation = !!values.inNavigation;
 
         return values;
     }
