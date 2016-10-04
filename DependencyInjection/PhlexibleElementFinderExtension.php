@@ -26,8 +26,6 @@ class PhlexibleElementFinderExtension extends Extension
     public function load(array $config, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yml');
-        $loader->load('twig_extensions.yml');
 
         $configuration = $this->getConfiguration($config, $container);
         $config = $this->processConfiguration($configuration, $config);
@@ -36,6 +34,12 @@ class PhlexibleElementFinderExtension extends Extension
             'phlexible_element_finder.use_master_language_as_fallback',
             $config['use_master_language_as_fallback']
         );
-        $container->setParameter('phlexible_element_finder.cache_dir', '%kernel.cache_dir%/elementfinder');
+        $container->setParameter('phlexible_element_finder.cache_dir', $config['cache']['dir']);
+        $container->setAlias('phlexible_element_finder.cache', $config['cache']['service']);
+        $container->setParameter('phlexible_element_finder.invalidator_ttl', $config['invalidator']['ttl']);
+        $container->setAlias('phlexible_element_finder.invalidator', $config['invalidator']['service']);
+
+        $loader->load('services.yml');
+        $loader->load('twig_extensions.yml');
     }
 }

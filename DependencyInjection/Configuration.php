@@ -27,8 +27,23 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('phlexible_element_finder');
 
         $rootNode
+            ->addDefaultsIfNotSet()
             ->children()
                 ->booleanNode('use_master_language_as_fallback')->defaultValue(false)->end()
+                ->arrayNode('cache')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('service')->defaultValue('phlexible_element_finder.file_cache')->end()
+                        ->scalarNode('dir')->defaultValue('%kernel.cache_dir%/elementfinder')->end()
+                    ->end()
+                ->end()
+                ->arrayNode('invalidator')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('service')->defaultValue('phlexible_element_finder.timestamp_invalidator')->end()
+                        ->integerNode('ttl')->defaultValue(300)->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

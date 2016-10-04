@@ -18,8 +18,28 @@ services:
             - "@event_dispatcher"
             - "@phlexible_element_finder.treenode_matcher"
             - "@phlexible_element_finder.filter_manager"
-            - "%phlexible_element_finder.cache_dir%"
+            - "@phlexible_element_finder.cache"
             - false
+
+    phlexible_element_finder.file_cache:
+        class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\Cache\FileCache
+        arguments:
+            - "@phlexible_element_finder.filter_manager"
+            - "@phlexible_element_finder.invalidator"
+            - "%phlexible_element_finder.cache_dir%"
+
+    phlexible_element_finder.always_invalidate_invalidator:
+        class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\AlwaysInvalidateInvalidator
+
+    phlexible_element_finder.ttl_invalidator:
+        class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\TtlInvalidator
+        arguments:
+            - "%phlexible_element_finder.invalidator_ttl%"
+
+    phlexible_element_finder.timestamp_invalidator:
+        class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\TimestampInvalidator
+        arguments:
+            - "@properties"
 
     phlexible_element_finder.lookup_builder:
         class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\LookupBuilder
@@ -35,6 +55,7 @@ services:
         class: Phlexible\Bundle\ElementFinderBundle\EventListener\NodeListener
         arguments:
             - "@phlexible_element_finder.lookup_builder"
+            - "@properties"
         tags:
             - {name: kernel.event_subscriber}
 
