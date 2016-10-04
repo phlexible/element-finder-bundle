@@ -26,8 +26,6 @@ interface CacheInterface
 
     /**
      * @param ResultPool $pool
-     *
-     * @return bool
      */
     public function put(ResultPool $pool);
 
