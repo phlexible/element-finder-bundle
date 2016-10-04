@@ -52,6 +52,7 @@ class TimestampInvalidator implements InvalidatorInterface
 
             if (!$this->checkTimestamp) {
                 $this->checkTimestamp = time();
+                $this->properties->set('element_finder', 'timestamp', $this->checkTimestamp);
             }
         }
 
