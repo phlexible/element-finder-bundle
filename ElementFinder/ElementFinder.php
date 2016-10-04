@@ -10,15 +10,14 @@ namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Dumper\XmlDumper;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Cache\CacheInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterManager;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\QueryEnhancerInterface;
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Loader\XmlLoader;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Matcher\TreeNodeMatcherInterface;
-use Phlexible\Bundle\ElementFinderBundle\Exception\UnknownIdentifierException;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinderEvents;
+use Phlexible\Bundle\ElementFinderBundle\Event\ResultPoolEvent;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Element finder
@@ -43,7 +42,7 @@ class ElementFinder
     /**
      * @var EventDispatcherInterface
      */
-    private $dispatcher;
+    private $eventDispatcher;
 
     /**
      * @var TreeNodeMatcherInterface
@@ -56,19 +55,14 @@ class ElementFinder
     private $filterManager;
 
     /**
-     * @var string
+     * @var CacheInterface
      */
-    private $cacheDir;
+    private $cache;
 
     /**
      * @var bool
      */
     private $useElementLanguageAsFallback;
-
-    /**
-     * @var int
-     */
-    private $ttl;
 
     /**
      * @var array
@@ -77,29 +71,26 @@ class ElementFinder
 
     /**
      * @param Connection               $connection
-     * @param EventDispatcherInterface $dispatcher
+     * @param EventDispatcherInterface $eventDispatcher
      * @param TreeNodeMatcherInterface $treeNodeMatcher
      * @param FilterManager            $filterManager
-     * @param string                   $cacheDir
+     * @param CacheInterface           $cache
      * @param bool                     $useElementLanguageAsFallback
-     * @param int                      $ttl
      */
     public function __construct(
         Connection $connection,
-        EventDispatcherInterface $dispatcher,
+        EventDispatcherInterface $eventDispatcher,
         TreeNodeMatcherInterface $treeNodeMatcher,
         FilterManager $filterManager,
-        $cacheDir,
-        $useElementLanguageAsFallback,
-        $ttl = 300
+        CacheInterface $cache,
+        $useElementLanguageAsFallback
     ) {
         $this->connection = $connection;
-        $this->dispatcher = $dispatcher;
+        $this->eventDispatcher = $eventDispatcher;
         $this->treeNodeMatcher = $treeNodeMatcher;
         $this->filterManager = $filterManager;
-        $this->cacheDir = $cacheDir;
+        $this->cache = $cache;
         $this->useElementLanguageAsFallback = (bool) $useElementLanguageAsFallback;
-        $this->ttl = $ttl;
     }
 
     /**
@@ -109,16 +100,7 @@ class ElementFinder
      */
     public function findByIdentifier($identifier)
     {
-        $filename = $this->cacheDir . "/$identifier.xml";
-
-        if (!file_exists($filename)) {
-            throw new UnknownIdentifierException("Result pool for identifier $identifier not found.");
-        }
-
-        $loader = new XmlLoader();
-        $resultPool = $loader->load($this->filterManager, $filename);
-
-        return $resultPool;
+        return $this->cache->get($identifier);
     }
 
     /**
@@ -133,10 +115,9 @@ class ElementFinder
     public function find(ElementFinderConfig $config, array $languages, $isPreview)
     {
         $identifier = $this->createIdentifier($config, $languages, $isPreview);
-        $filename = $this->cacheDir . "/$identifier.xml";
 
-        if (file_exists($filename) && filemtime($filename) > time() - $this->ttl) {
-            return $this->findByIdentifier($identifier);
+        if ($this->cache->isFresh($identifier)) {
+            return $this->cache->get($identifier);
         }
 
         $filters = array();
@@ -166,13 +147,6 @@ class ElementFinder
             }
         }
 
-        /*
-        $beforeEvent = new BeforeCatchGetResultPool($this, $qb, $resultPool);
-        if ($this->dispatcher->dispatch($beforeEvent)->isPropagationStopped()) {
-            return $resultPool;
-        }
-        */
-
         if (!$config->getSortField() && $matchedTreeIds) {
             // sort by tree order
             $treeIds = $this->treeNodeMatcher->flatten($matchedTreeIds);
@@ -193,15 +167,10 @@ class ElementFinder
         $query = !empty($qb) ? $qb->getSQL() : null;
         $resultPool = new ResultPool($identifier, $config, $query, $items, $filters);
 
-        /*
-        $event = new CatchGetResultPool($this, $resultPool);
-        $this->dispatcher->dispatch($event);
-        */
+        $this->cache->put($resultPool);
 
-        $filesystem = new Filesystem();
-        $dumper = new XmlDumper();
-
-        $filesystem->dumpFile($filename, $dumper->dump($resultPool));
+        $event = new ResultPoolEvent($resultPool);
+        $this->eventDispatcher->dispatch(ElementFinderEvents::FIND, $event);
 
         return $resultPool;
     }

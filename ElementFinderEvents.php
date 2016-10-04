@@ -16,44 +16,9 @@ namespace Phlexible\Bundle\ElementFinderBundle;
 class ElementFinderEvents
 {
     /**
-     * Fired before catch queries the database.
+     * Fired after a find.
      */
-    const BEFORE_CATCH_GET_RESULT_POOL = 'phlexible_element_finder.before_catch_get_result_pool';
-
-    /**
-     * Fired before catch queries the database.
-     */
-    const CATCH_GET_RESULT_POOL = 'phlexible_element_finder.catch_get_result_pool';
-
-    /**
-     * Fired before a catch is created.
-     */
-    const BEFORE_CREATE_CATCH = 'phlexible_element_finder.before_create_catch';
-
-    /**
-     * Fired after a catch has been created.
-     */
-    const CREATE_CATCH = 'phlexible_element_finder.create_catch';
-
-    /**
-     * Fired before a catch is updated.
-     */
-    const BEFORE_UPDATE_CATCH = 'phlexible_element_finder.before_update_catch';
-
-    /**
-     * Fired after a catch has been updated.
-     */
-    const UPDATE_CATCH = 'phlexible_element_finder.update_catch';
-
-    /**
-     * Fired before a teaser is deleted.
-     */
-    const BEFORE_DELETE_CATCH = 'phlexible_element_finder.before_delete_catch';
-
-    /**
-     * Fired after a catch has been deleted.
-     */
-    const DELETE_CATCH = 'phlexible_element_finder.delete_catch';
+    const FIND = 'phlexible_element_finder.find';
 
     /**
      * Fired before a catch teaser helper is updates.

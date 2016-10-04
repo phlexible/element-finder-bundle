@@ -11,6 +11,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\EventListener;
 use Phlexible\Bundle\ElementBundle\ElementEvents;
 use Phlexible\Bundle\ElementBundle\Event\SaveNodeDataEvent;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\LookupBuilder;
+use Phlexible\Bundle\GuiBundle\Properties\Properties;
 use Phlexible\Bundle\TreeBundle\Event\NodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\SetNodeOfflineEvent;
 use Phlexible\Bundle\TreeBundle\TreeEvents;
@@ -29,6 +30,11 @@ class NodeListener implements EventSubscriberInterface
     private $lookupBuilder;
 
     /**
+     * @var Properties
+     */
+    private $properties;
+
+    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
@@ -45,10 +51,12 @@ class NodeListener implements EventSubscriberInterface
 
     /**
      * @param LookupBuilder $lookupBuilder
+     * @param Properties    $properties
      */
-    public function __construct(LookupBuilder $lookupBuilder)
+    public function __construct(LookupBuilder $lookupBuilder, Properties $properties)
     {
         $this->lookupBuilder = $lookupBuilder;
+        $this->properties = $properties;
     }
 
     /**
@@ -59,6 +67,8 @@ class NodeListener implements EventSubscriberInterface
         $node = $event->getNode();
 
         $this->lookupBuilder->updatePreview($node);
+
+        $this->storeTimestamp();
     }
 
     /**
@@ -69,6 +79,8 @@ class NodeListener implements EventSubscriberInterface
         $node = $event->getNode();
 
         $this->lookupBuilder->updatePreview($node);
+
+        $this->storeTimestamp();
     }
 
     /**
@@ -79,6 +91,8 @@ class NodeListener implements EventSubscriberInterface
         $node = $event->getNode();
 
         $this->lookupBuilder->updatePreview($node);
+
+        $this->storeTimestamp();
     }
 
     /**
@@ -89,6 +103,8 @@ class NodeListener implements EventSubscriberInterface
         $node = $event->getNode();
 
         $this->lookupBuilder->updateOnline($node);
+
+        $this->storeTimestamp();
     }
 
     /**
@@ -100,6 +116,8 @@ class NodeListener implements EventSubscriberInterface
         $language = $event->getLanguage();
 
         $this->lookupBuilder->removeOnlineByTreeNodeAndLanguage($node, $language);
+
+        $this->storeTimestamp();
     }
 
     /**
@@ -110,5 +128,12 @@ class NodeListener implements EventSubscriberInterface
         $node = $event->getNode();
 
         $this->lookupBuilder->remove($node);
+
+        $this->storeTimestamp();
+    }
+
+    private function storeTimestamp()
+    {
+        $this->properties->set('element_finder', 'timestamp', time());
     }
 }
