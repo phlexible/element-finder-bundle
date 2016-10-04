@@ -45,6 +45,9 @@ class TimestampInvalidator implements InvalidatorInterface
         return $timestamp > $checkTimestamp;
     }
 
+    /**
+     * @return int
+     */
     private function getCheckTimestamp()
     {
         if (!$this->checkTimestamp) {

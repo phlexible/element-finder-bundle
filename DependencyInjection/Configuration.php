@@ -40,7 +40,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('invalidator')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('service')->defaultValue('phlexible_element_finder.always_invalidate_invalidator')->end()
+                        ->scalarNode('service')->defaultValue('phlexible_element_finder.timestamp_invalidator')->end()
                         ->integerNode('ttl')->defaultValue(300)->end()
                     ->end()
                 ->end()
