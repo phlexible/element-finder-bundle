@@ -50,8 +50,16 @@ services:
             - "@phlexible_element.element_meta_data_manager"
             - "@event_dispatcher"
 
+    # data collectors
+    phlexible_element_finder.data_collector:
+        class: Phlexible\Bundle\ElementFinderBundle\DataCollector\ElementFinderDataCollector
+        arguments:
+            - "@phlexible_element_finder.finder"
+        tags:
+            - {name: data_collector, template: "@PhlexibleElementFinder/Collector/result_pools.html.twig", id: element_finder, priority: -1}
+
     # event listeners
-    phlexible_element_finder.listener.publish_node:
+    phlexible_element_finder.node_listener:
         class: Phlexible\Bundle\ElementFinderBundle\EventListener\NodeListener
         arguments:
             - "@phlexible_element_finder.lookup_builder"

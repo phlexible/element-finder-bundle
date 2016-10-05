@@ -41,5 +41,10 @@ class PhlexibleElementFinderExtension extends Extension
 
         $loader->load('services.yml');
         $loader->load('twig_extensions.yml');
+
+        if ($container->getParameter('kernel.debug')) {
+            $container->findDefinition('phlexible_element_finder.finder')
+                ->setClass('Phlexible\Bundle\ElementFinderBundle\ElementFinder\DebugElementFinder');
+        }
     }
 }

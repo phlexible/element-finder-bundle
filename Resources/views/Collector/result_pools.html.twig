@@ -1,0 +1,87 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% if collector.countAll %}
+        {% set icon %}
+            {% set status_color = '' %}
+            {% set error_count = collector.countAll %}
+            {{ include('@PhlexibleElementFinder/Icon/element_finder.svg') }}
+            <span class="sf-toolbar-value">{{ error_count }}</span>
+        {% endset %}
+
+        {% set text %}
+            <div class="sf-toolbar-info-piece">
+                <b>Updated pools</b>
+                <span class="sf-toolbar-status sf-toolbar-status-">{{ collector.countFind }}</span>
+            </div>
+
+            <div class="sf-toolbar-info-piece">
+                <b>Existing pools</b>
+                <span class="sf-toolbar-status sf-toolbar-status-">{{ collector.countFindByIdentifier }}</span>
+            </div>
+        {% endset %}
+
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: profiler_url, status: status_color }) }}
+    {% endif %}
+{% endblock %}
+
+{% block menu %}
+    <span class="label {% if collector.countAll %}label-status-{% else %}disabled{% endif %}">
+        <span class="icon">{{ include('@PhlexibleElementFinder/Icon/search.svg') }}</span>
+        <strong>Element Finder</strong>
+        {% if collector.countAll %}
+        <span class="count">
+            <span>{{ collector.countAll }}</span>
+        </span>
+        {% endif %}
+    </span>
+{% endblock %}
+
+{% block panel %}
+
+    <div class="metrics">
+        <div class="metric">
+            <span class="value">{{ collector.countFind}}</span>
+            <span class="label">Updated pools</span>
+        </div>
+
+        <div class="metric">
+            <span class="value">{{ collector.countFindByIdentifier }}</span>
+            <span class="label">Existing pools</span>
+        </div>
+    </div>
+
+    {% for resultPool in collector.resultPools %}
+    <h3>Result Pool {{ resultPool.identifier }}</h3>
+    <table>
+        <thead>
+            <tr><th>Key</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+            <tr><th scope="col" class="key">Config</th><td>
+                <table style="margin: 0;">
+                {% for key, value in resultPool.config %}
+                    {% if value is not null %}
+                    <tr><th>{{ key }}</th><td>{{ profiler_dump(value) }}</td></tr>
+                    {% endif %}
+                {% endfor %}
+                </table>
+            </td></tr>
+            <tr><th scope="col" class="key">Parameters</th><td>
+                <table style="margin: 0;">
+                    {% for key, value in resultPool.parameters %}
+                        {% if value is not null %}
+                            <tr><th>{{ key }}</th><td>{{ profiler_dump(value) }}</td></tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </td></tr>
+            <tr><th scope="col" class="key">Raw Facets</th><td>{{ profiler_dump(resultPool.raw_facets) }}</td></tr>
+            <tr><th scope="col" class="key">Facet Names</th><td>{{ profiler_dump(resultPool.facet_names) }}</td></tr>
+            <tr><th scope="col" class="key">Created At</th><td>{{ resultPool.created_at|date }}</td></tr>
+            <tr><th scope="col" class="key">Identifier</th><td>{{ resultPool.identifier }}</td></tr>
+        </tbody>
+    </table>
+    {% endfor %}
+
+{% endblock %}
