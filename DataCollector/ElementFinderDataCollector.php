@@ -28,7 +28,7 @@ class ElementFinderDataCollector extends DataCollector implements LateDataCollec
     private $elementFinder;
 
     /**
-     * @param null $elementFinder
+     * @param null|ElementFinder $elementFinder
      */
     public function __construct($elementFinder = null)
     {
