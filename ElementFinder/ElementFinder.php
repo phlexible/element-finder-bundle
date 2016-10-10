@@ -100,7 +100,10 @@ class ElementFinder
      */
     public function findByIdentifier($identifier)
     {
-        return $this->cache->get($identifier);
+        $pool = $this->cache->get($identifier);
+        $pool->sort();
+
+        return $pool;
     }
 
     /**

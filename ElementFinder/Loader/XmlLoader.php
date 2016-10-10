@@ -30,8 +30,8 @@ class XmlLoader implements LoaderInterface
         $rootAttributes = $xml->attributes();
 
         $identifier = (string) $rootAttributes['identifier'];
-        $query = (string) $rootAttributes['query'];
-        $createdAt = new \DateTIme((string) $rootAttributes['createdAt']);
+        $query = (string) $xml->query;
+        $createdAt = new \DateTime((string) $rootAttributes['createdAt']);
 
 
         $config = new ElementFinderConfig();

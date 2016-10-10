@@ -384,6 +384,29 @@ class ResultPool implements \Countable
         return $this->extractValues($facetName, $this->items);
     }
 
+    public function sort()
+    {
+        $sortedColumn = array();
+        $items = array();
+        foreach ($this->items as $item) {
+            $sortedColumn[$item->getTreeId()] = mb_strtoupper($item->getSortField(), 'UTF-8');
+            $items[$item->getTreeId()] = $item;
+        }
+
+        if ($this->getConfig()->getSortDir() === 'DESC') {
+            arsort($sortedColumn, SORT_NATURAL);
+        } else {
+            asort($sortedColumn, SORT_NATURAL);
+        }
+
+        $orderedItems = array();
+        foreach (array_keys($sortedColumn) as $key) {
+            $orderedItems[] = $items[$key];
+        }
+
+        $this->items = new ArrayCollection(array_values($orderedItems));
+    }
+
     /**
      * @param string          $facetName
      * @param ArrayCollection $items

@@ -236,7 +236,7 @@ class CatchController extends Controller
     /**
      * @param Request $request
      *
-     * @return ResultResponse
+     * @return JsonResponse
      * @Route("/preview", name="elementfinder_catch_preview")
      */
     public function previewAction(Request $request)
