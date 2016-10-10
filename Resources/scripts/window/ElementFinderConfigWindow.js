@@ -42,6 +42,7 @@ Phlexible.elementfinder.ElementFinderConfigWindow = Ext.extend(Ext.Window, {
             baseValues: this.baseValues,
             listeners: {
                 values: function(configPanel, values) {
+                    values.inNavigation = values.inNavigation ? 1 : 0;
                     store.baseParams = values;
                     store.load();
                 },
@@ -66,7 +67,7 @@ Phlexible.elementfinder.ElementFinderConfigWindow = Ext.extend(Ext.Window, {
                 dataIndex: 'language',
                 width: 30,
                 renderer: function(v) {
-                    return Phlexible.inlineIcon("p-flags-" + v + "-icon");
+                    return Phlexible.inlineIcon("p-gui-" + v + "-icon");
                 }
             },{
                 header: this.strings.elementtype_id,

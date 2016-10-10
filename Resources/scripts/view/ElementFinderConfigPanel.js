@@ -277,7 +277,7 @@ Phlexible.elementfinder.ElementFinderConfigPanel = Ext.extend(Ext.Panel, {
         values.elementtypeIds = this.baseValues.elementtypeIds;
         values.filter = this.baseValues.filter;
         values.template = this.baseValues.template;
-        values.inNavigation = !!values.inNavigation;
+        values.inNavigation = values.inNavigation ? 1 : 0;
 
         return values;
     }
