@@ -4,23 +4,28 @@ Ext.require('Phlexible.fields.FieldHelper');
 Ext.require('Phlexible.elementfinder.field.FinderField');
 
 Phlexible.fields.Registry.addFactory('finder', function(parentConfig, item, valueStructure, element, repeatableId) {
-	var config = Phlexible.fields.FieldHelper.defaults(parentConfig, item, valueStructure, element, repeatableId);
+    var config = Phlexible.fields.FieldHelper.defaults(parentConfig, item, valueStructure, element, repeatableId);
 
-	Ext.apply(config, {
-		xtype: 'finderfield',
-		hiddenName: config.name,
+    Ext.apply(config, {
+        xtype: 'finderfield',
+        hiddenName: config.name,
 
-		width: (parseInt(item.configuration.width, 10) || 200),
+        width: (parseInt(item.configuration.width, 10) || 200),
 
         siterootId: element.siteroot_id,
 
-		supportsPrefix: true,
-		supportsSuffix: true,
-		supportsDiff: true,
-		supportsInlineDiff: true,
-		supportsUnlink: {unlinkEl: 'trigger'},
-		supportsRepeatable: true
-	});
+        supportsPrefix: true,
+        supportsSuffix: true,
+        supportsDiff: true,
+        supportsInlineDiff: true,
+        supportsUnlink: {unlinkEl: 'trigger'},
+        supportsRepeatable: true,
+        onApplyUnlink: function(c) {
+            if (c.hasUnlink) {
+                c.wrap.setStyle('overflow', 'visible');
+            }
+        }
+    });
 
     config.baseValues = {
         elementtypeIds: item.configuration.element_type_ids || '',
@@ -36,7 +41,7 @@ Phlexible.fields.Registry.addFactory('finder', function(parentConfig, item, valu
         config.value = 'configured';
     }
 
-	delete config.name;
+    delete config.name;
 
     if (config.readOnly) {
         config.hideTrigger1 = true;
@@ -45,7 +50,7 @@ Phlexible.fields.Registry.addFactory('finder', function(parentConfig, item, valu
         config.onTrigger2Click = Ext.emptyFn;
     }
 
-	return config;
+    return config;
 });
 
 Phlexible.fields.FieldTypes.addField('finder', {
@@ -55,11 +60,11 @@ Phlexible.fields.FieldTypes.addField('finder', {
     },
     iconCls: 'p-elementfinder-finder-icon',
     allowedIn: [
-		'tab',
-		'accordion',
-		'group',
-		'referenceroot'
-	],
+        'tab',
+        'accordion',
+        'group',
+        'referenceroot'
+    ],
     config: {
         labels: {
             field: 1,

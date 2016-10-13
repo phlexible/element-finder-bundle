@@ -6,8 +6,6 @@ The PhlexibleElementFinderBundle adds support for a finder field in phlexible.
 Installation
 ------------
 
-Installation is a 5 step process:
-
 1. Download PhlexibleElementFinderBundle using composer
 2. Enable the Bundle
 3. Import PhlexibleElementFinderBundle routing
