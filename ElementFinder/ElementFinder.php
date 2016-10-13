@@ -292,7 +292,7 @@ class ElementFinder
                     //'lookup.online_version',
                 )
             )
-            ->from('catch_lookup_element', 'lookup');
+            ->from('elementfinder_lookup_element', 'lookup');
 
         if (count($matchedTreeIds)) {
             $or = $qb->expr()->orX();
@@ -321,7 +321,7 @@ class ElementFinder
                 $qb
                     ->join(
                         'lookup',
-                        'catch_lookup_meta',
+                        'elementfinder_lookup_meta',
                         $alias,
                         $qb->expr()->andX(
                             $qb->expr()->eq("$alias.eid", "lookup.eid"),

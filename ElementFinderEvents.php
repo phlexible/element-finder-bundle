@@ -21,12 +21,12 @@ class ElementFinderEvents
     const FIND = 'phlexible_element_finder.find';
 
     /**
-     * Fired before a catch teaser helper is updates.
+     * Fired before a lookup elementis updated.
      */
     const BEFORE_UPDATE_LOOKUP_ELEMENT = 'phlexible_element_finder.before_update_lookup_element';
 
     /**
-     * Fired after a catch teaser helper is updates.
+     * Fired after a lookup element is updated.
      */
     const UPDATE_LOOKUP_ELEMENT = 'phlexible_element_finder.update_lookup_element';
 }

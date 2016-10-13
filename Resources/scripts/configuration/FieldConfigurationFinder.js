@@ -16,7 +16,7 @@ Phlexible.elementfinder.configuration.FieldConfigurationFinder = Ext.extend(Ext.
                 fieldLabel: this.strings.elementtype,
                 name: 'element_type_ids',
                 store: new Ext.data.JsonStore({
-                    url: Phlexible.Router.generate('elementfinder_catch_elementtypes'),
+                    url: Phlexible.Router.generate('elementfinder_config_elementtypes'),
                     root: 'elementtypes',
                     fields: ['id', 'title', 'icon'],
                     autoLoad: true,
@@ -61,7 +61,7 @@ Phlexible.elementfinder.configuration.FieldConfigurationFinder = Ext.extend(Ext.
                 fieldLabel: this.strings.sort_field,
                 hiddenName: 'sort_field',
                 store: new Ext.data.JsonStore({
-                    url: Phlexible.Router.generate('elementfinder_catch_sortfields'),
+                    url: Phlexible.Router.generate('elementfinder_config_sortfields'),
                     root: 'data',
                     fields: ['ds_id', 'title', 'icon'],
                     autoLoad: true
@@ -109,9 +109,9 @@ Phlexible.elementfinder.configuration.FieldConfigurationFinder = Ext.extend(Ext.
                 width: 300,
                 height: 100,
                 fieldLabel: this.strings.filter,
-                hiddenName: 'catch_filter',
+                hiddenName: 'filter',
                 store: new Ext.data.JsonStore({
-                    url: Phlexible.Router.generate('elementfinder_catch_filters'),
+                    url: Phlexible.Router.generate('elementfinder_config_filters'),
                     root: 'filters',
                     fields: ['id', 'name'],
                     autoLoad: true

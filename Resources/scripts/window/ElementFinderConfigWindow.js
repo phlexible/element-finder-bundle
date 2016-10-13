@@ -19,7 +19,7 @@ Phlexible.elementfinder.ElementFinderConfigWindow = Ext.extend(Ext.Window, {
 
     initComponent: function () {
         var store = new Ext.data.JsonStore({
-            url: Phlexible.Router.generate('elementfinder_catch_preview'),
+            url: Phlexible.Router.generate('elementfinder_config_preview'),
             fields: Phlexible.elementfinder.model.ResultItem,
             id: 'id',
             root: 'items',

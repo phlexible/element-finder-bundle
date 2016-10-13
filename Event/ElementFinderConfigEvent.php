@@ -12,7 +12,7 @@ use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Element catch event
+ * Element finder config event
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

@@ -56,8 +56,8 @@ For administration backend:
 
 ``` yaml
 # app/config/admin_routing.yml
-phlexible_element_finder_catch:
-    resource: "@PhlexibleElementFinderBundle/Controller/CatchController.php"
+phlexible_element_finder_config:
+    resource: "@PhlexibleElementFinderBundle/Controller/ConfigController.php"
     type:     annotation
 ```
 

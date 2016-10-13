@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author Stephan Wentz <sw@brainbits.net>
  *
  * @ORM\Entity
- * @ORM\Table(name="catch_lookup_meta")
+ * @ORM\Table(name="elementfinder_lookup_meta")
  */
 class ElementFinderLookupMeta
 {

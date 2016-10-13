@@ -18,13 +18,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Catch controller
+ * Config controller
  *
  * @author Stephan Wentz <sw@brainbits.net>
- * @Route("/elementfinder")
+ * @Route("/elementfinder/config")
  * @Security("is_granted('ROLE_ELEMENT_FINDER')")
  */
-class CatchController extends Controller
+class ConfigController extends Controller
 {
     /**
      * List all sortable fields.
@@ -32,7 +32,7 @@ class CatchController extends Controller
      * @param Request $request
      *
      * @return ResultResponse
-     * @Route("/sortfields", name="elementfinder_catch_sortfields")
+     * @Route("/sortfields", name="elementfinder_config_sortfields")
      */
     public function sortfieldsAction(Request $request)
     {
@@ -138,7 +138,7 @@ class CatchController extends Controller
      * List all element types
      *
      * @return JsonResponse
-     * @Route("/elementtypes", name="elementfinder_catch_elementtypes")
+     * @Route("/elementtypes", name="elementfinder_config_elementtypes")
      */
     public function elementtypesAction()
     {
@@ -163,7 +163,7 @@ class CatchController extends Controller
 
     /**
      * @return JsonResponse
-     * @Route("/metafields", name="elementfinder_catch_metafields")
+     * @Route("/metafields", name="elementfinder_config_metafields")
      */
     public function metaFieldsAction()
     {
@@ -186,7 +186,7 @@ class CatchController extends Controller
      * @param Request $request
      *
      * @return JsonResponse
-     * @Route("/metakeywords", name="elementfinder_catch_metakeywords")
+     * @Route("/metakeywords", name="elementfinder_config_metakeywords")
      */
     public function metaKeywordsAction(Request $request)
     {
@@ -215,7 +215,7 @@ class CatchController extends Controller
      * List all available filters
      *
      * @return JsonResponse
-     * @Route("/filters", name="elementfinder_catch_filters")
+     * @Route("/filters", name="elementfinder_config_filters")
      */
     public function filtersAction()
     {
@@ -237,7 +237,7 @@ class CatchController extends Controller
      * @param Request $request
      *
      * @return JsonResponse
-     * @Route("/preview", name="elementfinder_catch_preview")
+     * @Route("/preview", name="elementfinder_config_preview")
      */
     public function previewAction(Request $request)
     {

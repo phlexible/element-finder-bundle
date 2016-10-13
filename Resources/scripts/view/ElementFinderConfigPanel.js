@@ -6,7 +6,7 @@ Phlexible.elementfinder.ElementFinderConfigPanel = Ext.extend(Ext.Panel, {
     strings: Phlexible.elementfinder.Strings,
     title: Phlexible.elementfinder.Strings.finder,
     iconCls: 'p-elementfinder-finder-icon',
-    cls: 'p-elements-catch-panel',
+    cls: 'p-elements-config-panel',
     autoScroll: true,
     //autoWidth: false,
     bodyStyle: 'padding-top: 5px',
@@ -114,7 +114,7 @@ Phlexible.elementfinder.ElementFinderConfigPanel = Ext.extend(Ext.Panel, {
                         hiddenName: 'sortField',
                         value: this.values.sortField,
                         store: new Ext.data.JsonStore({
-                            url: Phlexible.Router.generate('elementfinder_catch_sortfields', {query: this.baseValues.elementtypeIds}),
+                            url: Phlexible.Router.generate('elementfinder_config_sortfields', {query: this.baseValues.elementtypeIds}),
                             root: 'data',
                             fields: ['ds_id', 'title', 'icon'],
                             autoLoad: true,
@@ -179,7 +179,7 @@ Phlexible.elementfinder.ElementFinderConfigPanel = Ext.extend(Ext.Panel, {
                         hiddenName: 'metaKey',
                         value: this.values.metaKey,
                         store: new Ext.data.JsonStore({
-                            url: Phlexible.Router.generate('elementfinder_catch_metafields'),
+                            url: Phlexible.Router.generate('elementfinder_config_metafields'),
                             root: 'metakeys',
                             fields: ['id', 'name'],
                             autoLoad: true,
@@ -218,7 +218,7 @@ Phlexible.elementfinder.ElementFinderConfigPanel = Ext.extend(Ext.Panel, {
                         name: 'metaKeywords',
                         value: this.values.metaKeywords,
                         store: new Ext.data.JsonStore({
-                            url: Phlexible.Router.generate('elementfinder_catch_metakeywords'),
+                            url: Phlexible.Router.generate('elementfinder_config_metakeywords'),
                             root: 'meta_keywords',
                             fields: ['keyword'],
                             autoLoad: !!this.values.metaKey,
