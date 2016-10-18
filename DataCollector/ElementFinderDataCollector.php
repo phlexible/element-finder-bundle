@@ -10,6 +10,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\DataCollector;
 
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\DebugElementFinder;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinder;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -51,48 +52,63 @@ class ElementFinderDataCollector extends DataCollector implements LateDataCollec
     public function lateCollect()
     {
         if (null !== $this->elementFinder) {
-            $this->data['find_count'] = $this->elementFinder->getFindCount();
-            $this->data['find_by_identifier_count'] = $this->elementFinder->getFindByIdentifierCount();
-            $this->data['total_count'] = $this->data['find_count'] + $this->data['find_by_identifier_count'];
+            $this->data['updated_count'] = $this->elementFinder->countUpdatedResultPools();
+            $this->data['cached_count'] = $this->elementFinder->countCachedResultPools();
+            $this->data['total_count'] = $this->data['updated_count'] + $this->data['cached_count'];
 
-            $pools = array();
+            $updatedResultPools = array();
+            $cachedResultPools = array();
 
-            foreach ($this->elementFinder->getResultPools() as $resultPool) {
-                $config = $resultPool->getConfig();
-                $pools[] = array(
-                    'config' => array(
-                        'elementtype_ids' => $config->getElementtypeIds(),
-                        'filter' => $config->getFilter(),
-                        'max_depth' => $config->getMaxDepth(),
-                        'meta_field' => $config->getMetaField(),
-                        'meta_keywords' => $config->getMetaKeywords(),
-                        'page_size' => $config->getPageSize(),
-                        'sort_field' => $config->getSortField(),
-                        'sort_dir' => $config->getSortDir(),
-                        'template' => $config->getTemplate(),
-                        'tree_id' => $config->getTreeId(),
-                    ),
-                    'parameters' => $resultPool->getParameters(),
-                    'filters' => $resultPool->getFilters(),
-                    #'count' => count($resultPool),
-                    #'facets' => $resultPool->getFacets(),
-                    'raw_facets' => $resultPool->getRawFacets(),
-                    'facet_names' => $resultPool->getFacetNames(),
-                    'created_at' => $resultPool->getCreatedAt(),
-                    'identifier' => $resultPool->getIdentifier(),
-                );
+            foreach ($this->elementFinder->getUpdatedResultPools() as $resultPool) {
+                $updatedResultPools[] = $this->poolToArray($resultPool);
+            }
+            foreach ($this->elementFinder->getCachedResultPools() as $resultPool) {
+                $cachedResultPools[] = $this->poolToArray($resultPool);
             }
 
-            $this->data['result_pools'] = $pools;
+            $this->data['updated_result_pools'] = $updatedResultPools;
+            $this->data['cached_result_pools'] = $cachedResultPools;
         }
+    }
+
+    /**
+     * @param ResultPool $resultPool
+     *
+     * @return array
+     */
+    private function poolToArray(ResultPool $resultPool)
+    {
+        $config = $resultPool->getConfig();
+        return array(
+            'config' => array(
+                'elementtype_ids' => $config->getElementtypeIds(),
+                'filter' => $config->getFilter(),
+                'max_depth' => $config->getMaxDepth(),
+                'meta_field' => $config->getMetaField(),
+                'meta_keywords' => $config->getMetaKeywords(),
+                'page_size' => $config->getPageSize(),
+                'sort_field' => $config->getSortField(),
+                'sort_dir' => $config->getSortDir(),
+                'template' => $config->getTemplate(),
+                'tree_id' => $config->getTreeId(),
+            ),
+            'parameters' => $resultPool->getParameters(),
+            'filters' => $resultPool->getFilters(),
+            #'count' => count($resultPool),
+            #'facets' => $resultPool->getFacets(),
+            'raw_facets' => $resultPool->getRawFacets(),
+            'facet_names' => $resultPool->getFacetNames(),
+            'created_at' => $resultPool->getCreatedAt(),
+            'identifier' => $resultPool->getIdentifier(),
+            'languages' => $resultPool->getLanguages(),
+            'query' => $resultPool->getQuery(),
+        );
     }
 
     /**
      * Gets the called events.
      *
-     * @return array An array of called events
-     *
-     * @see TraceableEventDispatcherInterface
+     * @return int
      */
     public function countAll()
     {
@@ -100,37 +116,43 @@ class ElementFinderDataCollector extends DataCollector implements LateDataCollec
     }
 
     /**
-     * Gets the called events.
+     * Gets the number of updated result pools events.
      *
-     * @return array An array of called events
-     *
-     * @see TraceableEventDispatcherInterface
+     * @return int
      */
-    public function countFind()
+    public function countUpdated()
     {
-        return isset($this->data['find_count']) ? $this->data['find_count'] : 0;
+        return isset($this->data['updated_count']) ? $this->data['updated_count'] : 0;
     }
 
     /**
-     * Gets the called events.
+     * Gets the number of cached result pools.
      *
-     * @return array An array of called events
-     *
-     * @see TraceableEventDispatcherInterface
+     * @return int
      */
-    public function countFindByIdentifier()
+    public function countCached()
     {
-        return isset($this->data['find_by_identifier_count']) ? $this->data['find_by_identifier_count'] : 0;
+        return isset($this->data['cached_count']) ? $this->data['cached_count'] : 0;
     }
 
     /**
-     * Gets the result pools.
+     * Gets the updated result pools.
      *
-     * @return array An array of result pools
+     * @return array
      */
-    public function getResultPools()
+    public function getUpdatedResultPools()
     {
-        return isset($this->data['result_pools']) ? $this->data['result_pools'] : [];
+        return isset($this->data['updated_result_pools']) ? $this->data['updated_result_pools'] : [];
+    }
+
+    /**
+     * Gets the updated result pools.
+     *
+     * @return array
+     */
+    public function getCachedResultPools()
+    {
+        return isset($this->data['cached_result_pools']) ? $this->data['cached_result_pools'] : [];
     }
 
     /**

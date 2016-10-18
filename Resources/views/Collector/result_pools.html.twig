@@ -12,12 +12,12 @@
         {% set text %}
             <div class="sf-toolbar-info-piece">
                 <b>Updated pools</b>
-                <span class="sf-toolbar-status sf-toolbar-status-">{{ collector.countFind }}</span>
+                <span class="sf-toolbar-status sf-toolbar-status-">{{ collector.countUpdated }}</span>
             </div>
 
             <div class="sf-toolbar-info-piece">
-                <b>Existing pools</b>
-                <span class="sf-toolbar-status sf-toolbar-status-">{{ collector.countFindByIdentifier }}</span>
+                <b>Cached pools</b>
+                <span class="sf-toolbar-status sf-toolbar-status-">{{ collector.countCached }}</span>
             </div>
         {% endset %}
 
@@ -39,49 +39,82 @@
 
 {% block panel %}
 
-    <div class="metrics">
-        <div class="metric">
-            <span class="value">{{ collector.countFind}}</span>
-            <span class="label">Updated pools</span>
+    {% import _self as helper %}
+
+    <style>
+        td.nested {
+            padding: 0;
+        }
+        td.nested table, td.nested tr td, td.nested tr th {
+            border-width: 0;
+        }
+        td.nested tr td, td.nested tr th {
+            border-width: 0 0 1px 0;
+        }
+        td.nested tr:last-child td, td.nested tr:last-child th {
+            border-width: 0;
+        }
+        .query pre {
+            white-space:pre-wrap;
+            margin:0;
+        }
+    </style>
+
+    <div class="sf-tabs">
+        <div class="tab">
+            <h3 class="tab-title">Updated pools <span class="badge">{{ collector.countUpdated}}</span></h3>
+
+            <div class="tab-content">
+                {% for resultPool in collector.updatedResultPools %}
+                    {{ helper.render_pool(resultPool) }}
+                {% endfor %}
+            </div>
         </div>
 
-        <div class="metric">
-            <span class="value">{{ collector.countFindByIdentifier }}</span>
-            <span class="label">Existing pools</span>
+        <div class="tab">
+            <h3 class="tab-title">Cached pools <span class="badge">{{ collector.countCached }}</span></h3>
+
+            <div class="tab-content">
+                {% for resultPool in collector.cachedResultPools %}
+                    {{ helper.render_pool(resultPool) }}
+                {% endfor %}
+            </div>
         </div>
     </div>
 
-    {% for resultPool in collector.resultPools %}
-    <h3>Result Pool {{ resultPool.identifier }}</h3>
-    <table>
-        <thead>
-            <tr><th>Key</th><th>Value</th></tr>
-        </thead>
-        <tbody>
-            <tr><th scope="col" class="key">Config</th><td>
-                <table style="margin: 0;">
+    {% macro render_pool(resultPool) %}
+<h3>Result Pool {{ resultPool.identifier }}</h3>
+<table>
+    <thead>
+    <tr><th>Key</th><th>Value</th></tr>
+    </thead>
+    <tbody>
+    <tr><th scope="col" class="key">Identifier</th><td>{{ resultPool.identifier }}</td></tr>
+    <tr><th scope="col" class="key">Languages</th><td>{{ profiler_dump(resultPool.languages) }}</td></tr>
+    <tr><th scope="col" class="key">Config</th><td class="nested">
+            <table style="margin: 0;">
                 {% for key, value in resultPool.config %}
                     {% if value is not null %}
-                    <tr><th>{{ key }}</th><td>{{ profiler_dump(value) }}</td></tr>
+                        <tr><th>{{ key }}</th><td>{{ profiler_dump(value) }}</td></tr>
                     {% endif %}
                 {% endfor %}
-                </table>
-            </td></tr>
-            <tr><th scope="col" class="key">Parameters</th><td>
-                <table style="margin: 0;">
-                    {% for key, value in resultPool.parameters %}
-                        {% if value is not null %}
-                            <tr><th>{{ key }}</th><td>{{ profiler_dump(value) }}</td></tr>
-                        {% endif %}
-                    {% endfor %}
-                </table>
-            </td></tr>
-            <tr><th scope="col" class="key">Raw Facets</th><td>{{ profiler_dump(resultPool.raw_facets) }}</td></tr>
-            <tr><th scope="col" class="key">Facet Names</th><td>{{ profiler_dump(resultPool.facet_names) }}</td></tr>
-            <tr><th scope="col" class="key">Created At</th><td>{{ resultPool.created_at|date }}</td></tr>
-            <tr><th scope="col" class="key">Identifier</th><td>{{ resultPool.identifier }}</td></tr>
-        </tbody>
-    </table>
-    {% endfor %}
+            </table>
+        </td></tr>
+    <tr><th scope="col" class="key">Parameters</th><td class="nested">
+            <table style="margin: 0;">
+                {% for key, value in resultPool.parameters %}
+                    {% if value is not null %}
+                        <tr><th>{{ key }}</th><td>{{ profiler_dump(value) }}</td></tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </td></tr>
+    <tr><th scope="col" class="key">Raw Facets</th><td>{{ profiler_dump(resultPool.raw_facets) }}</td></tr>
+    <tr><th scope="col" class="key">Facet Names</th><td>{{ profiler_dump(resultPool.facet_names) }}</td></tr>
+    <tr><th scope="col" class="key">Query</th><td class="query">{{ resultPool.query|doctrine_pretty_query(highlight_only = true) }}</td></tr>
+    <tr><th scope="col" class="key">Created At</th><td>{{ resultPool.created_at|date }}</td></tr>
+    </tbody>
+</table>
+    {% endmacro %}
 
 {% endblock %}
