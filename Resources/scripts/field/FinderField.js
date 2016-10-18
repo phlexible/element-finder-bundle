@@ -133,6 +133,7 @@ Phlexible.elementfinder.field.FinderField = Ext.extend(Ext.form.TwinTriggerField
             siterootId: this.siterootId,
             values: this.hiddenValue,
             baseValues: this.baseValues,
+            language: this.language,
             listeners: {
                 set: function(w, values) {
                     this.setValue(Ext.encode(values));
