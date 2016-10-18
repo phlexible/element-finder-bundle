@@ -39,44 +39,34 @@
 
 {% block panel %}
 
+    {% import _self as helper %}
+
+    <style>
+        td.nested {
+            padding: 0;
+        }
+        td.nested table, td.nested tr td, td.nested tr th {
+            border-width: 0;
+        }
+        td.nested tr td, td.nested tr th {
+            border-width: 0 0 1px 0;
+        }
+        td.nested tr:last-child td, td.nested tr:last-child th {
+            border-width: 0;
+        }
+        .query pre {
+            white-space:pre-wrap;
+            margin:0;
+        }
+    </style>
+
     <div class="sf-tabs">
         <div class="tab">
             <h3 class="tab-title">Updated pools <span class="badge">{{ collector.countUpdated}}</span></h3>
 
             <div class="tab-content">
                 {% for resultPool in collector.updatedResultPools %}
-                    <h3>Result Pool {{ resultPool.identifier }}</h3>
-                    <table>
-                        <thead>
-                        <tr><th>Key</th><th>Value</th></tr>
-                        </thead>
-                        <tbody>
-                        <tr><th scope="col" class="key">Identifier</th><td>{{ resultPool.identifier }}</td></tr>
-                        <tr><th scope="col" class="key">Languages</th><td>{{ profiler_dump(resultPool.languages) }}</td></tr>
-                        <tr><th scope="col" class="key">Config</th><td>
-                                <table style="margin: 0;">
-                                    {% for key, value in resultPool.config %}
-                                        {% if value is not null %}
-                                            <tr><th>{{ key }}</th><td>{{ profiler_dump(value) }}</td></tr>
-                                        {% endif %}
-                                    {% endfor %}
-                                </table>
-                            </td></tr>
-                        <tr><th scope="col" class="key">Parameters</th><td>
-                                <table style="margin: 0;">
-                                    {% for key, value in resultPool.parameters %}
-                                        {% if value is not null %}
-                                            <tr><th>{{ key }}</th><td>{{ profiler_dump(value) }}</td></tr>
-                                        {% endif %}
-                                    {% endfor %}
-                                </table>
-                            </td></tr>
-                        <tr><th scope="col" class="key">Raw Facets</th><td>{{ profiler_dump(resultPool.raw_facets) }}</td></tr>
-                        <tr><th scope="col" class="key">Facet Names</th><td>{{ profiler_dump(resultPool.facet_names) }}</td></tr>
-                        <tr><th scope="col" class="key">Query</th><td>{{ resultPool.query }}</td></tr>
-                        <tr><th scope="col" class="key">Created At</th><td>{{ resultPool.created_at|date }}</td></tr>
-                        </tbody>
-                    </table>
+                    {{ helper.render_pool(resultPool) }}
                 {% endfor %}
             </div>
         </div>
@@ -86,41 +76,45 @@
 
             <div class="tab-content">
                 {% for resultPool in collector.cachedResultPools %}
-                    <h3>Result Pool {{ resultPool.identifier }}</h3>
-                    <table>
-                        <thead>
-                        <tr><th>Key</th><th>Value</th></tr>
-                        </thead>
-                        <tbody>
-                        <tr><th scope="col" class="key">Identifier</th><td>{{ resultPool.identifier }}</td></tr>
-                        <tr><th scope="col" class="key">Languages</th><td>{{ profiler_dump(resultPool.languages) }}</td></tr>
-                        <tr><th scope="col" class="key">Config</th><td>
-                                <table style="margin: 0;">
-                                    {% for key, value in resultPool.config %}
-                                        {% if value is not null %}
-                                            <tr><th>{{ key }}</th><td>{{ profiler_dump(value) }}</td></tr>
-                                        {% endif %}
-                                    {% endfor %}
-                                </table>
-                            </td></tr>
-                        <tr><th scope="col" class="key">Parameters</th><td>
-                                <table style="margin: 0;">
-                                    {% for key, value in resultPool.parameters %}
-                                        {% if value is not null %}
-                                            <tr><th>{{ key }}</th><td>{{ profiler_dump(value) }}</td></tr>
-                                        {% endif %}
-                                    {% endfor %}
-                                </table>
-                            </td></tr>
-                        <tr><th scope="col" class="key">Raw Facets</th><td>{{ profiler_dump(resultPool.raw_facets) }}</td></tr>
-                        <tr><th scope="col" class="key">Facet Names</th><td>{{ profiler_dump(resultPool.facet_names) }}</td></tr>
-                        <tr><th scope="col" class="key">Query</th><td>{{ resultPool.query }}</td></tr>
-                        <tr><th scope="col" class="key">Created At</th><td>{{ resultPool.created_at|date }}</td></tr>
-                        </tbody>
-                    </table>
+                    {{ helper.render_pool(resultPool) }}
                 {% endfor %}
             </div>
         </div>
     </div>
+
+    {% macro render_pool(resultPool) %}
+<h3>Result Pool {{ resultPool.identifier }}</h3>
+<table>
+    <thead>
+    <tr><th>Key</th><th>Value</th></tr>
+    </thead>
+    <tbody>
+    <tr><th scope="col" class="key">Identifier</th><td>{{ resultPool.identifier }}</td></tr>
+    <tr><th scope="col" class="key">Languages</th><td>{{ profiler_dump(resultPool.languages) }}</td></tr>
+    <tr><th scope="col" class="key">Config</th><td class="nested">
+            <table style="margin: 0;">
+                {% for key, value in resultPool.config %}
+                    {% if value is not null %}
+                        <tr><th>{{ key }}</th><td>{{ profiler_dump(value) }}</td></tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </td></tr>
+    <tr><th scope="col" class="key">Parameters</th><td class="nested">
+            <table style="margin: 0;">
+                {% for key, value in resultPool.parameters %}
+                    {% if value is not null %}
+                        <tr><th>{{ key }}</th><td>{{ profiler_dump(value) }}</td></tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </td></tr>
+    <tr><th scope="col" class="key">Raw Facets</th><td>{{ profiler_dump(resultPool.raw_facets) }}</td></tr>
+    <tr><th scope="col" class="key">Facet Names</th><td>{{ profiler_dump(resultPool.facet_names) }}</td></tr>
+    <tr><th scope="col" class="key">Query</th><td class="query">{{ resultPool.query|doctrine_pretty_query(highlight_only = true) }}</td></tr>
+    <tr><th scope="col" class="key">Created At</th><td>{{ resultPool.created_at|date }}</td></tr>
+    </tbody>
+</table>
+    {% endmacro %}
 
 {% endblock %}
