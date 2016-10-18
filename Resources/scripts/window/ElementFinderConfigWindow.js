@@ -43,10 +43,8 @@ Phlexible.elementfinder.ElementFinderConfigWindow = Ext.extend(Ext.Window, {
             listeners: {
                 values: function(configPanel, values) {
                     values.inNavigation = values.inNavigation ? 1 : 0;
-                    if (!values.hasOwnProperty('language') && this.hasOwnProperty('language')) {
-                        values.language = this.language;
-                    }
                     store.baseParams = values;
+                    store.baseParams.language = this.language;
                     store.load();
                 },
                 scope: this
@@ -56,7 +54,9 @@ Phlexible.elementfinder.ElementFinderConfigWindow = Ext.extend(Ext.Window, {
             region: 'center',
             store: store,
             autoExpandColumn: 4,
-            emptyText: this.strings.no_match,
+            viewConfig: {
+                emptyText: this.strings.no_match
+            },
             columns: [{
                 header: this.strings.id,
                 dataIndex: 'id',
@@ -120,6 +120,7 @@ Phlexible.elementfinder.ElementFinderConfigWindow = Ext.extend(Ext.Window, {
                 iconCls: 'p-elementfinder-reload-icon',
                 handler: function() {
                     this.getComponent(1).getStore().baseParams = this.getComponent(0).getValues();
+                    this.getComponent(1).getStore().baseParams.language = this.language;
                     this.getComponent(1).getStore().reload();
                 },
                 scope: this

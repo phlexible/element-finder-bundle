@@ -256,6 +256,12 @@ class ConfigController extends Controller
         $sortField = $request->get('sortField', null);
         $sortDir = $request->get('sortDir', null);
         $filter = $request->get('filter', null);
+        $language = $request->get('language', 'en');
+
+        $elementFinder = $this->get('phlexible_element_finder.finder');
+        $treeManager = $this->get('phlexible_tree.tree_manager');
+        $elementService = $this->get('phlexible_element.element_service');
+        $iconResolver = $this->get('phlexible_element.icon_resolver');
 
         $config = new ElementFinderConfig();
         $config
@@ -269,13 +275,6 @@ class ConfigController extends Controller
             ->setSortField($sortField)
             ->setSortDir($sortDir)
             ->setFilter($filter);
-
-        $elementFinder = $this->get('phlexible_element_finder.finder');
-        $treeManager = $this->get('phlexible_tree.tree_manager');
-        $elementService = $this->get('phlexible_element.element_service');
-        $iconResolver = $this->get('phlexible_element.icon_resolver');
-
-        $language = $request->get('language', 'de');
 
         $result = $elementFinder->find($config, [$language], false);
 
