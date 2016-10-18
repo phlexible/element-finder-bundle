@@ -32,6 +32,11 @@ class ResultPool implements \Countable
     private $config;
 
     /**
+     * @var array
+     */
+    private $languages;
+
+    /**
      * @var ResultItem[]
      */
     private $items = array();
@@ -64,12 +69,13 @@ class ResultPool implements \Countable
     /**
      * @param string              $identifier
      * @param ElementFinderConfig $config
+     * @param array               $languages
      * @param string              $query
      * @param ResultItem[]        $items
      * @param array               $filters
      * @param \DateTime           $createdAt
      */
-    public function __construct($identifier, ElementFinderConfig $config, $query, array $items, array $filters, \DateTime $createdAt = null)
+    public function __construct($identifier, ElementFinderConfig $config, array $languages, $query, array $items, array $filters, \DateTime $createdAt = null)
     {
         if (null === $createdAt) {
             $createdAt = new \DateTime;
@@ -85,6 +91,7 @@ class ResultPool implements \Countable
         sort($this->facetNames);
 
         $this->identifier = $identifier;
+        $this->languages = $languages;
         $this->config = $config;
         $this->query = $query;
         $this->filters = $filters;
@@ -159,6 +166,14 @@ class ResultPool implements \Countable
     public function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLanguages()
+    {
+        return $this->languages;
     }
 
     /**

@@ -29,6 +29,11 @@ class XmlDumper implements DumperInterface
 
         $root->appendElement('query', $pool->getQuery());
 
+        $languagesNode = $root->appendElement('languages');
+        foreach ($pool->getLanguages() as $language) {
+            $languagesNode->appendElement('language', $language);
+        }
+
         $configNode = $root->appendElement('config');
         $configNode->appendElement('value', $pool->getConfig()->getTreeId(), array('key' => 'treeId'));
         $configNode->appendElement('value', implode(',', $pool->getConfig()->getElementtypeIds()), array('key' => 'elementtypeIds'));

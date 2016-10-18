@@ -18,42 +18,45 @@ use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 class DebugElementFinder extends ElementFinder
 {
     /**
-     * @var int
+     * @var ResultPool[]
      */
-    private $findByIdentifierCount = 0;
-
-    /**
-     * @var int
-     */
-    private $findCount = 0;
+    private $updatedResultPools = array();
 
     /**
      * @var ResultPool[]
      */
-    private $resultPools = array();
+    private $cachedResultPools = array();
 
     /**
      * @return int
      */
-    public function getFindByIdentifierCount()
+    public function countUpdatedResultPools()
     {
-        return $this->findByIdentifierCount;
+        return count($this->updatedResultPools);
     }
 
     /**
      * @return int
      */
-    public function getFindCount()
+    public function countCachedResultPools()
     {
-        return $this->findCount;
+        return count($this->cachedResultPools);
     }
 
     /**
      * @return ResultPool[]
      */
-    public function getResultPools()
+    public function getUpdatedResultPools()
     {
-        return $this->resultPools;
+        return $this->updatedResultPools;
+    }
+
+    /**
+     * @return ResultPool[]
+     */
+    public function getCachedResultPools()
+    {
+        return $this->cachedResultPools;
     }
 
     /**
@@ -63,11 +66,9 @@ class DebugElementFinder extends ElementFinder
      */
     public function findByIdentifier($identifier)
     {
-        $this->findByIdentifierCount++;
-
         $resultPool = parent::findByIdentifier($identifier);
 
-        $this->resultPools[] = $resultPool;
+        $this->cachedResultPools[] = $resultPool;
 
         return $resultPool;
     }
@@ -83,11 +84,9 @@ class DebugElementFinder extends ElementFinder
      */
     public function find(ElementFinderConfig $config, array $languages, $isPreview)
     {
-        $this->findCount++;
-
         $resultPool = parent::find($config, $languages, $isPreview);
 
-        $this->resultPools[] = $resultPool;
+        $this->updatedResultPools[] = $resultPool;
 
         return $resultPool;
     }

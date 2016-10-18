@@ -168,7 +168,7 @@ class ElementFinder
         }
 
         $query = !empty($qb) ? $qb->getSQL() : null;
-        $resultPool = new ResultPool($identifier, $config, $query, $items, $filters);
+        $resultPool = new ResultPool($identifier, $config, $languages, $query, $items, $filters);
 
         $this->cache->put($resultPool);
 

@@ -33,6 +33,10 @@ class XmlLoader implements LoaderInterface
         $query = (string) $xml->query;
         $createdAt = new \DateTime((string) $rootAttributes['createdAt']);
 
+        $languages = array();
+        foreach ($xml->languages->language as $languageNode) {
+            $languages[] = (string) $languageNode;
+        }
 
         $config = new ElementFinderConfig();
         foreach ($xml->config->value as $valueNode) {
@@ -96,7 +100,7 @@ class XmlLoader implements LoaderInterface
             $filters[] = $filter;
         }
 
-        $result = new ResultPool($identifier, $config, $query, $items, $filters, $createdAt);
+        $result = new ResultPool($identifier, $config, $languages, $query, $items, $filters, $createdAt);
 
         return $result;
     }
