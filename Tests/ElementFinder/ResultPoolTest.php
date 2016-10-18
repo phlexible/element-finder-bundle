@@ -40,6 +40,7 @@ class ResultPoolTest extends \PHPUnit_Framework_TestCase
         $pool = new ResultPool(
             'testIdentifier',
             $config,
+            array('en'),
             'testQuery',
             array(
                 $this->createResultItem(array('foo' => 'abc')),
@@ -93,6 +94,7 @@ class ResultPoolTest extends \PHPUnit_Framework_TestCase
         $pool = new ResultPool(
             'testIdentifier',
             $config,
+            array('en'),
             'testQuery',
             array(
                 $this->createResultItem(array('foo' => 'abc')),
