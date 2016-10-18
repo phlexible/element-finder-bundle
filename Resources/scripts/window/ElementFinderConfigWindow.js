@@ -43,6 +43,9 @@ Phlexible.elementfinder.ElementFinderConfigWindow = Ext.extend(Ext.Window, {
             listeners: {
                 values: function(configPanel, values) {
                     values.inNavigation = values.inNavigation ? 1 : 0;
+                    if (!values.hasOwnProperty('language') && this.hasOwnProperty('language')) {
+                        values.language = this.language;
+                    }
                     store.baseParams = values;
                     store.load();
                 },

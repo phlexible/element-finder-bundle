@@ -275,7 +275,9 @@ class ConfigController extends Controller
         $elementService = $this->get('phlexible_element.element_service');
         $iconResolver = $this->get('phlexible_element.icon_resolver');
 
-        $result = $elementFinder->find($config, array('de'), false);
+        $language = $request->get('language', 'de');
+
+        $result = $elementFinder->find($config, [$language], false);
 
         $data = array();
         foreach ($result->range(0, 10) as $resultItem) {
