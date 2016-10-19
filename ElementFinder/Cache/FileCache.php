@@ -1,9 +1,12 @@
 <?php
-/**
- * phlexible
+
+/*
+ * This file is part of the phlexible element finder package.
  *
- * @copyright 2007-2013 brainbits GmbH (http://www.brainbits.net)
- * @license   proprietary
+ * (c) Stephan Wentz <sw@brainbits.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Cache;
@@ -17,7 +20,7 @@ use Phlexible\Bundle\ElementFinderBundle\Exception\UnknownIdentifierException;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * File cache
+ * File based result pool cache
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

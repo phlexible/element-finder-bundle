@@ -1,7 +1,7 @@
 {
     "name": "phlexible/element-finder-bundle",
     "description": "phlexible element finder bundle",
-    "license": "proprietary",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Phlexible\\Bundle\\ElementFinderBundle\\": ""
