@@ -15,7 +15,7 @@ use FluentDOM\Document;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 
 /**
- * Xml result pool dumper
+ * Xml result pool dumper.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -57,17 +57,17 @@ class XmlDumper implements DumperInterface
         $itemsNode = $root->appendElement('items');
         foreach ($pool->rawAll() as $item) {
             $attributes = array(
-                'treeId'        => $item->getTreeId(),
-                'eid'           => $item->getEid(),
-                'version'       => $item->getVersion(),
-                'language'      => $item->getLanguage(),
+                'treeId' => $item->getTreeId(),
+                'eid' => $item->getEid(),
+                'version' => $item->getVersion(),
+                'language' => $item->getLanguage(),
                 'elementtypeId' => $item->getElementtypeId(),
-                'isPreview'     => $item->isPreview() ? 1 : 0,
-                'inNavigation'  => $item->isInNavigation() ? 1 : 0,
-                'isRestricted'  => $item->isRestricted() ? 1 : 0,
-                'customDate'    => $item->getCustomDate() ? $item->getCustomDate()->format('Y-m-d H:i:s') : '',
-                'publishedAt'   => $item->getPublishedAt() ? $item->getPublishedAt()->format('Y-m-d H:i:s') : '',
-                'sortField'     => $item->getSortField(),
+                'isPreview' => $item->isPreview() ? 1 : 0,
+                'inNavigation' => $item->isInNavigation() ? 1 : 0,
+                'isRestricted' => $item->isRestricted() ? 1 : 0,
+                'customDate' => $item->getCustomDate() ? $item->getCustomDate()->format('Y-m-d H:i:s') : '',
+                'publishedAt' => $item->getPublishedAt() ? $item->getPublishedAt()->format('Y-m-d H:i:s') : '',
+                'sortField' => $item->getSortField(),
             );
             $itemNode = $itemsNode->appendElement('item', '', $attributes);
 

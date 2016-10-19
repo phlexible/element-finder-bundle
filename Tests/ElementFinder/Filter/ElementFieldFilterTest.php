@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\Tests\ElementFinder;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\ElementFieldFilter;
 
 /**
- * Element field filter test
+ * Element field filter test.
  *
  * @author Tim Hoepfner <thoepfner@brainbits.net>
  */
@@ -22,6 +22,6 @@ class ElementFieldFilterTest extends \PHPUnit_Framework_TestCase
 {
     public function testEnsureElementFieldFilterIsInstantiable()
     {
-        new ElementFieldFilter('','');
+        new ElementFieldFilter('', '');
     }
 }

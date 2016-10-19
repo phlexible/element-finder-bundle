@@ -18,7 +18,7 @@ use Phlexible\Bundle\ElementFinderBundle\Exception\InvalidArgumentException;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
 /**
- * Result pool
+ * Result pool.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -81,13 +81,13 @@ class ResultPool implements \Countable
     public function __construct($identifier, ElementFinderConfig $config, array $languages, $query, array $items, array $filters, \DateTime $createdAt = null)
     {
         if (null === $createdAt) {
-            $createdAt = new \DateTime;
+            $createdAt = new \DateTime();
         }
 
         $this->facetNames = array();
         foreach ($items as $item) {
             if (!$item instanceof ResultItem) {
-                throw new InvalidArgumentException("Invalid result item.");
+                throw new InvalidArgumentException('Invalid result item.');
             }
             $this->facetNames = array_unique(array_merge($this->facetNames, array_keys($item->getExtras())));
         }
@@ -438,7 +438,7 @@ class ResultPool implements \Countable
             if (!isset($values[$item->getExtra($facetName)])) {
                 $values[$item->getExtra($facetName)] = array('value' => $item->getExtra($facetName), 'count' => 1);
             } else {
-                $values[$item->getExtra($facetName)]['count']++;
+                ++$values[$item->getExtra($facetName)]['count'];
             }
         }
 

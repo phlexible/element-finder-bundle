@@ -15,7 +15,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterManager;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 
 /**
- * Loader interface
+ * Loader interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

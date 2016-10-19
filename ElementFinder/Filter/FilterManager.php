@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter;
 use Phlexible\Bundle\ElementFinderBundle\Exception\InvalidArgumentException;
 
 /**
- * Filter manager
+ * Filter manager.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -52,6 +52,7 @@ class FilterManager
      * @param string $name
      *
      * @return FilterInterface
+     *
      * @throws InvalidArgumentException
      */
     public function get($name)

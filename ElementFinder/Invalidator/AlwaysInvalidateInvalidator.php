@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator;
 
 /**
- * Invalidator that always invalidates
+ * Invalidator that always invalidates.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

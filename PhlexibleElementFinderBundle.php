@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Element finder bundle
+ * Element finder bundle.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

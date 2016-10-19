@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter;
 
 /**
- * Facet sorter interface
+ * Facet sorter interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

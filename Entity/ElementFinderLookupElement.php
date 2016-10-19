@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Element finder lookup element
+ * Element finder lookup element.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  *
@@ -224,7 +224,7 @@ class ElementFinderLookupElement
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsPreview()
     {
@@ -232,7 +232,7 @@ class ElementFinderLookupElement
     }
 
     /**
-     * @param boolean $isPreview
+     * @param bool $isPreview
      *
      * @return $this
      */
@@ -244,7 +244,7 @@ class ElementFinderLookupElement
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getInNavigation()
     {
@@ -252,7 +252,7 @@ class ElementFinderLookupElement
     }
 
     /**
-     * @param boolean $inNavigation
+     * @param bool $inNavigation
      *
      * @return $this
      */
@@ -264,7 +264,7 @@ class ElementFinderLookupElement
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsRestricted()
     {
@@ -272,7 +272,7 @@ class ElementFinderLookupElement
     }
 
     /**
-     * @param boolean $isRestricted
+     * @param bool $isRestricted
      *
      * @return $this
      */

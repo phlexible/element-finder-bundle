@@ -53,7 +53,7 @@ class BuildCommand extends ContainerAwareCommand
             }
         }
 
-        $output->writeln("Build finished.");
+        $output->writeln('Build finished.');
 
         return $output;
     }

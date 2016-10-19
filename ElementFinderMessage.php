@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\ElementFinderBundle;
 use Phlexible\Bundle\MessageBundle\Entity\Message;
 
 /**
- * Element finder message
+ * Element finder message.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

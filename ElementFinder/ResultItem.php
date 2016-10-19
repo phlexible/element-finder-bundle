@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
 use DateTimeInterface;
 
 /**
- * Result item
+ * Result item.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -147,7 +147,7 @@ class ResultItem
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isPreview()
     {
@@ -155,7 +155,7 @@ class ResultItem
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isInNavigation()
     {
@@ -163,7 +163,7 @@ class ResultItem
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isRestricted()
     {

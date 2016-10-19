@@ -15,7 +15,7 @@ use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Update lookup element
+ * Update lookup element.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -32,8 +32,8 @@ class UpdateLookupElement extends Event
     private $preview;
 
     /**
-     * @param TreeNodeInterface  $treeNode
-     * @param bool               $preview
+     * @param TreeNodeInterface $treeNode
+     * @param bool              $preview
      */
     public function __construct(TreeNodeInterface $treeNode, $preview = false)
     {

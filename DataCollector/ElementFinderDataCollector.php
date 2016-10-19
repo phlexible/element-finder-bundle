@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpKernel\DataCollector\LateDataCollectorInterface;
 
 /**
- * Data collector for element finder result pools
+ * Data collector for element finder result pools.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -82,6 +82,7 @@ class ElementFinderDataCollector extends DataCollector implements LateDataCollec
     private function poolToArray(ResultPool $resultPool)
     {
         $config = $resultPool->getConfig();
+
         return array(
             'config' => array(
                 'elementtype_ids' => $config->getElementtypeIds(),
@@ -97,8 +98,8 @@ class ElementFinderDataCollector extends DataCollector implements LateDataCollec
             ),
             'parameters' => $resultPool->getParameters(),
             'filters' => $resultPool->getFilters(),
-            #'count' => count($resultPool),
-            #'facets' => $resultPool->getFacets(),
+            //'count' => count($resultPool),
+            //'facets' => $resultPool->getFacets(),
             'raw_facets' => $resultPool->getRawFacets(),
             'facet_names' => $resultPool->getFacetNames(),
             'created_at' => $resultPool->getCreatedAt(),

@@ -17,7 +17,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
 /**
- * Xml loader
+ * Xml loader.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

@@ -15,7 +15,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Result pool event
+ * Result pool event.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

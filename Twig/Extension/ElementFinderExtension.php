@@ -61,6 +61,7 @@ class ElementFinderExtension extends \Twig_Extension
      * @param int                         $pageSize
      *
      * @return ResultPool
+     *
      * @throws \Exception
      */
     public function find($configValues, $pageSize = null)
@@ -76,7 +77,7 @@ class ElementFinderExtension extends \Twig_Extension
         if ($configValues instanceof ElementStructureValue) {
             $configValues = $configValues->getValue();
         } elseif (!is_array($configValues)) {
-            throw new InvalidArgumentException("No valid configuration values given to find().");
+            throw new InvalidArgumentException('No valid configuration values given to find().');
         }
 
         $config = ElementFinderConfig::fromValues($configValues);

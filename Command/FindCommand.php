@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Command that finds elements on given element finder configuration
+ * Command that finds elements on given element finder configuration.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -76,7 +76,7 @@ class FindCommand extends ContainerAwareCommand
             }
         }
 
-        $output->writeln('Result pool identifier: ' . $resultPool->getIdentifier());
+        $output->writeln('Result pool identifier: '.$resultPool->getIdentifier());
         $output->writeln('');
 
         $table = new Table($output);
@@ -84,14 +84,14 @@ class FindCommand extends ContainerAwareCommand
 
         foreach ($resultPool->all() as $item) {
             $row = array(
-                'treeId'        => $item->getTreeId(),
-                'version'       => $item->getVersion(),
-                'language'      => $item->getLanguage(),
+                'treeId' => $item->getTreeId(),
+                'version' => $item->getVersion(),
+                'language' => $item->getLanguage(),
                 'elementtypeId' => $item->getElementtypeId(),
-                'customDate'    => $item->getCustomDate() ? $item->getCustomDate()->format('Y-m-d H:i:s') : '-',
-                'sortField'     => $item->getSortField(),
-                'publishedAt'   => $item->getPublishedAt() ? $item->getPublishedAt()->format('Y-m-d H:i:s') : '-',
-                'extra'         => $item->getExtras() ? json_encode($item->getExtras()) : '-',
+                'customDate' => $item->getCustomDate() ? $item->getCustomDate()->format('Y-m-d H:i:s') : '-',
+                'sortField' => $item->getSortField(),
+                'publishedAt' => $item->getPublishedAt() ? $item->getPublishedAt()->format('Y-m-d H:i:s') : '-',
+                'extra' => $item->getExtras() ? json_encode($item->getExtras()) : '-',
             );
             $table->addRow($row);
         }

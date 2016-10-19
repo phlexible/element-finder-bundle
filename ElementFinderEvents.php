@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle;
 
 /**
- * Element finder events
+ * Element finder events.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

@@ -15,7 +15,7 @@ use Doctrine\Common\Cache\Cache;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 
 /**
- * Cache rotations strategy
+ * Cache rotations strategy.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

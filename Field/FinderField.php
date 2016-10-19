@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\Field;
 use Phlexible\Bundle\ElementtypeBundle\Field\AbstractField;
 
 /**
- * FinderField
+ * FinderField.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

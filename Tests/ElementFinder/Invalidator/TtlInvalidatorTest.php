@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\Tests\ElementFinder\Invalidator;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\TtlInvalidator;
 
 /**
- * TTL invalidator test
+ * TTL invalidator test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

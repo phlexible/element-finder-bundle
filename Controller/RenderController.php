@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 class RenderController extends Controller
 {
     /**
-     * Render finder pool as html
+     * Render finder pool as html.
      *
      * @param Request $request
      * @param string  $identifier
@@ -48,7 +48,7 @@ class RenderController extends Controller
         $resultPool->setParameters($parameters);
 
         $data = array(
-            'pool'  => $resultPool,
+            'pool' => $resultPool,
             'start' => !empty($parameters['finder_start']) ? $parameters['finder_start'] : 0,
         );
 
@@ -56,7 +56,7 @@ class RenderController extends Controller
     }
 
     /**
-     * Render finder pool as html
+     * Render finder pool as html.
      *
      * @param Request $request
      * @param string  $identifier
@@ -78,18 +78,18 @@ class RenderController extends Controller
         $resultPool->setParameters($parameters);
 
         $data = array(
-            'pool'  => $resultPool,
+            'pool' => $resultPool,
             'start' => !empty($parameters['finder_start']) ? $parameters['finder_start'] : 0,
         );
 
         return new JsonResponse(array(
-            'view'       => $this->renderView($resultPool->getConfig()->getTemplate(), $data),
-            'start'      => (int) $resultPool->getParameter('finder_start', 0),
-            'limit'      => $resultPool->getConfig()->getPageSize(),
-            'facets'     => $resultPool->getFacets(),
-            'rawFacets'  => $resultPool->getRawFacets(),
+            'view' => $this->renderView($resultPool->getConfig()->getTemplate(), $data),
+            'start' => (int) $resultPool->getParameter('finder_start', 0),
+            'limit' => $resultPool->getConfig()->getPageSize(),
+            'facets' => $resultPool->getFacets(),
+            'rawFacets' => $resultPool->getRawFacets(),
             'parameters' => $parameters,
-            'hasMore'    => $resultPool->hasMore(),
+            'hasMore' => $resultPool->hasMore(),
         ));
     }
 }
