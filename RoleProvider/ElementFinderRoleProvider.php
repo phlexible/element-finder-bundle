@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\RoleProvider;
 use Phlexible\Bundle\GuiBundle\Security\RoleProvider\RoleProvider;
 
 /**
- * Element finder role provider
+ * Element finder role provider.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

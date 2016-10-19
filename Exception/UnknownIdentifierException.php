@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\Exception;
 
 /**
- * Unknown identifier exception
+ * Unknown identifier exception.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

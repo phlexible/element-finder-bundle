@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator;
 
 /**
- * Invalidator interface
+ * Invalidator interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

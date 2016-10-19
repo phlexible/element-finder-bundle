@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Cache;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 
 /**
- * Result pool cache interface
+ * Result pool cache interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

@@ -23,7 +23,7 @@ use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Element finder
+ * Element finder.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -110,7 +110,7 @@ class ElementFinder
     }
 
     /**
-     * Find elements
+     * Find elements.
      *
      * @param ElementFinderConfig $config
      * @param array               $languages
@@ -320,16 +320,16 @@ class ElementFinder
         if ($config->getMetaField() && $config->getMetaKeywords()) {
             $metaI = 0;
             foreach ($config->getMetaKeywords() as $key => $value) {
-                $alias = 'meta' . ++$metaI;
+                $alias = 'meta'.++$metaI;
                 $qb
                     ->join(
                         'lookup',
                         'elementfinder_lookup_meta',
                         $alias,
                         $qb->expr()->andX(
-                            $qb->expr()->eq("$alias.eid", "lookup.eid"),
-                            $qb->expr()->eq("$alias.version", "lookup.version"),
-                            $qb->expr()->eq("$alias.language", "lookup.language")
+                            $qb->expr()->eq("$alias.eid", 'lookup.eid'),
+                            $qb->expr()->eq("$alias.version", 'lookup.version'),
+                            $qb->expr()->eq("$alias.language", 'lookup.language')
                         )
                     )
                     ->andWhere($qb->expr()->eq("$alias.field", $qb->expr()->literal($config->getMetaField())));
@@ -443,7 +443,7 @@ class ElementFinder
                 'sort_d',
                 'element_structure_value',
                 'sort_esv',
-                'sort_es.data_id = sort_esvl.data_id AND sort_es.version = sort_esv.version AND sort_es.eid = sort_esv.eid AND sort_es.ds_id = ' . $qb->expr()->literal($config->getSortField()) . ' AND sort_esv.language = lookup.language'
+                'sort_es.data_id = sort_esvl.data_id AND sort_es.version = sort_esv.version AND sort_es.eid = sort_esv.eid AND sort_es.ds_id = '.$qb->expr()->literal($config->getSortField()).' AND sort_esv.language = lookup.language'
             );
     }
 
@@ -482,7 +482,7 @@ class ElementFinder
     private function applySortByPublishDate(QueryBuilder $qb, ElementFinderConfig $config, $isPreview)
     {
         $qb
-            ->addSelect("lookup.published_at AS sort_field");
+            ->addSelect('lookup.published_at AS sort_field');
     }
 
     /**
@@ -494,6 +494,6 @@ class ElementFinder
     private function applySortByCustomDate(QueryBuilder $qb, ElementFinderConfig $config)
     {
         $qb
-            ->addSelect("lookup.custom_date AS sort_field");
+            ->addSelect('lookup.custom_date AS sort_field');
     }
 }

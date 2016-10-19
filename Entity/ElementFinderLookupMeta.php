@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Element finder lookup meta
+ * Element finder lookup meta.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  *
@@ -232,5 +232,4 @@ class ElementFinderLookupMeta
     {
         return $this->version;
     }
-
 }

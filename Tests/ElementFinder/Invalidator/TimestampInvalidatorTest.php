@@ -16,7 +16,7 @@ use Phlexible\Bundle\GuiBundle\Properties\Properties;
 use Prophecy\Argument;
 
 /**
- * Timestamp invalidator test
+ * Timestamp invalidator test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

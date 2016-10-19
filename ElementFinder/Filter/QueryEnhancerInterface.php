@@ -15,7 +15,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
 /**
- * Query enhancer interface
+ * Query enhancer interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

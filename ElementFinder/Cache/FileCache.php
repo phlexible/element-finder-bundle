@@ -20,7 +20,7 @@ use Phlexible\Bundle\ElementFinderBundle\Exception\UnknownIdentifierException;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * File based result pool cache
+ * File based result pool cache.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -58,7 +58,7 @@ class FileCache implements CacheInterface
      */
     public function isFresh($identifier)
     {
-        $filename = $this->cacheDir . "/$identifier.xml";
+        $filename = $this->cacheDir."/$identifier.xml";
 
         if (!file_exists($filename)) {
             return false;
@@ -87,7 +87,7 @@ class FileCache implements CacheInterface
      */
     public function get($identifier)
     {
-        $filename = $this->cacheDir . "/$identifier.xml";
+        $filename = $this->cacheDir."/$identifier.xml";
 
         if (!file_exists($filename)) {
             throw new UnknownIdentifierException("Result pool for identifier $identifier not found.");

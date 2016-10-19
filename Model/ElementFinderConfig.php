@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\Model;
 
 /**
- * Element finder config
+ * Element finder config.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -98,7 +98,7 @@ class ElementFinderConfig
         $template = !empty($values['template']) ? $values['template'] : null;
         $pageSize = !empty($values['pageSize']) ? $values['pageSize'] : null;
 
-        $config = new ElementFinderConfig();
+        $config = new self();
         $config
             ->setTreeId($startTreeId)
             ->setElementtypeIds($elementtypeIds)

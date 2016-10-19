@@ -77,7 +77,7 @@ class DebugElementFinder extends ElementFinder
     }
 
     /**
-     * Find elements
+     * Find elements.
      *
      * @param ElementFinderConfig $config
      * @param array               $languages

@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter;
 
 /**
- * Filter interface
+ * Filter interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

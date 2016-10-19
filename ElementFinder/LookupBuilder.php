@@ -26,7 +26,7 @@ use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Lookup builder
+ * Lookup builder.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -95,7 +95,7 @@ class LookupBuilder
     }
 
     /**
-     * Remove all lookup items
+     * Remove all lookup items.
      */
     public function removeAll()
     {
@@ -286,7 +286,7 @@ class LookupBuilder
                 array(
                     'treeId' => $treeNode->getId(),
                     'isPreview' => $preview,
-                    'language' => $language
+                    'language' => $language,
                 )
             );
 
@@ -335,7 +335,7 @@ class LookupBuilder
         }
 
         foreach ($metaset->getFields() as $field) {
-//        foreach ($metadata->getValues()[$language] as $name => $value) {
+            //        foreach ($metadata->getValues()[$language] as $name => $value) {
             $fieldId = $field->getId();
             $value = $metadata->get($field->getName(), $language);
             if (!$value) {

@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\Tests\ElementFinder\Invalidator;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\AlwaysInvalidateInvalidator;
 
 /**
- * Always invalidate invalidator test
+ * Always invalidate invalidator test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

@@ -15,7 +15,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
- * Session rotations strategy
+ * Session rotations strategy.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

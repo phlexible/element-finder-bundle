@@ -87,7 +87,7 @@ class ConfigController extends Controller
                     continue;
                 }
                 if (!in_array($field->getDataType(), array('string', 'float', 'integer', 'number', 'boolean'))) {
-                     continue;
+                    continue;
                 }
 
                 if (in_array($fieldType, $skipFieldTypes)) {
@@ -96,8 +96,8 @@ class ConfigController extends Controller
 
                 $fields[] = array(
                     'ds_id' => $dsId,
-                    'title' => $node->getName() . ' (' . $node->getLabel('fieldLabel', $this->getUser()->getInterfaceLanguage('en')) . ')',
-                    'icon'  => $field->getIcon(),
+                    'title' => $node->getName().' ('.$node->getLabel('fieldLabel', $this->getUser()->getInterfaceLanguage('en')).')',
+                    'icon' => $field->getIcon(),
                 );
             }
 
@@ -110,27 +110,27 @@ class ConfigController extends Controller
             array(
                 'ds_id' => ElementFinderConfig::SORT_TITLE_BACKEND,
                 'title' => $translator->trans('elements.backend_title', array(), 'gui'),
-                'icon'  => '',
+                'icon' => '',
             ),
             array(
                 'ds_id' => ElementFinderConfig::SORT_TITLE_PAGE,
                 'title' => $translator->trans('elements.page_title', array(), 'gui'),
-                'icon'  => '',
+                'icon' => '',
             ),
             array(
                 'ds_id' => ElementFinderConfig::SORT_TITLE_NAVIGATION,
                 'title' => $translator->trans('elements.navigation_title', array(), 'gui'),
-                'icon'  => '',
+                'icon' => '',
             ),
             array(
                 'ds_id' => ElementFinderConfig::SORT_PUBLISH_DATE,
                 'title' => $translator->trans('elements.publish_date', array(), 'gui'),
-                'icon'  => '',
+                'icon' => '',
             ),
             array(
                 'ds_id' => ElementFinderConfig::SORT_CUSTOM_DATE,
                 'title' => $translator->trans('elements.custom_date', array(), 'gui'),
-                'icon'  => '',
+                'icon' => '',
             )
         );
 
@@ -138,7 +138,7 @@ class ConfigController extends Controller
     }
 
     /**
-     * List all element types
+     * List all element types.
      *
      * @return JsonResponse
      * @Route("/elementtypes", name="elementfinder_config_elementtypes")
@@ -152,10 +152,10 @@ class ConfigController extends Controller
 
         $data = array();
         foreach ($elementtypes as $elementtype) {
-            $data[$elementtype->getTitle() . $elementtype->getId()] = array(
-                'id'    => $elementtype->getId(),
+            $data[$elementtype->getTitle().$elementtype->getId()] = array(
+                'id' => $elementtype->getId(),
                 'title' => $elementtype->getTitle(),
-                'icon'  => $iconResolver->resolveElementtype($elementtype),
+                'icon' => $iconResolver->resolveElementtype($elementtype),
             );
         }
         ksort($data);
@@ -176,8 +176,8 @@ class ConfigController extends Controller
         foreach ($metasetManager->findAll() as $metaset) {
             foreach ($metaset->getFields() as $field) {
                 $metaFields[] = array(
-                    'id'   => $field->getId(),
-                    'name' => $metaset->getName() . '/' . $field->getName()
+                    'id' => $field->getId(),
+                    'name' => $metaset->getName().'/'.$field->getName(),
                 );
             }
         }
@@ -215,7 +215,7 @@ class ConfigController extends Controller
     }
 
     /**
-     * List all available filters
+     * List all available filters.
      *
      * @return JsonResponse
      * @Route("/filters", name="elementfinder_config_filters")
@@ -228,7 +228,7 @@ class ConfigController extends Controller
 
         foreach ($filterManager->all() as $name => $filter) {
             $data[] = array(
-                'id'   => $name,
+                'id' => $name,
                 'name' => ucfirst(strtolower($name)),
             );
         }
@@ -289,19 +289,19 @@ class ConfigController extends Controller
             $elementVersion = $elementService->findElementVersion($element, $resultItem->getVersion());
 
             $data[] = array(
-                'id'            => $resultItem->getTreeId(),
-                'version'       => $resultItem->getVersion(),
-                'language'      => $resultItem->getLanguage(),
+                'id' => $resultItem->getTreeId(),
+                'version' => $resultItem->getVersion(),
+                'language' => $resultItem->getLanguage(),
                 'elementtypeId' => $resultItem->getElementtypeId(),
-                'customDate'    => $resultItem->getCustomDate() ? $resultItem->getCustomDate()->format('Y-m-d H:i:s') : null,
-                'publishedAt'   => $resultItem->getPublishedAt() ? $resultItem->getPublishedAt()->format('Y-m-d H:i:s') : null,
-                'sortField'     => $resultItem->getSortField(),
-                'isRestricted'  => $resultItem->isRestricted(),
-                'isPreview'     => $resultItem->isPreview(),
-                'inNavigation'  => $resultItem->isInNavigation(),
-                'extras'        => $resultItem->getExtras(),
-                'title'         => $elementVersion->getBackendTitle($resultItem->getLanguage()),
-                'icon'          => $iconResolver->resolveTreeNode($treeNode, $resultItem->getLanguage()),
+                'customDate' => $resultItem->getCustomDate() ? $resultItem->getCustomDate()->format('Y-m-d H:i:s') : null,
+                'publishedAt' => $resultItem->getPublishedAt() ? $resultItem->getPublishedAt()->format('Y-m-d H:i:s') : null,
+                'sortField' => $resultItem->getSortField(),
+                'isRestricted' => $resultItem->isRestricted(),
+                'isPreview' => $resultItem->isPreview(),
+                'inNavigation' => $resultItem->isInNavigation(),
+                'extras' => $resultItem->getExtras(),
+                'title' => $elementVersion->getBackendTitle($resultItem->getLanguage()),
+                'icon' => $iconResolver->resolveTreeNode($treeNode, $resultItem->getLanguage()),
             );
         }
 

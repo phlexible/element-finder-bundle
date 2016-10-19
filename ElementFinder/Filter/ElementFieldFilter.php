@@ -17,7 +17,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
 /**
- * Element field filter
+ * Element field filter.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

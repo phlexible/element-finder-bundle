@@ -15,14 +15,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 
 /**
- * Pool filter interface
+ * Pool filter interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
 interface ResultPoolFilterInterface extends FilterInterface
 {
     /**
-     * Filter result items
+     * Filter result items.
      *
      * @param ArrayCollection $items
      * @param ResultPool      $resultPool

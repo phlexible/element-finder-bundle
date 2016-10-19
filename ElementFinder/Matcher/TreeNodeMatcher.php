@@ -19,7 +19,7 @@ use Phlexible\Bundle\TreeBundle\Tree\TreeIterator;
 use Phlexible\Bundle\TreeBundle\Tree\TreeManager;
 
 /**
- * Tree node matcher
+ * Tree node matcher.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -90,7 +90,7 @@ class TreeNodeMatcher implements TreeNodeMatcherInterface
                 $actions = $this->elementHistoryManager->findBy(
                     array(
                         'eid' => $childNode->getTypeId(),
-                        'action' => ElementHistoryManagerInterface::ACTION_SAVE_ELEMENT
+                        'action' => ElementHistoryManagerInterface::ACTION_SAVE_ELEMENT,
                     )
                 );
                 $onlineLanguages = array();

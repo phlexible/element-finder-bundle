@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\RotationStrategy;
 
 /**
- * Pool rotation
+ * Pool rotation.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -50,5 +50,4 @@ class Rotation
             $result = $reducedResult;
         }
     }
-
 }

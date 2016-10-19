@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Matcher;
 
 /**
- * Tree node matcher
+ * Tree node matcher.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -20,7 +20,7 @@ interface TreeNodeMatcherInterface
 {
     /**
      * Traverse tree and find matching nodes.
-     * - check max depth
+     * - check max depth.
      *
      * @param int   $treeId
      * @param int   $maxDepth
@@ -32,7 +32,7 @@ interface TreeNodeMatcherInterface
     public function getMatchingTreeIdsByLanguage($treeId, $maxDepth, $isPreview, $languages);
 
     /**
-     * Flatten matched tree ids by language to simple tree id array
+     * Flatten matched tree ids by language to simple tree id array.
      *
      * @param array $matchedTreeIdsByLanguage
      *

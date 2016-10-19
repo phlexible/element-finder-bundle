@@ -21,7 +21,7 @@ use Phlexible\Bundle\TreeBundle\TreeEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Node listener
+ * Node listener.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -43,12 +43,12 @@ class NodeListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            TreeEvents::CREATE_NODE          => 'onCreateNode',
+            TreeEvents::CREATE_NODE => 'onCreateNode',
             TreeEvents::CREATE_NODE_INSTANCE => 'onCreateNodeInstance',
-            ElementEvents::SAVE_NODE_DATA    => 'onSaveNodeData',
-            TreeEvents::PUBLISH_NODE         => 'onPublishNode',
-            TreeEvents::SET_NODE_OFFLINE     => 'onSetNodeOffline',
-            TreeEvents::DELETE_NODE          => 'onDeleteNode',
+            ElementEvents::SAVE_NODE_DATA => 'onSaveNodeData',
+            TreeEvents::PUBLISH_NODE => 'onPublishNode',
+            TreeEvents::SET_NODE_OFFLINE => 'onSetNodeOffline',
+            TreeEvents::DELETE_NODE => 'onDeleteNode',
         );
     }
 

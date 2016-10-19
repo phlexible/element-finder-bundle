@@ -18,7 +18,7 @@ use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Prophecy\Argument;
 
 /**
- * Result pool test
+ * Result pool test.
  *
  * @author Stephan Wentz <swentz@brainbits.net>
  */
@@ -78,7 +78,7 @@ class ResultPoolTest extends \PHPUnit_Framework_TestCase
                 ),
                 'foo' => array(
                     array('value' => 'abc', 'count' => 2),
-                    array('value' => 'jkl', 'count' => 1)
+                    array('value' => 'jkl', 'count' => 1),
                 ),
             ),
             $pool->getFacets()
@@ -86,14 +86,14 @@ class ResultPoolTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             array(
                 array('value' => 'abc', 'count' => 2),
-                array('value' => 'jkl', 'count' => 1)
+                array('value' => 'jkl', 'count' => 1),
             ),
             $pool->getFacet('foo')
         );
         $this->assertSame(
             array(
                 array('value' => 'abc', 'count' => 2),
-                array('value' => 'jkl', 'count' => 1)
+                array('value' => 'jkl', 'count' => 1),
             ),
             $pool->getRawFacet('foo')
         );
