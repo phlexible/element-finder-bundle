@@ -2,6 +2,8 @@
     "name": "phlexible/element-finder-bundle",
     "description": "phlexible element finder bundle",
     "license": "MIT",
+    "type": "symfony-bundle",
+    "keywords": ["find"],
     "autoload": {
         "psr-4": {
             "Phlexible\\Bundle\\ElementFinderBundle\\": ""
