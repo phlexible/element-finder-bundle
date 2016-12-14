@@ -90,16 +90,16 @@ class TreeNodeMatcher implements TreeNodeMatcherInterface
                 $actions = $this->elementHistoryManager->findBy(
                     array(
                         'eid' => $childNode->getTypeId(),
-                        'action' => ElementHistoryManagerInterface::ACTION_SAVE_ELEMENT
+                        'action' => ElementHistoryManagerInterface::ACTION_CREATE_ELEMENT_VERSION
                     )
                 );
+
                 $onlineLanguages = array();
                 foreach ($actions as $action) {
                     $onlineLanguages[$action->getLanguage()] = $action->getLanguage();
                 }
-                // TODO: repair
+
                 $onlineLanguages = array_values($onlineLanguages);
-                $onlineLanguages = array('de');
             } else {
                 $onlineLanguages = $tree->getPublishedLanguages($childNode);
             }
