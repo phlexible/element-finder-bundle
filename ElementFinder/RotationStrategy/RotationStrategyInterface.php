@@ -11,7 +11,7 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\RotationStrategy;
 
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 
 /**
  * Cache rotations strategy.
@@ -33,7 +33,7 @@ interface RotationStrategyInterface
     /**
      * Get last remembered position for teaser rotation.
      *
-     * @param ResultPool $pool
+     * @param \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool $pool
      *
      * @return int
      */

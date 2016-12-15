@@ -11,11 +11,13 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Cache;
 
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Dumper\DumperInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Dumper\XmlDumper;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterManager;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\InvalidatorInterface;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Loader\LoaderInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Loader\XmlLoader;
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Exception\UnknownIdentifierException;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -27,11 +29,6 @@ use Symfony\Component\Filesystem\Filesystem;
 class FileCache implements CacheInterface
 {
     /**
-     * @var FilterManager
-     */
-    private $filterManager;
-
-    /**
      * @var InvalidatorInterface
      */
     private $invalidator;
@@ -42,15 +39,27 @@ class FileCache implements CacheInterface
     private $cacheDir;
 
     /**
+     * @var LoaderInterface
+     */
+    private $loader;
+
+    /**
+     * @var DumperInterface
+     */
+    private $dumper;
+
+    /**
      * @param FilterManager        $filterManager
      * @param InvalidatorInterface $invalidator
      * @param string               $cacheDir
      */
     public function __construct(FilterManager $filterManager, InvalidatorInterface $invalidator, $cacheDir)
     {
-        $this->filterManager = $filterManager;
         $this->invalidator = $invalidator;
         $this->cacheDir = $cacheDir;
+
+        $this->dumper = new XmlDumper();
+        $this->loader = new XmlLoader($filterManager);
     }
 
     /**
@@ -75,11 +84,10 @@ class FileCache implements CacheInterface
     public function put(ResultPool $resultPool)
     {
         $filesystem = new Filesystem();
-        $dumper = new XmlDumper();
 
         $filename = "{$this->cacheDir}/{$resultPool->getIdentifier()}.xml";
 
-        $filesystem->dumpFile($filename, $dumper->dump($resultPool));
+        $filesystem->dumpFile($filename, $this->dumper->dump($resultPool));
     }
 
     /**
@@ -93,8 +101,7 @@ class FileCache implements CacheInterface
             throw new UnknownIdentifierException("Result pool for identifier $identifier not found.");
         }
 
-        $loader = new XmlLoader();
-        $resultPool = $loader->load($this->filterManager, $filename);
+        $resultPool = $this->loader->load($filename);
 
         return $resultPool;
     }

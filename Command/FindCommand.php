@@ -11,8 +11,9 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\Command;
 
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinder;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -23,8 +24,23 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class FindCommand extends ContainerAwareCommand
+class FindCommand extends Command
 {
+    /**
+     * @var ElementFinder
+     */
+    private $finder;
+
+    /**
+     * @param ElementFinder $finder
+     */
+    public function __construct(ElementFinder $finder)
+    {
+        $this->finder = $finder;
+
+        parent::__construct();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -49,8 +65,6 @@ class FindCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $finder = $this->getContainer()->get('phlexible_element_finder.finder');
-
         $treeId = $input->getOption('tree-id');
         $elementtypeIds = $input->getOption('elementtype-id');
         $filter = $input->getOption('filter');
@@ -67,7 +81,7 @@ class FindCommand extends ContainerAwareCommand
         $config->setMaxDepth($maxDepth);
         $config->setNavigation($navigation);
 
-        $resultPool = $finder->find($config, $languages, $preview);
+        $resultPool = $this->finder->find($config, $languages, $preview);
 
         foreach ($parameters as $parameter) {
             $parts = explode('=', $parameter);

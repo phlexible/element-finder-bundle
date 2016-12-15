@@ -17,6 +17,8 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\TtlInvalidato
  * TTL invalidator test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\TtlInvalidator
  */
 class TtlInvalidatorTest extends \PHPUnit_Framework_TestCase
 {

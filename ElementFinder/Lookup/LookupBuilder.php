@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
+namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Lookup;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -83,7 +83,7 @@ class LookupBuilder
      */
     private function getLookupElementRepository()
     {
-        return $this->entityManager->getRepository('PhlexibleElementFinderBundle:ElementFinderLookupElement');
+        return $this->entityManager->getRepository(ElementFinderLookupElement::class);
     }
 
     /**
@@ -91,7 +91,7 @@ class LookupBuilder
      */
     private function getLookupMetaRepository()
     {
-        return $this->entityManager->getRepository('PhlexibleElementFinderBundle:ElementFinderLookupMeta');
+        return $this->entityManager->getRepository(ElementFinderLookupMeta::class);
     }
 
     /**
@@ -277,8 +277,8 @@ class LookupBuilder
         ElementVersion $elementVersion,
         $preview,
         $language,
-        $onlineVersion)
-    {
+        $onlineVersion
+    ) {
         $this->updateMeta($treeNode, $element, $elementVersion, $language);
 
         $lookupElement = $this->getLookupElementRepository()
@@ -297,6 +297,7 @@ class LookupBuilder
         $lookupElement
             ->setEid($element->getEid())
             ->setTreeId($treeNode->getId())
+            ->setPath($treeNode->getTree()->getIdPath($treeNode))
             ->setPublishedAt($elementVersion->getCreatedAt())
             ->setCustomDate($elementVersion->getCustomDate($language))
             ->setIsPreview($preview)

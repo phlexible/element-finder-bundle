@@ -11,7 +11,7 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Dumper;
 
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 
 /**
  * Result pool dumper interface.
@@ -21,7 +21,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
 interface DumperInterface
 {
     /**
-     * @param ResultPool $pool
+     * @param \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool $pool
      *
      * @return string
      */

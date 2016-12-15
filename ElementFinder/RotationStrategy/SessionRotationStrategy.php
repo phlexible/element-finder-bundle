@@ -11,7 +11,7 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\RotationStrategy;
 
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**

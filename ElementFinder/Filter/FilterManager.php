@@ -41,7 +41,7 @@ class FilterManager
      *
      * @return $this
      */
-    public function addFilter($name, FilterInterface $filter)
+    private function addFilter($name, FilterInterface $filter)
     {
         $this->filters[$name] = $filter;
 

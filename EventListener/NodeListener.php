@@ -13,7 +13,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\EventListener;
 
 use Phlexible\Bundle\ElementBundle\ElementEvents;
 use Phlexible\Bundle\ElementBundle\Event\SaveNodeDataEvent;
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\LookupBuilder;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Lookup\LookupBuilder;
 use Phlexible\Bundle\GuiBundle\Properties\Properties;
 use Phlexible\Bundle\TreeBundle\Event\NodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\SetNodeOfflineEvent;

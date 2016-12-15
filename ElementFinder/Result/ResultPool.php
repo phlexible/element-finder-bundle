@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
+namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FacetSorterInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\ResultPoolFilterInterface;
@@ -60,7 +61,7 @@ class ResultPool implements \Countable
     private $query;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $createdAt;
 
@@ -76,12 +77,12 @@ class ResultPool implements \Countable
      * @param string              $query
      * @param ResultItem[]        $items
      * @param array               $filters
-     * @param \DateTime           $createdAt
+     * @param DateTime            $createdAt
      */
-    public function __construct($identifier, ElementFinderConfig $config, array $languages, $query, array $items, array $filters, \DateTime $createdAt = null)
+    public function __construct($identifier, ElementFinderConfig $config, array $languages, $query, array $items, array $filters, DateTime $createdAt = null)
     {
         if (null === $createdAt) {
-            $createdAt = new \DateTime();
+            $createdAt = new DateTime();
         }
 
         $this->facetNames = array();
@@ -196,7 +197,7 @@ class ResultPool implements \Countable
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreatedAt()
     {

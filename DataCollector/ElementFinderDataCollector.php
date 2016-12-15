@@ -13,7 +13,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\DataCollector;
 
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\DebugElementFinder;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinder;
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;

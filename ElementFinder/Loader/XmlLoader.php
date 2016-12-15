@@ -12,8 +12,8 @@
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Loader;
 
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterManager;
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultItem;
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultItem;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
 /**
@@ -24,9 +24,22 @@ use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 class XmlLoader implements LoaderInterface
 {
     /**
+     * @var FilterManager
+     */
+    private $filterManager;
+
+    /**
+     * @param FilterManager $filterManager
+     */
+    public function __construct(FilterManager $filterManager)
+    {
+        $this->filterManager = $filterManager;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function load(FilterManager $filterManager, $filename)
+    public function load($filename)
     {
         $xml = simplexml_load_file($filename);
 
@@ -77,7 +90,27 @@ class XmlLoader implements LoaderInterface
             $extra = array();
             foreach ($itemNode->extra as $extraNode) {
                 $extraAttributes = $extraNode->attributes();
-                $extra[(string) $extraAttributes['key']] = (string) $extraNode;
+                $extraKey = (string) $extraAttributes['key'];
+                $extraType = (string) $extraAttributes['type'];
+                switch ($extraType) {
+                    case 'float':
+                    case 'double':
+                        $extraValue = (float) $extraNode;
+                        break;
+                    case 'integer':
+                        $extraValue = (int) $extraNode;
+                        break;
+                    case 'boolean':
+                        $extraValue = (bool) $extraNode;
+                        break;
+                    case 'array':
+                        $extraValue = json_decode((string) $extraNode, true);
+                        break;
+                    case 'string':
+                    default:
+                        $extraValue = (string) $extraNode;
+                }
+                $extra[$extraKey] = $extraValue;
             }
 
             $items[] = new ResultItem(
@@ -86,9 +119,9 @@ class XmlLoader implements LoaderInterface
                 (int) $itemAttributes['version'],
                 (string) $itemAttributes['language'],
                 (string) $itemAttributes['elementtypeId'],
-                (bool) $itemAttributes['isPreview'],
-                (bool) $itemAttributes['inNavigation'],
-                (bool) $itemAttributes['isRestricted'],
+                (bool) (string) $itemAttributes['isPreview'],
+                (bool) (string) $itemAttributes['inNavigation'],
+                (bool) (string) $itemAttributes['isRestricted'],
                 (string) $itemAttributes['publishedAt'] ? new \DateTimeImmutable((string) $itemAttributes['publishedAt']) : null,
                 (string) $itemAttributes['customDate'] ? new \DateTimeImmutable((string) $itemAttributes['customDate']) : null,
                 (string) $itemAttributes['sortField'],
@@ -99,7 +132,7 @@ class XmlLoader implements LoaderInterface
         $filters = array();
         foreach ($xml->filters->filter as $filterNode) {
             $filterName = (string) $filterNode;
-            $filter = $filterManager->get($filterName);
+            $filter = $this->filterManager->get($filterName);
             $filters[] = $filter;
         }
 

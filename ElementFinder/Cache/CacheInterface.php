@@ -11,7 +11,7 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Cache;
 
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 
 /**
  * Result pool cache interface.
@@ -28,14 +28,14 @@ interface CacheInterface
     public function isFresh($identifier);
 
     /**
-     * @param ResultPool $pool
+     * @param \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool $pool
      */
     public function put(ResultPool $pool);
 
     /**
      * @param string $identifier
      *
-     * @return ResultPool
+     * @return \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool
      */
     public function get($identifier);
 }

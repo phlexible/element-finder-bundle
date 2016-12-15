@@ -19,6 +19,8 @@ use Prophecy\Argument;
  * Timestamp invalidator test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\TimestampInvalidator
  */
 class TimestampInvalidatorTest extends \PHPUnit_Framework_TestCase
 {

@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Loader;
-
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
+namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Executor;
 
 /**
- * Loader interface.
+ * Executor interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-interface LoaderInterface
+interface ExecutorInterface
 {
     /**
-     * @param string $filename
+     * Find elements.
      *
-     * @return ResultPool
+     * @param ExecutionDescriptor $descriptor
+     *
+     * @return ExecutionResult
      */
-    public function load($filename);
+    public function execute(ExecutionDescriptor $descriptor);
 }

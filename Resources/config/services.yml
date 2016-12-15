@@ -42,13 +42,29 @@ services:
             - "@properties"
 
     phlexible_element_finder.lookup_builder:
-        class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\LookupBuilder
+        class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\Lookup\LookupBuilder
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@phlexible_element.element_service"
             - "@phlexible_element.element_meta_set_resolver"
             - "@phlexible_element.element_meta_data_manager"
             - "@event_dispatcher"
+
+    # comands
+    phlexible_element_finder.build_command:
+        class: Phlexible\Bundle\ElementFinderBundle\Command\BuildCommand
+        arguments:
+            - "@phlexible_tree.tree_manager"
+            - "@phlexible_element_finder.lookup_builder"
+        tags:
+            - {name: console.command}
+
+    phlexible_element_finder.find_command:
+        class: Phlexible\Bundle\ElementFinderBundle\Command\FindCommand
+        arguments:
+            - "@phlexible_element_finder.finder"
+        tags:
+            - {name: console.command}
 
     # data collectors
     phlexible_element_finder.data_collector:

@@ -11,18 +11,43 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Lookup\LookupBuilder;
+use Phlexible\Bundle\TreeBundle\Tree\TreeManager;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Command that build element finder lookup tables.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class BuildCommand extends ContainerAwareCommand
+class BuildCommand extends Command
 {
+    /**
+     * @var TreeManager
+     */
+    private $treeManager;
+
+    /**
+     * @var LookupBuilder
+     */
+    private $lookupBuilder;
+
+    /**
+     * @param TreeManager   $treeManager
+     * @param LookupBuilder $lookupBuilder
+     */
+    public function __construct(TreeManager $treeManager, LookupBuilder $lookupBuilder)
+    {
+        $this->treeManager = $treeManager;
+        $this->lookupBuilder = $lookupBuilder;
+
+        parent::__construct();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -39,21 +64,20 @@ class BuildCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $treeManager = $this->getContainer()->get('phlexible_tree.tree_manager');
-        $lookupBuilder = $this->getContainer()->get('phlexible_element_finder.lookup_builder');
+        $style = new SymfonyStyle($input, $output);
 
         if ($input->getOption('empty')) {
-            $lookupBuilder->removeAll();
+            $this->lookupBuilder->removeAll();
         }
 
-        foreach ($treeManager->getAll() as $tree) {
+        foreach ($this->treeManager->getAll() as $tree) {
             $rii = new \RecursiveIteratorIterator($tree->getIterator(), \RecursiveIteratorIterator::SELF_FIRST);
             foreach ($rii as $treeNode) {
-                $lookupBuilder->update($treeNode);
+                $this->lookupBuilder->update($treeNode);
             }
         }
 
-        $output->writeln('Build finished.');
+        $style->success('Build finished.');
 
         return $output;
     }

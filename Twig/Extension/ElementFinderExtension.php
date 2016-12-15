@@ -12,8 +12,9 @@
 namespace Phlexible\Bundle\ElementFinderBundle\Twig\Extension;
 
 use Phlexible\Bundle\ElementBundle\Model\ElementStructureValue;
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinder;
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinderInterface;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Executor\ExecutionDescriptor;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Exception\InvalidArgumentException;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -26,7 +27,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class ElementFinderExtension extends \Twig_Extension
 {
     /**
-     * @var ElementFinder
+     * @var ElementFinderInterface
      */
     private $elementFinder;
 
@@ -36,10 +37,10 @@ class ElementFinderExtension extends \Twig_Extension
     private $requestStack;
 
     /**
-     * @param ElementFinder $elementFinder
-     * @param RequestStack  $requestStack
+     * @param ElementFinderInterface $elementFinder
+     * @param RequestStack           $requestStack
      */
-    public function __construct(ElementFinder $elementFinder, RequestStack $requestStack)
+    public function __construct(ElementFinderInterface $elementFinder, RequestStack $requestStack)
     {
         $this->elementFinder = $elementFinder;
         $this->requestStack = $requestStack;
@@ -60,7 +61,7 @@ class ElementFinderExtension extends \Twig_Extension
      * @param ElementStructureValue|array $configValues
      * @param int                         $pageSize
      *
-     * @return ResultPool
+     * @return \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool
      *
      * @throws \Exception
      */
@@ -85,7 +86,8 @@ class ElementFinderExtension extends \Twig_Extension
             $config->setPageSize($pageSize);
         }
 
-        $resultPool = $this->elementFinder->find($config, $languages, $preview);
+        $descriptor = new ExecutionDescriptor($config, $languages, $preview);
+        $resultPool = $this->elementFinder->find($descriptor);
 
         $parameters = array_merge(
             $masterRequest->request->all(),

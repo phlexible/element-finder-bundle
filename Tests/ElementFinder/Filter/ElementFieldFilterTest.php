@@ -17,6 +17,8 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\ElementFieldFilter
  * Element field filter test.
  *
  * @author Tim Hoepfner <thoepfner@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\ElementFieldFilter
  */
 class ElementFieldFilterTest extends \PHPUnit_Framework_TestCase
 {

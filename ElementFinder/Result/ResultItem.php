@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
+namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result;
 
 use DateTimeInterface;
 

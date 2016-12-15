@@ -218,6 +218,21 @@ class ElementFinderConfig
     }
 
     /**
+     * @return array
+     */
+    public function getFilters()
+    {
+        $filters = array();
+        if (trim($this->filter)) {
+            foreach (explode(',', $this->filter) as $filter) {
+                $filters[$filter] = $filter;
+            }
+        }
+
+        return array_values($filters);
+    }
+
+    /**
      * @param int $maxDepth
      *
      * @return $this

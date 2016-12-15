@@ -11,7 +11,7 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\Event;
 
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -35,7 +35,7 @@ class ResultPoolEvent extends Event
     }
 
     /**
-     * @return ResultPool
+     * @return \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool
      */
     public function getResultPool()
     {

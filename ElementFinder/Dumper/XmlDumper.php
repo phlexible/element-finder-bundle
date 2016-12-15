@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Dumper;
 
 use FluentDOM\Document;
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 
 /**
  * Xml result pool dumper.
@@ -72,7 +72,13 @@ class XmlDumper implements DumperInterface
             $itemNode = $itemsNode->appendElement('item', '', $attributes);
 
             foreach ($item->getExtras() as $key => $value) {
-                $itemNode->appendElement('extra', null, array('key' => $key))->appendChild($dom->createCDATASection($value));
+                $type = gettype($value);
+                switch ($type) {
+                    case 'array':
+                        $value = json_encode($value);
+                        break;
+                }
+                $itemNode->appendElement('extra', null, array('key' => $key, 'type' => $type))->appendChild($dom->createCDATASection($value));
             }
         }
 

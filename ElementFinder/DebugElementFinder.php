@@ -11,15 +11,22 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
 
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Executor\ExecutionDescriptor;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
 /**
- * Element finder that stores all assembled result pools for debug purposes.
+ * Element finder that stores all assembled result pools for debugging purposes.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class DebugElementFinder extends ElementFinder
+class DebugElementFinder implements ElementFinderInterface
 {
+    /**
+     * @var ElementFinderInterface
+     */
+    private $finder;
+
     /**
      * @var ResultPool[]
      */
@@ -29,6 +36,14 @@ class DebugElementFinder extends ElementFinder
      * @var ResultPool[]
      */
     private $cachedResultPools = array();
+
+    /**
+     * @param ElementFinderInterface $finder
+     */
+    public function __construct(ElementFinderInterface $finder)
+    {
+        $this->finder = $finder;
+    }
 
     /**
      * @return int
@@ -69,7 +84,7 @@ class DebugElementFinder extends ElementFinder
      */
     public function findByIdentifier($identifier)
     {
-        $resultPool = parent::findByIdentifier($identifier);
+        $resultPool = $this->finder->findByIdentifier($identifier);
 
         $this->cachedResultPools[] = $resultPool;
 
@@ -79,15 +94,13 @@ class DebugElementFinder extends ElementFinder
     /**
      * Find elements.
      *
-     * @param ElementFinderConfig $config
-     * @param array               $languages
-     * @param bool                $isPreview
+     * @param ExecutionDescriptor $descriptor
      *
      * @return ResultPool
      */
-    public function find(ElementFinderConfig $config, array $languages, $isPreview)
+    public function find(ExecutionDescriptor $descriptor)
     {
-        $resultPool = parent::find($config, $languages, $isPreview);
+        $resultPool = $this->finder->find($descriptor);
 
         $this->updatedResultPools[] = $resultPool;
 

@@ -17,6 +17,8 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\AlwaysInvalid
  * Always invalidate invalidator test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\AlwaysInvalidateInvalidator
  */
 class AlwaysInvalidateInvalidatorTest extends \PHPUnit_Framework_TestCase
 {

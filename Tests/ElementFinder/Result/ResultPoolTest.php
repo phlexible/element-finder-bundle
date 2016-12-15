@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\ElementFinderBundle\Tests\ElementFinder;
+namespace Phlexible\Bundle\ElementFinderBundle\Tests\ElementFinder\Result;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultItem;
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ResultPool;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultItem;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Prophecy\Argument;
 
@@ -21,6 +21,8 @@ use Prophecy\Argument;
  * Result pool test.
  *
  * @author Stephan Wentz <swentz@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool
  */
 class ResultPoolTest extends \PHPUnit_Framework_TestCase
 {
@@ -51,7 +53,7 @@ class ResultPoolTest extends \PHPUnit_Framework_TestCase
     {
         $config = new ElementFinderConfig();
 
-        $pool = new ResultPool(
+        $pool = new \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool(
             'testIdentifier',
             $config,
             array('en'),
