@@ -226,23 +226,7 @@ class LookupBuilder
         $element = $this->elementService->findElement($treeNode->getTypeId());
         $elementVersion = $this->elementService->findLatestElementVersion($element);
 
-        $actions = $this->elementHistoryManager->findBy(
-            array(
-                'eid' => $treeNode->getTypeId(),
-                'action' => ElementHistoryManagerInterface::ACTION_CREATE_ELEMENT_VERSION
-            )
-        );
-
-        $languages = array();
-        foreach ($actions as $action) {
-            $languages[$action->getLanguage()] = $action->getLanguage();
-        }
-
-        $languages = array_filter(array_values($languages), function ($value) {
-            return !is_null($value);
-        });
-
-        foreach ($languages as $language) {
+        foreach ($treeNode->getTree()->getSavedLanguages($treeNode) as $language) {
             $this->updateVersion(
                 $treeNode,
                 $element,

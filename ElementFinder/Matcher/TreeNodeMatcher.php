@@ -87,25 +87,13 @@ class TreeNodeMatcher implements TreeNodeMatcherInterface
             /* @var $childNode TreeNodeInterface */
 
             if ($isPreview) {
-                $actions = $this->elementHistoryManager->findBy(
-                    array(
-                        'eid' => $childNode->getTypeId(),
-                        'action' => ElementHistoryManagerInterface::ACTION_CREATE_ELEMENT_VERSION
-                    )
-                );
-
-                $onlineLanguages = array();
-                foreach ($actions as $action) {
-                    $onlineLanguages[$action->getLanguage()] = $action->getLanguage();
-                }
-
-                $onlineLanguages = array_values($onlineLanguages);
+                $availableLanguages = $childNode->getTree()->getSavedLanguages($childNode);
             } else {
-                $onlineLanguages = $tree->getPublishedLanguages($childNode);
+                $availableLanguages = $tree->getPublishedLanguages($childNode);
             }
 
             foreach ($languages as $language) {
-                if (in_array($language, $onlineLanguages)) {
+                if (in_array($language, $availableLanguages)) {
                     if (!isset($catched[$language])) {
                         $catched[$language] = array();
                     }
@@ -127,7 +115,7 @@ class TreeNodeMatcher implements TreeNodeMatcherInterface
 
                 // master language is published
                 // and master language was not processed yet
-                if (in_array($masterLanguage, $onlineLanguages) && !in_array($masterLanguage, $languages)) {
+                if (in_array($masterLanguage, $availableLanguages) && !in_array($masterLanguage, $languages)) {
                     $catched[$masterLanguage][] = (int) $childNode->getId();
                 }
             }
