@@ -49,6 +49,7 @@ services:
             - "@phlexible_element.element_meta_set_resolver"
             - "@phlexible_element.element_meta_data_manager"
             - "@event_dispatcher"
+            - "@phlexible_element.element_history_manager"
 
     # comands
     phlexible_element_finder.build_command:

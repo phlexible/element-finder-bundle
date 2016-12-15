@@ -18,6 +18,7 @@ use Phlexible\Bundle\ElementBundle\Entity\Element;
 use Phlexible\Bundle\ElementBundle\Entity\ElementVersion;
 use Phlexible\Bundle\ElementBundle\Meta\ElementMetaDataManager;
 use Phlexible\Bundle\ElementBundle\Meta\ElementMetaSetResolver;
+use Phlexible\Bundle\ElementBundle\Model\ElementHistoryManagerInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinderEvents;
 use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderLookupElement;
 use Phlexible\Bundle\ElementFinderBundle\Entity\ElementFinderLookupMeta;
@@ -58,24 +59,32 @@ class LookupBuilder
     private $dispatcher;
 
     /**
-     * @param EntityManager            $entityManager
-     * @param ElementService           $elementService
-     * @param ElementMetaSetResolver   $metasetResolver
-     * @param ElementMetaDataManager   $metadataManager
+     * @var ElementHistoryManagerInterface
+     */
+    private $elementHistoryManager;
+
+    /**
+     * @param EntityManager $entityManager
+     * @param ElementService $elementService
+     * @param ElementMetaSetResolver $metasetResolver
+     * @param ElementMetaDataManager $metadataManager
      * @param EventDispatcherInterface $dispatcher
+     * @param ElementHistoryManagerInterface $elementHistoryManager
      */
     public function __construct(
         EntityManager $entityManager,
         ElementService $elementService,
         ElementMetaSetResolver $metasetResolver,
         ElementMetaDataManager $metadataManager,
-        EventDispatcherInterface $dispatcher)
+        EventDispatcherInterface $dispatcher,
+        ElementHistoryManagerInterface $elementHistoryManager)
     {
         $this->entityManager = $entityManager;
         $this->elementService = $elementService;
         $this->metasetResolver = $metasetResolver;
         $this->metadataManager = $metadataManager;
         $this->dispatcher = $dispatcher;
+        $this->elementHistoryManager = $elementHistoryManager;
     }
 
     /**
@@ -217,8 +226,7 @@ class LookupBuilder
         $element = $this->elementService->findElement($treeNode->getTypeId());
         $elementVersion = $this->elementService->findLatestElementVersion($element);
 
-        $languages = array('de');
-        foreach ($languages as $language) {
+        foreach ($treeNode->getTree()->getSavedLanguages($treeNode) as $language) {
             $this->updateVersion(
                 $treeNode,
                 $element,

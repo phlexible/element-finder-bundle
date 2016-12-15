@@ -73,7 +73,7 @@ class ElementFinderExtension extends \Twig_Extension
         }
 
         $languages = array($currentRequest->getLocale());
-        $preview = $currentRequest->attributes->get('preview', false);
+        $preview = $currentRequest->attributes->get('_preview', false);
 
         if ($configValues instanceof ElementStructureValue) {
             $configValues = $configValues->getValue();
