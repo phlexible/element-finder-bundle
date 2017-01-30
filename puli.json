@@ -76,6 +76,16 @@
             "install-path": "vendor/justinrainbow/json-schema",
             "installer": "composer"
         },
+        "matthiasnoback/symfony-config-test": {
+            "install-path": "vendor/matthiasnoback/symfony-config-test",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "matthiasnoback/symfony-dependency-injection-test": {
+            "install-path": "vendor/matthiasnoback/symfony-dependency-injection-test",
+            "installer": "composer",
+            "env": "dev"
+        },
         "michelf/php-markdown": {
             "install-path": "vendor/michelf/php-markdown",
             "installer": "composer"
@@ -303,8 +313,7 @@
         },
         "symfony/polyfill-mbstring": {
             "install-path": "vendor/symfony/polyfill-mbstring",
-            "installer": "composer",
-            "env": "dev"
+            "installer": "composer"
         },
         "symfony/polyfill-php54": {
             "install-path": "vendor/symfony/polyfill-php54",
