@@ -12,6 +12,8 @@
 namespace Phlexible\Bundle\ElementFinderBundle\Command;
 
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinder;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinderInterface;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Executor\ExecutionDescriptor;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -27,14 +29,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 class FindCommand extends Command
 {
     /**
-     * @var ElementFinder
+     * @var ElementFinderInterface
      */
     private $finder;
 
     /**
-     * @param ElementFinder $finder
+     * @param ElementFinderInterface $finder
      */
-    public function __construct(ElementFinder $finder)
+    public function __construct(ElementFinderInterface $finder)
     {
         $this->finder = $finder;
 
@@ -81,7 +83,8 @@ class FindCommand extends Command
         $config->setMaxDepth($maxDepth);
         $config->setNavigation($navigation);
 
-        $resultPool = $this->finder->find($config, $languages, $preview);
+        $descriptor = new ExecutionDescriptor($config, $languages, $preview);
+        $resultPool = $this->finder->find($descriptor);
 
         foreach ($parameters as $parameter) {
             $parts = explode('=', $parameter);

@@ -12,18 +12,23 @@ services:
             - "%phlexible_element_finder.use_master_language_as_fallback%"
 
     phlexible_element_finder.find_executor:
-        class: Phlexible\Bundle\ElementFinderBundle\Executor\FindExecutor
+        class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\Executor\FindExecutor
         arguments:
             - "@doctrine.dbal.default_connection"
-            - "@phlexible_element_finder.treenode_matcher"
             - "@phlexible_element_finder.filter_manager"
+            - "@phlexible_element_finder.treenode_matcher"
 
-    phlexible_element_finder.finder:
-        class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinder
+    phlexible_element_finder.caching_finder:
+        class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\CachingElementFinder
         arguments:
             - "@event_dispatcher"
             - "@phlexible_element_finder.find_executor"
             - "@phlexible_element_finder.cache"
+
+    phlexible_element_finder.debug_finder:
+        class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\DebugElementFinder
+        arguments:
+            - "@phlexible_element_finder.caching_finder"
 
     phlexible_element_finder.file_cache:
         class: Phlexible\Bundle\ElementFinderBundle\ElementFinder\Cache\FileCache

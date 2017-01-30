@@ -11,8 +11,10 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\DependencyInjection;
 
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\DebugElementFinder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
@@ -46,8 +48,9 @@ class PhlexibleElementFinderExtension extends Extension
         $loader->load('twig_extensions.yml');
 
         if ($container->getParameter('kernel.debug')) {
-            $container->findDefinition('phlexible_element_finder.finder')
-                ->setClass('Phlexible\Bundle\ElementFinderBundle\ElementFinder\DebugElementFinder');
+            $container->setAlias('phlexible_element_finder.finder', 'phlexible_element_finder.debug_finder');
+        } else {
+            $container->setAlias('phlexible_element_finder.finder', 'phlexible_element_finder.caching_finder');
         }
     }
 }

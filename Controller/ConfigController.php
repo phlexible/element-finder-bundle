@@ -12,6 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\Controller;
 
 use Doctrine\DBAL\Connection;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Executor\ExecutionDescriptor;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 use Phlexible\Bundle\GuiBundle\Response\ResultResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -279,7 +280,7 @@ class ConfigController extends Controller
             ->setSortDir($sortDir)
             ->setFilter($filter);
 
-        $result = $elementFinder->find($config, [$language], false);
+        $result = $elementFinder->find(new ExecutionDescriptor($config, [$language], false));
 
         $data = array();
         foreach ($result->range(0, 10) as $resultItem) {
