@@ -64,11 +64,11 @@ class LookupBuilder
     private $elementHistoryManager;
 
     /**
-     * @param EntityManager $entityManager
-     * @param ElementService $elementService
-     * @param ElementMetaSetResolver $metasetResolver
-     * @param ElementMetaDataManager $metadataManager
-     * @param EventDispatcherInterface $dispatcher
+     * @param EntityManager                  $entityManager
+     * @param ElementService                 $elementService
+     * @param ElementMetaSetResolver         $metasetResolver
+     * @param ElementMetaDataManager         $metadataManager
+     * @param EventDispatcherInterface       $dispatcher
      * @param ElementHistoryManagerInterface $elementHistoryManager
      */
     public function __construct(

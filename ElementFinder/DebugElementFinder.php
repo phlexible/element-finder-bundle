@@ -13,7 +13,6 @@ namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder;
 
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Executor\ExecutionDescriptor;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
-use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
 /**
  * Element finder that stores all assembled result pools for debugging purposes.

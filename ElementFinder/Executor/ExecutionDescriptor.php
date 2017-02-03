@@ -11,7 +11,6 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\ElementFinder\Executor;
 
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterInterface;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
 
 /**
