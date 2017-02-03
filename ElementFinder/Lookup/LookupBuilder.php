@@ -305,7 +305,7 @@ class LookupBuilder
         $lookupElement
             ->setEid($element->getEid())
             ->setTreeId($treeNode->getId())
-            ->setPath($treeNode->getTree()->getIdPath($treeNode))
+            ->setPath(implode(',', $treeNode->getTree()->getIdPath($treeNode)))
             ->setPublishedAt($elementVersion->getCreatedAt())
             ->setCustomDate($elementVersion->getCustomDate($language))
             ->setIsPreview($preview)
