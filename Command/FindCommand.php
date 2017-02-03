@@ -11,7 +11,6 @@
 
 namespace Phlexible\Bundle\ElementFinderBundle\Command;
 
-use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinder;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\ElementFinderInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Executor\ExecutionDescriptor;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;

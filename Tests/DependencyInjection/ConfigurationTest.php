@@ -15,7 +15,7 @@ use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use Phlexible\Bundle\ElementFinderBundle\DependencyInjection\Configuration;
 
 /**
- * Configuration test
+ * Configuration test.
  *
  * @author Stephan Wentz <swentz@brainbits.net>
  *
@@ -37,7 +37,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertProcessedConfigurationEquals(
             array(
-                array()
+                array(),
             ),
             array(
                 'use_master_language_as_fallback' => false,
@@ -65,9 +65,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                     ),
                     'invalidator' => array(
                         'service' => 'testInvalidatorService',
-                        'ttl' => 999
+                        'ttl' => 999,
                     ),
-                )
+                ),
             ),
             array(
                 'use_master_language_as_fallback' => true,
