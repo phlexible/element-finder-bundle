@@ -12,6 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\Tests\ElementFinder\Result;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\ResultPoolFilterInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultItem;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
@@ -54,7 +55,7 @@ class ResultPoolTest extends TestCase
     {
         $config = new ElementFinderConfig();
 
-        $pool = new \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool(
+        $pool = new ResultPool(
             'testIdentifier',
             $config,
             array('en'),
@@ -106,7 +107,7 @@ class ResultPoolTest extends TestCase
     {
         $config = new ElementFinderConfig();
 
-        $filter = $this->prophesize('Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\ResultPoolFilterInterface');
+        $filter = $this->prophesize(ResultPoolFilterInterface::class);
 
         $pool = new ResultPool(
             'testIdentifier',
