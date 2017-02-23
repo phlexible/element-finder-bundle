@@ -15,6 +15,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Executor\ExecutionDescrip
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Executor\ExecutionResult;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultItem;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultItemMapper;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Result item mapper test.
@@ -23,7 +24,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultItemMapper;
  *
  * @covers \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultItemMapper
  */
-class ResultItemMapperTest extends \PHPUnit_Framework_TestCase
+class ResultItemMapperTest extends TestCase
 {
     public function testMapResult()
     {

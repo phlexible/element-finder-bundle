@@ -13,6 +13,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\Test\DependencyInjection;
 
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use Phlexible\Bundle\ElementFinderBundle\DependencyInjection\Configuration;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Configuration test.
@@ -21,7 +22,7 @@ use Phlexible\Bundle\ElementFinderBundle\DependencyInjection\Configuration;
  *
  * @covers \Phlexible\Bundle\ElementFinderBundle\DependencyInjection\Configuration
  */
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends TestCase
 {
     use ConfigurationTestCaseTrait;
 

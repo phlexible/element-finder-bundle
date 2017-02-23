@@ -12,6 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\Tests\ElementFinder\Invalidator;
 
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\TtlInvalidator;
+use PHPUnit\Framework\TestCase;
 
 /**
  * TTL invalidator test.
@@ -20,7 +21,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\TtlInvalidato
  *
  * @covers \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\TtlInvalidator
  */
-class TtlInvalidatorTest extends \PHPUnit_Framework_TestCase
+class TtlInvalidatorTest extends TestCase
 {
     public function testIsFresh()
     {

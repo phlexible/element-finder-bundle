@@ -13,6 +13,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\Tests\ElementFinder\Filter;
 
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterManager;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Filter manager test.
@@ -21,7 +22,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterManager;
  *
  * @covers \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterManager
  */
-class FilterManagerTest extends \PHPUnit_Framework_TestCase
+class FilterManagerTest extends TestCase
 {
     public function testGet()
     {

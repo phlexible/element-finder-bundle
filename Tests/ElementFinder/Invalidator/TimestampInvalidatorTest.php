@@ -13,6 +13,7 @@ namespace Phlexible\Bundle\ElementFinderBundle\Tests\ElementFinder\Invalidator;
 
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\TimestampInvalidator;
 use Phlexible\Bundle\GuiBundle\Properties\Properties;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
 /**
@@ -22,7 +23,7 @@ use Prophecy\Argument;
  *
  * @covers \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\TimestampInvalidator
  */
-class TimestampInvalidatorTest extends \PHPUnit_Framework_TestCase
+class TimestampInvalidatorTest extends TestCase
 {
     public function testIsFresh()
     {

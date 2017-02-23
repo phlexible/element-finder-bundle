@@ -16,6 +16,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\FilterInterface;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultItem;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Xml dumper test.
@@ -24,7 +25,7 @@ use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
  *
  * @covers \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Dumper\XmlDumper
  */
-class XmlDumperTest extends \PHPUnit_Framework_TestCase
+class XmlDumperTest extends TestCase
 {
     public function testDump()
     {

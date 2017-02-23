@@ -17,6 +17,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Loader\XmlLoader;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultItem;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Xml loader test.
@@ -25,7 +26,7 @@ use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
  *
  * @covers \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Loader\XmlLoader
  */
-class XmlLoaderTest extends \PHPUnit_Framework_TestCase
+class XmlLoaderTest extends TestCase
 {
     public function testLoad()
     {

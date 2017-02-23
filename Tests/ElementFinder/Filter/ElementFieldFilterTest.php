@@ -12,6 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\Tests\ElementFinder;
 
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\ElementFieldFilter;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Element field filter test.
@@ -20,7 +21,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\ElementFieldFilter
  *
  * @covers \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Filter\ElementFieldFilter
  */
-class ElementFieldFilterTest extends \PHPUnit_Framework_TestCase
+class ElementFieldFilterTest extends TestCase
 {
     public function testEnsureElementFieldFilterIsInstantiable()
     {

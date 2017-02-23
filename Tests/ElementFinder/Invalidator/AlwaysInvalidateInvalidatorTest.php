@@ -12,6 +12,7 @@
 namespace Phlexible\Bundle\ElementFinderBundle\Tests\ElementFinder\Invalidator;
 
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\AlwaysInvalidateInvalidator;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Always invalidate invalidator test.
@@ -20,7 +21,7 @@ use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\AlwaysInvalid
  *
  * @covers \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Invalidator\AlwaysInvalidateInvalidator
  */
-class AlwaysInvalidateInvalidatorTest extends \PHPUnit_Framework_TestCase
+class AlwaysInvalidateInvalidatorTest extends TestCase
 {
     public function testIsFresh()
     {

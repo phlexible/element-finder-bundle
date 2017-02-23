@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultItem;
 use Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool;
 use Phlexible\Bundle\ElementFinderBundle\Model\ElementFinderConfig;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
 /**
@@ -24,7 +25,7 @@ use Prophecy\Argument;
  *
  * @covers \Phlexible\Bundle\ElementFinderBundle\ElementFinder\Result\ResultPool
  */
-class ResultPoolTest extends \PHPUnit_Framework_TestCase
+class ResultPoolTest extends TestCase
 {
     /**
      * @param array $extra
