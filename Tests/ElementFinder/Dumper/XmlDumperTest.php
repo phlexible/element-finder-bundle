@@ -46,7 +46,7 @@ class XmlDumperTest extends \PHPUnit_Framework_TestCase
                 'pageSize' => 345,
             )),
             array(
-                'de'
+                'de',
             ),
             'testQuery',
             array(
@@ -55,7 +55,7 @@ class XmlDumperTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 'testFilter1' => $filter1->reveal(),
-                'testFilter2' => $filter2->reveal()
+                'testFilter2' => $filter2->reveal(),
             ),
             new \DateTime('2001-02-03 04:05:06')
         );
@@ -64,7 +64,7 @@ class XmlDumperTest extends \PHPUnit_Framework_TestCase
 
         $result = $dumper->dump($pool);
 
-        $expected = <<<EOF
+        $expected = <<<'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <pool identifier="foo" createdAt="2001-02-03 04:05:06">
   <query>testQuery</query>

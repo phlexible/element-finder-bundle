@@ -74,7 +74,7 @@ class ResultItemMapperTest extends \PHPUnit_Framework_TestCase
                     'extra3' => true,
                     'extra4' => array(1, 2, 3),
                 )
-            )
+            ),
         );
 
         $this->assertEquals($expected, $result);

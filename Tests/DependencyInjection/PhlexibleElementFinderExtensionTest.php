@@ -15,7 +15,7 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Phlexible\Bundle\ElementFinderBundle\DependencyInjection\PhlexibleElementFinderExtension;
 
 /**
- * Phlexible element finder extension test
+ * Phlexible element finder extension test.
  *
  * @author Stephan Wentz <swentz@brainbits.net>
  *
@@ -29,7 +29,7 @@ class PhlexibleElementFinderExtensionTest extends AbstractExtensionTestCase
     protected function getContainerExtensions()
     {
         return array(
-            new PhlexibleElementFinderExtension()
+            new PhlexibleElementFinderExtension(),
         );
     }
 
@@ -58,7 +58,7 @@ class PhlexibleElementFinderExtensionTest extends AbstractExtensionTestCase
             ),
             'invalidator' => array(
                 'service' => 'testInvalidatorService',
-                'ttl' => 999
+                'ttl' => 999,
             ),
         ));
 

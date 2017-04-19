@@ -29,7 +29,7 @@ class XmlLoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoad()
     {
-        $xml = <<<EOF
+        $xml = <<<'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <pool identifier="foo" createdAt="2001-02-03 04:05:06">
   <query>testQuery</query>
@@ -91,7 +91,7 @@ EOF;
                 'pageSize' => 345,
             )),
             array(
-                'de'
+                'de',
             ),
             'testQuery',
             array(
@@ -100,7 +100,7 @@ EOF;
             ),
             array(
                 'testFilter1',
-                'testFilter2'
+                'testFilter2',
             ),
             new \DateTime('2001-02-03 04:05:06')
         );
