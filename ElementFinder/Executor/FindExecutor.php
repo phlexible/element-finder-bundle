@@ -54,8 +54,7 @@ class FindExecutor implements ExecutorInterface
         Connection $connection,
         FilterManager $filterManager,
         TreeNodeMatcherInterface $treeNodeMatcher
-    )
-    {
+    ) {
         $this->connection = $connection;
         $this->filterManager = $filterManager;
         $this->treeNodeMatcher = $treeNodeMatcher;
