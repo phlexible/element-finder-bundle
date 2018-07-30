@@ -65,7 +65,7 @@ class PhlexibleElementFinderExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter('phlexible_element_finder.use_master_language_as_fallback', true);
         $this->assertContainerBuilderHasParameter('phlexible_element_finder.cache_dir', 'testDir1');
         $this->assertContainerBuilderHasParameter('phlexible_element_finder.invalidator_ttl', 999);
-        $this->assertContainerBuilderHasAlias('phlexible_element_finder.cache', 'testCacheService');
-        $this->assertContainerBuilderHasAlias('phlexible_element_finder.invalidator', 'testInvalidatorService');
+        $this->assertContainerBuilderHasAlias('phlexible_element_finder.cache', 'testcacheservice');
+        $this->assertContainerBuilderHasAlias('phlexible_element_finder.invalidator', 'testinvalidatorservice');
     }
 }
